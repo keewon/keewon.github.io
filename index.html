@@ -1,0 +1,44 @@
+---
+layout: default
+title: Keewon Seo (oedalpha)
+---
+
+<script lang="javascript">
+function swap_photo() {
+    var im = document.getElementById('img_front');
+    if (im.src.indexOf("kwseo_2012_small.jpg") != -1) {
+	im.src = "kwseo_2012.jpg";
+    }
+    else if (im.src.indexOf("kwseo_2012.jpg") != -1) {
+	im.src = "kwseo_2012_small.jpg";
+    }
+}
+</script>
+<div id="home">
+<p>
+<a href="#" onclick="javascript:swap_photo();"><img id="img_front" src="kwseo_2012_small.jpg" align="right" style="margin-left: 1em" alt="My photo" /></a>
+My name is Keewon Seo. I live in Seongnam, South Korea, with my wife, Miae Kim.<br/>
+<br/>
+I'm a freelance software engineer.
+Recently I'm interested in building backend of mobile service with Erlang.
+I also write codes for iOS if needed.
+When I write some scripts for me, I prefer Python.<br/>
+<br/>
+To get further, see my <a href="resume.html">Resume</a> and <a href="http://github.com/oedalpha/">github.com/oedalpha</a>.
+</p>
+
+  <h2>Work</h2>
+  <ul class="posts">
+    {% for post in site.categories.work %}
+      <li><span>{{ post.date | date_to_string }}</span> - <a href="{{ post.url }}">{{ post.title }}</a></li>
+    {% endfor %}
+  </ul>
+
+  <h2>Life</h2>
+  <ul class="posts">
+    {% for post in site.categories.life %}
+      <li><span>{{ post.date | date_to_string }}</span> - <a href="{{ post.url }}">{{ post.title }}</a></li>
+    {% endfor %}
+  </ul>
+
+</div>

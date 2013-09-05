@@ -14,6 +14,8 @@ to check all clients are running.
 
 Fortunately [Tsung FAQ](http://tsung.erlang-projects.org/user_manual.html#htoc82)
 presents trouble shooting guide.
+If clustering doesn't work well, you need to check connectivity of each nodes.
+Each nodes are connected via ssh as far as I know. PATH also should be set properly.
 
 If you want to test custom XMPP protocols,
 you may edit `ts_jabber_common.erl` and recompile the project.  

@@ -5,10 +5,10 @@
 /*****************************************************************************/
 
 /* Global Reset */
-/** {
+{
   margin: 0;
   padding: 0;
-} */
+}
 
 html, body { height: 100%; }
 
@@ -91,12 +91,19 @@ ul p {
   margin-right: 0.5em; margin-bottom: -0.5em
 }
 
+.site .header table {
+  border-spacing: 0;
+/*  margin: 0;
+  padding: 0; */
+}
+
+/*
 .site .header h1.title .text {
   position: relative;
   left: 100px;
   top: -0.5em;
-
 }
+*/
 
 .site .header a.extra {
   color: #aaa;

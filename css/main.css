@@ -25,10 +25,6 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 100%; }
 */
 
-h1 {margin: 0 }
-h1 img { margin-right: 0.5em; margin-bottom: -0.5em }
-
-/* h1 { margin-bottom: 1em; } */
 /* p { margin: 1em 0; } */
 
 /*
@@ -86,9 +82,20 @@ ul p {
 }
 
 .site .header h1.title {
-  display: inline-block;
+/*  display: inline-block;
   margin-bottom: 1em;
-  color: #a00;
+  color: #a00; */
+}
+
+.site .header h1 img {
+  margin-right: 0.5em; margin-bottom: -0.5em
+}
+
+.site .header h1.title .text {
+  position: relative;
+  left: 100px;
+  top: -0.5em;
+
 }
 
 .site .header a.extra {

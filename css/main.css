@@ -5,10 +5,10 @@
 /*****************************************************************************/
 
 /* Global Reset */
-* {
+/** {
   margin: 0;
   padding: 0;
-}
+} */
 
 html, body { height: 100%; }
 
@@ -26,7 +26,7 @@ h1, h2, h3, h4, h5, h6 {
 */
 
 h1 { margin-bottom: 1em; }
-p { margin: 1em 0; }
+/* p { margin: 1em 0; } */
 
 /*
 a         { color: #00a; }
@@ -39,6 +39,7 @@ a:visited { color: #a0a; }
 /* Home
 /*
 /*****************************************************************************/
+/*
 ul.posts {
   list-style-type: none;
   margin-bottom: 2em;
@@ -47,6 +48,7 @@ ul.posts {
 ul.posts li {
   line-height: 1.75em;
 }
+*/
 
 /*
 ul.posts span {
@@ -55,6 +57,11 @@ ul.posts span {
   font-size: 80%;
 }
 */
+
+ul p {
+  -webkit-margin-before: 0;
+  -webkit-margin-after: 0;
+}
 
 /*****************************************************************************/
 /*

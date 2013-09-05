@@ -1,2 +1,2 @@
-all:
+run:
 	jekyll serve -w

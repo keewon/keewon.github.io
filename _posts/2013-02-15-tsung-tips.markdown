@@ -5,7 +5,7 @@ date: 2013-02-15
 categories: work erlang
 ---
 
-If you want to load test of XMPP server, there are not many ready-made choices.
+If you want to do load test on XMPP server, there are not many ready-made choices.
 [Tsung](http://tsung.erlang-projects.org) is one of them, which is well maintained.
 
 But Tsung is not easy to use.

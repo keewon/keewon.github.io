@@ -8,4 +8,4 @@
 ## Note
  - [Gideros](https://github.com/gideros/gideros) is a cross-platform mobile development environment and it is used for Organic Pop
  - [InChI](http://www.inchi-trust.org/) key and the software are used for internal algorithm.
- - OrganicPop depends on [PubChem](https://pubchem.ncbi.nlm.nih.gov/). Most chemistry data are from there.
+ - Most chemistry data are from [PubChem](https://pubchem.ncbi.nlm.nih.gov/). I appreciate it.

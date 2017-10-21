@@ -10,3 +10,5 @@
  - [InChI](http://www.inchi-trust.org/) key and the software are used for internal algorithm.
  - Most chemistry data are from [PubChem](https://pubchem.ncbi.nlm.nih.gov/). I appreciate it.
 
+## Discussion
+{% include opop_disqus.html %}

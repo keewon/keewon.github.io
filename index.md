@@ -7,4 +7,4 @@ I was a game developer, and I believe I am still.
 
 ## Other Links
  - [https://github.com/keewon](https://github.com/keewon)
- - I like writing a small patch of software - [Gist](https://gist.github.com/keewon)
+ - I like writing a small patch of software - [My Gist](https://gist.github.com/keewon)

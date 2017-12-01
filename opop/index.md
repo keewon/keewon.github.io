@@ -3,10 +3,10 @@
 
 ## Download
  - Android : [Google Play Store](https://play.google.com/store/apps/details?id=com.acidblob.opop1)
- - iOS : Coming soon!
+ - iOS : [App Store](https://itunes.apple.com/kr/app/organic-pop/id1317691271?mt=8)
 
 ## History
- - 2017-11-?? iOS version will be released soon. Testing now.
+ - 2017-12-01 iOS version has been released.
  - 2017-11-25 1.0 for Android has been released. Submitted to [GIGDC](http://www.gigdc.or.kr/)
  - 2017-06-12 Submitted to [BIC2017](https://bicfest.org/), but not accepted.
  - 2016-11-24 First prototype is developed in a night.

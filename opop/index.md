@@ -7,7 +7,7 @@
 
 ## History
  - 2017-12-01 iOS version has been released.
- - 2017-11-25 1.0 for Android has been released. Submitted to [GIGDC](http://www.gigdc.or.kr/)
+ - 2017-11-25 1.0 for Android has been released. Submitted to [GIGDC](http://www.gigdc.or.kr/), but not accepted.
  - 2017-06-12 Submitted to [BIC2017](https://bicfest.org/), but not accepted.
  - 2016-11-24 First prototype is developed in a night.
 

@@ -6,6 +6,7 @@
  - iOS : [App Store](https://itunes.apple.com/kr/app/organic-pop/id1317691271?mt=8)
 
 ## History
+ - 2017-12-21 1.0.4 has been released for both of Android and iOS platforms with newly added 20 Amino acids.
  - 2017-12-01 iOS version has been released.
  - 2017-11-25 1.0 for Android has been released. Submitted to [GIGDC](http://www.gigdc.or.kr/), but not accepted.
  - 2017-06-12 Submitted to [BIC2017](https://bicfest.org/), but not accepted.
@@ -29,4 +30,6 @@
    - Pop: It's from my mouth.
 
 ## Discussion
+Please leave your opinion here in any language, I'll use Google translate.
+
 {% include opop_disqus.html %}

@@ -6,6 +6,8 @@
  - iOS : [App Store](https://itunes.apple.com/kr/app/organic-pop/id1317691271?mt=8)
 
 ## History
+ - 2018-03-?? 1.0.5 will be released with **Undo** and Vitamins.
+ - 2018-01-27 Introduced at the lightning talk of [2nd Mad Science Festival](https://madscientist.wordpress.com/2018/01/31/2%EB%B6%84%EC%9D%98-%EB%A7%88%EB%B2%95%EA%B3%BC-%EB%8F%8C-%EC%88%98%ED%94%84%EC%9D%98-%EB%B9%84%EB%B0%80-%EC%A0%9C-2%ED%9A%8C-%EB%A7%A4%EC%82%AC%ED%8E%98-%ED%9B%84%EA%B8%B0/)
  - 2017-12-21 1.0.4 has been released for both of Android and iOS platforms with newly added 20 Amino acids.
  - 2017-12-01 iOS version has been released.
  - 2017-11-25 1.0 for Android has been released. Submitted to [GIGDC](http://www.gigdc.or.kr/), but not accepted.
@@ -21,7 +23,7 @@
    - [Gideros](https://github.com/gideros/gideros) is a cross-platform mobile development environment and it is used for this game.
    - [InChI](http://www.inchi-trust.org/) key and the software are used for internal algorithm.
  - Data and text
-   - Most chemistry data are from [PubChem](https://pubchem.ncbi.nlm.nih.gov/). I deeply appreciate it.
+   - Most chemistry data are from [PubChem](https://pubchem.ncbi.nlm.nih.gov/), and some are from Wikipedia. I deeply appreciate it.
  - Font
    - We use Gideros default font and [Google Noto Fonts](https://www.google.com/get/noto/)
  - Sound

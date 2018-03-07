@@ -1,5 +1,15 @@
 # Organic Pop
+
+[한국어](index_ko)
+
+![Caffeine in Organic Pop](caffeine.png) ![Ibuprofen in Organic Pop](ibuprofen.png)
+
 {% include opop_tutorial_youtube.html %}
+
+## Game Rules
+ 1. Connect atoms. Octet-rule apply here.
+ 2. Atoms disappear when connected atoms form a molecule.
+ 3. Repeat 1-2 until you build a target molecule.
 
 ## Download
  - Android : [Google Play Store](https://play.google.com/store/apps/details?id=com.acidblob.opop1)

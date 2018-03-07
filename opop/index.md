@@ -15,6 +15,7 @@
 ## Download
  - Android : [Google Play Store](https://play.google.com/store/apps/details?id=com.acidblob.opop1)
  - iOS : [App Store](https://itunes.apple.com/kr/app/organic-pop/id1317691271?mt=8)
+ - Do you want other platforms? Please leave your feedback!
 
 ## History
  - 2018-03-05 1.0.5 has been released with **Undo** and Vitamins.

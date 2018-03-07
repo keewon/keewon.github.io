@@ -6,6 +6,7 @@
 
 {% include opop_tutorial_youtube.html %}
 
+
 ## Game Rules
  1. Connect atoms. Octet-rule apply here.
  2. Atoms disappear when connected atoms form a molecule.

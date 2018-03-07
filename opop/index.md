@@ -17,7 +17,7 @@
  - iOS : [App Store](https://itunes.apple.com/kr/app/organic-pop/id1317691271?mt=8)
 
 ## History
- - 2018-03-05 1.0.5 will be released with **Undo** and Vitamins.
+ - 2018-03-05 1.0.5 has been released with **Undo** and Vitamins.
  - 2018-01-27 Introduced at the lightning talk of [2nd Mad Science Festival](https://madscientist.wordpress.com/2018/01/31/2%EB%B6%84%EC%9D%98-%EB%A7%88%EB%B2%95%EA%B3%BC-%EB%8F%8C-%EC%88%98%ED%94%84%EC%9D%98-%EB%B9%84%EB%B0%80-%EC%A0%9C-2%ED%9A%8C-%EB%A7%A4%EC%82%AC%ED%8E%98-%ED%9B%84%EA%B8%B0/)
  - 2017-12-21 1.0.4 has been released for both of Android and iOS platforms with newly added 20 Amino acids.
  - 2017-12-01 iOS version has been released.

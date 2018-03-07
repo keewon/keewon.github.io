@@ -1,6 +1,6 @@
 # Organic Pop - 오가닉팝
 
-[English](index)
+[\[English\]](index) [\[Korean\]](index_ko)
 
 ![오가닉팝 - 카페인](caffeine.png) ![오가닉팝 - 이부프로펜](ibuprofen.png)
 

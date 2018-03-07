@@ -2,6 +2,8 @@
 
 [\[English\]](index) [\[Korean\]](index_ko)
 
+*유기화학이 퍼즐 게임을 만났습니다. 원자 블록을 없애려면 분자를 만드세요!*
+
 ![오가닉팝 - 카페인](caffeine.png) ![오가닉팝 - 이부프로펜](ibuprofen.png)
 
 {% include opop_tutorial_youtube.html %}

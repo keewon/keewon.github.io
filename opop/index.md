@@ -1,6 +1,6 @@
 # Organic Pop
 
-[English](index) [Korean](index_ko)
+[\[English\]](index) [\[Korean\]](index_ko)
 
 ![Caffeine in Organic Pop](caffeine.png) ![Ibuprofen in Organic Pop](ibuprofen.png)
 

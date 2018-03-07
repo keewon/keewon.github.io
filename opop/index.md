@@ -7,8 +7,6 @@
 
 {% include opop_tutorial_youtube.html %} 
 
-![Caffeine in Organic Pop](caffeine.png) ![Ibuprofen in Organic Pop](ibuprofen.png) 
-
 ## Game Rules
  1. Connect atoms. Octet-rule apply here.
  2. Atoms disappear when connected atoms form a molecule.
@@ -43,6 +41,9 @@
    - Merge: https://www.freesoundeffects.com/free-track/electricshock-426768/
    - Spark: https://www.freesoundeffects.com/free-track/arrow-swoosh-1-466463/
    - Pop: It's from my mouth.
+
+## Screenshots
+![Caffeine in Organic Pop](caffeine.png) ![Ibuprofen in Organic Pop](ibuprofen.png) 
 
 ## Discussion
 Please leave your opinion here in any language, I'll use Google translate.

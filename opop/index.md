@@ -2,8 +2,7 @@
 
 [\[English\]](index) [\[Korean\]](index_ko)
 
-*Organic Chemistry met Tile-matching puzzle.*  
-*Build a Molecule to eliminate Atom blocks!*
+*Organic Chemistry met Tile-matching puzzle. Build a Molecule to eliminate Atom blocks!*
 
 ![Caffeine in Organic Pop](caffeine.png) ![Ibuprofen in Organic Pop](ibuprofen.png)
 

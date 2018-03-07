@@ -46,6 +46,6 @@
 ![Caffeine in Organic Pop](caffeine.png) ![Ibuprofen in Organic Pop](ibuprofen.png) 
 
 ## Discussion
-Please leave your opinion here in any language, I'll use Google translate.
+Please leave your feedback here or to https://twitter.com/keewonseo
 
 {% include opop_disqus.html %}

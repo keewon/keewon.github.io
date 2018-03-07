@@ -45,7 +45,7 @@
 ## Screenshots
 ![Caffeine in Organic Pop](caffeine.png) ![Ibuprofen in Organic Pop](ibuprofen.png) 
 
-## Discussion
-Please leave your feedback here or to https://twitter.com/keewonseo
+## Feedback
+Please leave your feedback on any channel - here, app store, hacker news or [twitter](https://twitter.com/keewonseo)
 
 {% include opop_disqus.html %}

@@ -4,7 +4,6 @@
 
 *유기화학이 퍼즐 게임을 만났습니다. 원자 블록을 없애려면 분자를 만드세요!*
 
-![오가닉팝 - 카페인](caffeine.png) ![오가닉팝 - 이부프로펜](ibuprofen.png)
 
 {% include opop_tutorial_youtube.html %}
 
@@ -44,6 +43,10 @@
    - 없애기: https://www.freesoundeffects.com/free-track/arrow-swoosh-1-466463/
    - Pop: 입으로 낸 소리입니다.
 
-## 댓글
+## 스크린샷
+![오가닉팝 - 카페인](caffeine.png) ![오가닉팝 - 이부프로펜](ibuprofen.png)
+
+## 피드백
+편하신 채널로 피드백을 남겨주세요 - 여기, 스토어, 아니면 [Twitter](https://twitter.com/keewonseo)
 
 {% include opop_disqus.html %}

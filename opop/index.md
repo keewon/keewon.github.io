@@ -12,7 +12,7 @@
  2. Atoms disappear when connected atoms form a molecule.
  3. Repeat 1-2 until you build a target molecule.
 
-![Ethanol in Organic Pop](ethanol.gif)
+![Ethanol in Organic Pop](https://keewon.github.io/opop/ethanol.gif)
 
 ## Download
  - Android : [Google Play Store](https://play.google.com/store/apps/details?id=com.acidblob.opop1)

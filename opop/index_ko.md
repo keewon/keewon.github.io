@@ -1,8 +1,9 @@
 # Organic Pop - 오가닉팝
 
-[English](index)
+[\[English\]](index) [\[Korean\]](index_ko)
 
-![오가닉팝 - 카페인](caffeine.png) ![오가닉팝 - 이부프로펜](ibuprofen.png)
+*유기화학이 퍼즐 게임을 만났습니다. 원자 블록을 없애려면 분자를 만드세요!*
+
 
 {% include opop_tutorial_youtube.html %}
 
@@ -11,6 +12,8 @@
  1. 원자를 연결합니다. 옥텟 규칙이 적용됩니다.
  2. 연결된 원자가 분자를 이루면, 원자가 사라집니다.
  3. 목표 분자를 만들 때까지 1-2 를 반복합니다.
+
+![Ethanol in Organic Pop](ethanol.gif)
 
 ## 다운로드
  - Android : [Google Play Store](https://play.google.com/store/apps/details?id=com.acidblob.opop1)
@@ -42,6 +45,10 @@
    - 없애기: https://www.freesoundeffects.com/free-track/arrow-swoosh-1-466463/
    - Pop: 입으로 낸 소리입니다.
 
-## 댓글
+## 스크린샷
+![오가닉팝 - 카페인](caffeine.png) ![오가닉팝 - 이부프로펜](ibuprofen.png)
+
+## 피드백
+편하신 채널로 피드백을 남겨주세요 - 여기, 스토어, 아니면 [Twitter](https://twitter.com/keewonseo)
 
 {% include opop_disqus.html %}

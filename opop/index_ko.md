@@ -13,6 +13,8 @@
  2. 연결된 원자가 분자를 이루면, 원자가 사라집니다.
  3. 목표 분자를 만들 때까지 1-2 를 반복합니다.
 
+![Ethanol in Organic Pop](ethanol.gif)
+
 ## 다운로드
  - Android : [Google Play Store](https://play.google.com/store/apps/details?id=com.acidblob.opop1)
  - iOS : [App Store](https://itunes.apple.com/kr/app/organic-pop/id1317691271?mt=8)

@@ -1,23 +1,26 @@
 # Organic Pop
 
-[한국어](index_ko)
+[\[English\]](index) [\[Korean\]](index_ko)
 
-![Caffeine in Organic Pop](caffeine.png) ![Ibuprofen in Organic Pop](ibuprofen.png)
+*Organic Chemistry met Tile-matching puzzle.*  
+*Build a Molecule to eliminate Atom blocks!*
 
-{% include opop_tutorial_youtube.html %}
-
+{% include opop_tutorial_youtube.html %} 
 
 ## Game Rules
  1. Connect atoms. Octet-rule apply here.
  2. Atoms disappear when connected atoms form a molecule.
  3. Repeat 1-2 until you build a target molecule.
 
+![Ethanol in Organic Pop](ethanol.gif)
+
 ## Download
  - Android : [Google Play Store](https://play.google.com/store/apps/details?id=com.acidblob.opop1)
  - iOS : [App Store](https://itunes.apple.com/kr/app/organic-pop/id1317691271?mt=8)
+ - Do you want other platforms? Please leave your feedback!
 
 ## History
- - 2018-03-05 1.0.5 will be released with **Undo** and Vitamins.
+ - 2018-03-05 1.0.5 has been released with **Undo** and Vitamins.
  - 2018-01-27 Introduced at the lightning talk of [2nd Mad Science Festival](https://madscientist.wordpress.com/2018/01/31/2%EB%B6%84%EC%9D%98-%EB%A7%88%EB%B2%95%EA%B3%BC-%EB%8F%8C-%EC%88%98%ED%94%84%EC%9D%98-%EB%B9%84%EB%B0%80-%EC%A0%9C-2%ED%9A%8C-%EB%A7%A4%EC%82%AC%ED%8E%98-%ED%9B%84%EA%B8%B0/)
  - 2017-12-21 1.0.4 has been released for both of Android and iOS platforms with newly added 20 Amino acids.
  - 2017-12-01 iOS version has been released.
@@ -42,7 +45,10 @@
    - Spark: https://www.freesoundeffects.com/free-track/arrow-swoosh-1-466463/
    - Pop: It's from my mouth.
 
-## Discussion
-Please leave your opinion here in any language, I'll use Google translate.
+## Screenshots
+![Caffeine in Organic Pop](caffeine.png) ![Ibuprofen in Organic Pop](ibuprofen.png) 
+
+## Feedback
+Please leave your feedback on any channel - here, app store, hacker news or [twitter](https://twitter.com/keewonseo)
 
 {% include opop_disqus.html %}

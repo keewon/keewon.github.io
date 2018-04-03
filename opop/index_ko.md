@@ -4,7 +4,6 @@
 
 *유기화학이 퍼즐 게임을 만났습니다. 원자 블록을 없애려면 분자를 만드세요!*
 
-
 {% include opop_tutorial_youtube.html %}
 
 

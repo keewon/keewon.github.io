@@ -54,3 +54,6 @@
 Please leave your feedback on any channel - here, app store, hacker news or [twitter](https://twitter.com/keewonseo)
  
 {% include opop_disqus.html %}
+
+
+[Privacy](privacy)

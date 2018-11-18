@@ -51,3 +51,5 @@
 편하신 채널로 피드백을 남겨주세요 - 여기, 스토어, 아니면 [Twitter](https://twitter.com/keewonseo)
 
 {% include opop_disqus.html %}
+
+[Privacy](privacy)

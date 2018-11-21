@@ -20,6 +20,7 @@
  - Do you want other platforms? Please leave your feedback!
 
 ## History
+ - 2018-11-22 1.1.1 - Jumpers, Pages, Hint, Morphine, Tannic acid and more
  - 2018-03-25 1.0.6/1.0.7 has been released with Polyphenols.
  - 2018-03-17 Made a page on itch.io - https://keewon.itch.io/organic-pop
  - 2018-03-05 1.0.5 has been released with **Undo** and Vitamins.

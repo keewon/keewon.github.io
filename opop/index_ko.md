@@ -15,8 +15,9 @@
 ![Ethanol in Organic Pop](https://keewon.github.io/opop/ethanol.gif)
 
 ## 다운로드
- - Android : [Google Play Store](https://play.google.com/store/apps/details?id=com.acidblob.opop1)
- - iOS : [App Store](https://itunes.apple.com/kr/app/organic-pop/id1317691271?mt=8)
+[![Google Play](https://keewon.github.io/opop/google.png)](https://play.google.com/store/apps/details?id=com.acidblob.opop1)
+[![AppStore](https://keewon.github.io/opop/apple.png)](https://itunes.apple.com/kr/app/organic-pop/id1317691271?mt=8)
+
 
 ## 기록
  - 2018-11-22 1.1.1 - 점퍼, 페이지, 힌트, Morphine, Tannic acid 등

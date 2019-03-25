@@ -21,6 +21,7 @@
 Do you want other platforms? Please leave your feedback!
 
 ## History
+ - 2019-03-25 Created [Facebook Page](https://www.facebook.com/OrganicPopGame/)
  - 2018-11-22 1.1.1 - Jumpers, Pages, Hint, Morphine, Tannic acid and more
  - 2018-03-25 1.0.6/1.0.7 has been released with Polyphenols.
  - 2018-03-17 Made a page on itch.io - https://keewon.itch.io/organic-pop
@@ -53,9 +54,8 @@ Do you want other platforms? Please leave your feedback!
 ![Caffeine in Organic Pop](caffeine.png) ![Ibuprofen in Organic Pop](ibuprofen.png) 
 
 ## Feedback
-Please leave your feedback on any channel - here, app store, hacker news or [twitter](https://twitter.com/keewonseo)
+Please leave your feedback on any channel - app store, hacker news, [facebook](https://www.facebook.com/OrganicPopGame/) or [twitter](https://twitter.com/keewonseo)
  
-{% include opop_disqus.html %}
 
 
 [Privacy](privacy)

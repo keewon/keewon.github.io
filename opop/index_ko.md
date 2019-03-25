@@ -20,6 +20,7 @@
 
 
 ## 기록
+ - 2019-03-25 [Facebook Page](https://www.facebook.com/OrganicPopGame/) 를 만들었습니다.
  - 2018-11-22 1.1.1 - 점퍼, 페이지, 힌트, Morphine, Tannic acid 등
  - 2018-03-05 1.0.5 가 나왔습니다. Vitamin과 되돌리기 기능이 추가되었습니다.
  - 2018-01-27 [2nd Mad Science Festival](https://madscientist.wordpress.com/2018/01/31/2%EB%B6%84%EC%9D%98-%EB%A7%88%EB%B2%95%EA%B3%BC-%EB%8F%8C-%EC%88%98%ED%94%84%EC%9D%98-%EB%B9%84%EB%B0%80-%EC%A0%9C-2%ED%9A%8C-%EB%A7%A4%EC%82%AC%ED%8E%98-%ED%9B%84%EA%B8%B0/) 의 라이트닝 토크에서 소개되었습니다.
@@ -50,8 +51,6 @@
 ![오가닉팝 - 카페인](caffeine.png) ![오가닉팝 - 이부프로펜](ibuprofen.png)
 
 ## 피드백
-편하신 채널로 피드백을 남겨주세요 - 여기, 스토어, 아니면 [Twitter](https://twitter.com/keewonseo)
-
-{% include opop_disqus.html %}
+편하신 채널로 피드백을 남겨주세요 - 스토어, [Facebook](https://www.facebook.com/OrganicPopGame/) 아니면 [Twitter](https://twitter.com/keewonseo)
 
 [Privacy](privacy)

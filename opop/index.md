@@ -15,11 +15,13 @@
 ![Ethanol in Organic Pop](https://keewon.github.io/opop/ethanol.gif)
 
 ## Download
- - Android : [Google Play Store](https://play.google.com/store/apps/details?id=com.acidblob.opop1)
- - iOS : [App Store](https://itunes.apple.com/kr/app/organic-pop/id1317691271?mt=8)
- - Do you want other platforms? Please leave your feedback!
+[![Google Play](https://keewon.github.io/opop/google.png)](https://play.google.com/store/apps/details?id=com.acidblob.opop1)
+[![AppStore](https://keewon.github.io/opop/apple.png)](https://itunes.apple.com/kr/app/organic-pop/id1317691271?mt=8)
+
+Do you want other platforms? Please leave your feedback!
 
 ## History
+ - 2018-11-22 1.1.1 - Jumpers, Pages, Hint, Morphine, Tannic acid and more
  - 2018-03-25 1.0.6/1.0.7 has been released with Polyphenols.
  - 2018-03-17 Made a page on itch.io - https://keewon.itch.io/organic-pop
  - 2018-03-05 1.0.5 has been released with **Undo** and Vitamins.
@@ -54,3 +56,6 @@
 Please leave your feedback on any channel - here, app store, hacker news or [twitter](https://twitter.com/keewonseo)
  
 {% include opop_disqus.html %}
+
+
+[Privacy](privacy)

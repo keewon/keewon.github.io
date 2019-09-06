@@ -2,12 +2,15 @@
 
 [\[English\]](index)
 
-*Fully accessible Minesweeper.*  
-*Can you play Minesweeper only with Audio feedback?*
+
+
+*Can you play Minesweeper in the dark?*
+
+This is accessible Minesweeper so visually impaired people can play this game. Non visually impaired people can also get a new experience by playing this game in the dark mode.
 
 
 ## Download
-[![AppStore](https://keewon.github.io/opop/apple.png)](https://apps.apple.com/kr/app/organic-pop/id1317691271)
+[![AppStore](https://keewon.github.io/opop/apple.png)](https://apps.apple.com/kr/app/minesweeper-in-the-dark/id1478632873)
 
  - Android - [com.android.mindsweeper2-1.0.0.apk](com.android.mindsweeper2-1.0.0.apk)
 
@@ -17,16 +20,31 @@
  - 2005 I made a [Minesweeper](https://github.com/keewon/blindmine) which runs on PC for visually impaired people. 
 
 ## Related works
- - [Accessible Minesweeper](https://apps.apple.com/us/app/accessible-minesweeper/id405094331)
+ - [Accessible Minesweeper](https://apps.apple.com/us/app/accessible-minesweeper/id405094331) - This is also an accessible minesweeper.
 
 ## Note
  - Software
    - We use Flutter
 
 ## Screenshots
+### Sunlight mode
+It's a ordinary Minesweeper.
+
 ![Sunlight mode](screenshot_sunlight.png)
-![Moonunlight mode](screenshot_moonlight.png)
+
+### Moonlight mode
+Only 3x3 tiles are visible.
+
+![Moonlight mode](screenshot_moonlight.png)
+
+### Starlight mode
+Only 1 tile is visible.
+
 ![Starlight mode](screenshot_starlight.png)
+
+### Dark mode
+Oops, nothing is visible. Can you play Minesweeper only with audio feedback?
+
 ![Dark mode](screenshot_inthedark.png)
 
 

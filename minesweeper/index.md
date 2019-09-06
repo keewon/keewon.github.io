@@ -7,9 +7,9 @@
 
 
 ## Download
- - Android - [com.android.mindsweeper2-1.0.0.apk](com.android.mindsweeper2-1.0.0.apk)
- - iOS
 [![AppStore](https://keewon.github.io/opop/apple.png)](https://apps.apple.com/kr/app/organic-pop/id1317691271)
+
+ - Android - [com.android.mindsweeper2-1.0.0.apk](com.android.mindsweeper2-1.0.0.apk)
 
 ## History
  - 2019-09-06 1.0.0 is released.

@@ -10,9 +10,8 @@ This is an accessible Minesweeper so visually impaired people can play this game
 
 
 ## Download
+[![Google Play](https://keewon.github.io/opop/google.png)](https://play.google.com/store/apps/details?id=com.acidblob.mindsweeper2)
 [![AppStore](https://keewon.github.io/opop/apple.png)](https://apps.apple.com/kr/app/minesweeper-in-the-dark/id1478632873)
-
- - Android - [com.android.mindsweeper2-1.0.0.apk](com.android.mindsweeper2-1.0.0.apk)
 
 ## History
  - 2019-09-06  1.0.0 is released. Actually it's not finished.

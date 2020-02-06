@@ -20,6 +20,7 @@
 
 
 ## 기록
+ - 2020-01-12 1.2.0 - 커스텀 레벨, 백업/복구, ATP 등 생화학 관련 분자 추가, 일본어 텍스트 지원
  - 2019-03-25 [Facebook Page](https://www.facebook.com/OrganicPopGame/) 를 만들었습니다.
  - 2018-11-22 1.1.1 - 점퍼, 페이지, 힌트, Morphine, Tannic acid 등
  - 2018-03-05 1.0.5 가 나왔습니다. Vitamin과 되돌리기 기능이 추가되었습니다.

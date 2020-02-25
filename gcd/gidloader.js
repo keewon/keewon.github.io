@@ -176,7 +176,7 @@ if (hasFBInstant) {
 	FBInstant.initializeAsync();
 }
 var progressCur=0;
-var progressMax=1198721;
+var progressMax=1198722;
 function downloadProgress(diff) {
 	progressCur+=diff;
 	var pro=100*progressCur/progressMax;
@@ -225,8 +225,8 @@ function getParameterByName(name, url) {
     preInit: [],
     TOTAL_MEMORY: GIDEROS_MEMORY_MB*1024*1024,
     GiderosPlugins: [ "EP_Mp3.wasm.gidz", "EP_Xmp.wasm.gidz", /*GIDEROS_DYNLIB_PLUGIN*/
-"lfs.gidz",
-"json.gidz", null ],
+"json.gidz",
+"lfs.gidz", null ],
     JSPlugins: [ /*GIDEROS_JS_PLUGIN*/ null ],
     requestFile: function (file) { return 0; },
     print: (function() {

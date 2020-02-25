@@ -176,7 +176,7 @@ if (hasFBInstant) {
 	FBInstant.initializeAsync();
 }
 var progressCur=0;
-var progressMax=1198722;
+var progressMax=1158604;
 function downloadProgress(diff) {
 	progressCur+=diff;
 	var pro=100*progressCur/progressMax;

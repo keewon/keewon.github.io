@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang=en-us>
+  <head>
+    <meta charset=utf-8>
+    <meta http-equiv=Content-Type content="text/html; charset=utf-8">
+	<meta name=viewport content="width=device-width,user-scalable=no,initial-scale=1,target-densitydpi=device-dpi">
+    <link href=gideros.css rel=stylesheet>
+    <link href=favicon.png rel=icon>
+    <title>Common Divisor</title>
+  </head>
+  <body class="fullscreen toplevel" style="background-color:#ffffff;">
+    <div id=infopane class="fullscreen flex">
+    <figure style=overflow:visible id=spinner>
+    <img src=gideros.png>   
+    <div class=flex>
+     <div class=spinner></div>
+     <div id=status style=margin-left:10px>Downloading...</div>
+    </div>
+    <div id=progress_box class=emscripten>
+      <progress value=0 max=100 id=progress hidden></progress>  
+    </div>
+    </figure>
+  </div>
+  <div id=oops class="fullscreen oops" style=display:none>
+  <h1>Oops, something went wrong...</h1>
+  <div id=memoryErr style=display:none>
+  <h3>This app ran out of memory</h3>
+  Try to close some other apps or tabs in your browser and try again.
+  </div>
+  <div id=luaErr style=display:none>
+  <h3>An error occured in the code</h3>
+  Please inform the app developer about the details below, they will help him fix this in the future.
+  </div>
+  <div id=featErr style=display:none>
+  <h3>Browser not supported</h3>
+  Your browser doesn't support one or more functionalities required for this application. More details below.
+  </div>
+  <div id=genErr style=display:none>
+  <h3>An unexpected error occured</h3>
+  The details below may be helpful to you or the app developer... hopefully.
+  </div>
+  <pre id=errDetails>
+  </pre>
+  </div>
+  <!-- Put canvas on top of everything so that it catches events -->
+  <canvas class=fullscreen id=canvas oncontextmenu=event.preventDefault() hidden></canvas>
+        
+    <script src=gidloader.js></script>
+<!-- <script src='lzma.js'></script> -->
+<!-- GIDEROS-FBINSTANT-START
+    <script src="https://connect.facebook.net/en_US/fbinstant.6.3.js"></script>
+GIDEROS-FBINSTANT-END -->
+    <script async >
+JPZLoad('gideros-wasm.wasm.gidz',function(c) { Module.wasmBinary=c; JPZLoad('gideros-wasm.js.gidz',eval); },"array");</script>
+  </body>
+</html>
+
+

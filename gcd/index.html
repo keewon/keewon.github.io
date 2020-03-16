@@ -45,6 +45,11 @@
   <!-- Put canvas on top of everything so that it catches events -->
   <canvas class=fullscreen id=canvas oncontextmenu=event.preventDefault() hidden></canvas>
         
+    <script type="javascript">
+if (location.protocol !== 'https:') {
+  location.href = 'https://keewon.github.io/gcd'; // Specify https scheme!
+}
+    </script>
     <script src=gidloader.js></script>
 <!-- <script src='lzma.js'></script> -->
 <!-- GIDEROS-FBINSTANT-START

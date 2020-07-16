@@ -56,7 +56,7 @@ Do you want other platforms? Please leave your feedback!
 ![Caffeine in Organic Pop](caffeine.png) ![Ibuprofen in Organic Pop](ibuprofen.png) 
 
 ## Feedback
-Please leave your feedback on any channel - app store, hacker news, [facebook](https://www.facebook.com/OrganicPopGame/) or [twitter](https://twitter.com/keewonseo)
+Please leave your feedback on any channel - app store, hacker news, [facebook](https://www.facebook.com/AcidBlob/) or [twitter](https://twitter.com/keewonseo)
  
 
 

@@ -53,6 +53,6 @@
 ![오가닉팝 - 카페인](caffeine.png) ![오가닉팝 - 이부프로펜](ibuprofen.png)
 
 ## 피드백
-편하신 채널로 피드백을 남겨주세요 - 스토어, [Facebook](https://www.facebook.com/OrganicPopGame/) 아니면 [Twitter](https://twitter.com/keewonseo)
+편하신 채널로 피드백을 남겨주세요 - 스토어, [Facebook](https://www.facebook.com/AcidBlob/) 아니면 [Twitter](https://twitter.com/keewonseo)
 
 [Privacy](privacy)

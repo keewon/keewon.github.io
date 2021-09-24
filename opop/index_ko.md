@@ -2,7 +2,7 @@
 
 [\[English\]](index) [\[Korean\]](index_ko)
 
-*유기화학이 퍼즐 게임을 만났습니다. 원자 블록을 없애려면 분자를 만드세요!*
+*오가닉팝은 옥텟 규칙 기반 화학 게임입니다. 수소 분자부터 인슐린까지 만들어보세요!*
 
 {% include opop_tutorial_youtube.html %}
 
@@ -20,6 +20,8 @@
 
 
 ## 기록
+ - 2021-09-11 1.3.1 - 버그 수정. And iMessage 스티커가 제공됩니다!!
+ - 2021-08-22 1.3.0 - 펩타이드를 보다 쉽게 만들 수 있습니다.
  - 2020-07-14 Listed in [Top Underrated Puzzle Games To Play](https://gameskeys.net/top-underrated-puzzle-games-to-play/#Organic) - [GamesKeys](https://gameskeys.net/)
  - 2020-01-12 1.2.0 - 커스텀 레벨, 백업/복구, ATP 등 생화학 관련 분자 추가, 일본어 텍스트 지원
  - 2019-03-25 [Facebook Page](https://www.facebook.com/OrganicPopGame/) 를 만들었습니다.
@@ -51,6 +53,12 @@
 
 ## 스크린샷
 ![오가닉팝 - 카페인](caffeine.png) ![오가닉팝 - 이부프로펜](ibuprofen.png)
+
+![iMessage sticker](imessage1.png) ![iMessage sticker list](imessage2.png)
+
+{% include opop_aminoacid_youtube.html %}
+
+[Insulin human](insulin/)
 
 ## 피드백
 편하신 채널로 피드백을 남겨주세요 - 스토어, [Facebook](https://www.facebook.com/AcidBlob/) 아니면 [Twitter](https://twitter.com/keewonseo)

@@ -2,10 +2,10 @@
 
 [\[English\]](index) [\[Korean\]](index_ko)
 
-*Organic Chemistry met Tile-matching puzzle.*  
-*Build a Molecule to eliminate Atom blocks!*
+*Organic Pop is a chemistry game based on octet-rule.*
+*Build a Molecule from Hydrogen molecule to Insulin!*
 
-{% include opop_tutorial_youtube.html %} 
+{% include opop_tutorial_youtube.html %}
 
 ## Game Rules
  1. Connect atoms. Octet-rule apply here.
@@ -21,6 +21,8 @@
 Do you want other platforms? Please leave your feedback!
 
 ## History
+ - 2021-09-11 1.3.1 - Bug fixed. And iMessage stickers for iOS!!
+ - 2021-08-22 1.3.0 - You can build peptides now.
  - 2020-07-14 Listed in [Top Underrated Puzzle Games To Play](https://gameskeys.net/top-underrated-puzzle-games-to-play/#Organic) - [GamesKeys](https://gameskeys.net/)
  - 2020-01-12 1.2.0 - Custom Levels, Backup/Restore, Biochemistry molecules such as ATP, Japanese translation
  - 2019-03-25 Created [Facebook Page](https://www.facebook.com/OrganicPopGame/)
@@ -54,6 +56,12 @@ Do you want other platforms? Please leave your feedback!
 
 ## Screenshots
 ![Caffeine in Organic Pop](caffeine.png) ![Ibuprofen in Organic Pop](ibuprofen.png) 
+
+![iMessage sticker](imessage1.png) ![iMessage sticker list](imessage2.png)
+
+{% include opop_aminoacid_youtube.html %}
+
+[Insulin human](insulin/)
 
 ## Feedback
 Please leave your feedback on any channel - app store, hacker news, [facebook](https://www.facebook.com/AcidBlob/) or [twitter](https://twitter.com/keewonseo)

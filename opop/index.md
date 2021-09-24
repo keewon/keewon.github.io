@@ -3,6 +3,7 @@
 [\[English\]](index) [\[Korean\]](index_ko)
 
 *Organic Pop is a chemistry game based on octet-rule.*
+
 *Build a Molecule from Hydrogen molecule to Insulin!*
 
 {% include opop_tutorial_youtube.html %}
@@ -59,9 +60,9 @@ Do you want other platforms? Please leave your feedback!
 
 ![iMessage sticker](imessage1.png) ![iMessage sticker list](imessage2.png)
 
-{% include opop_aminoacid_youtube.html %}
+[![Insulin human](insulin/IMG_4609.PNG)](insulin/)
 
-[Insulin human](insulin/)
+{% include opop_aminoacid_youtube.html %}
 
 ## Feedback
 Please leave your feedback on any channel - app store, hacker news, [facebook](https://www.facebook.com/AcidBlob/) or [twitter](https://twitter.com/keewonseo)

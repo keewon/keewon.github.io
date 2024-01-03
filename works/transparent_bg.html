@@ -1,0 +1,33 @@
+<html>
+    <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+body: { background-color: rgba(51, 170, 51, 1); } 
+    
+#outer { 
+  width: 200px; height: 200px; background: blue; position: relative; 
+} 
+.inner { 
+  position: absolute; top: 20px; right: 20px; bottom: 20px; left: 20px; 
+} 
+.red { 
+  background: red; 
+} 
+    
+.green { 
+  background: green; 
+} 
+    </style> 
+    </head> 
+    <body> 
+        <div style="background-color: skyblue;"> 
+        Hello world 
+        </div> 
+        <div id="outer"> 
+            <div class="inner red"> 
+               <div class="inner green"> 
+               </div> 
+            </div> 
+        </div> 
+    </body> 
+ </html>

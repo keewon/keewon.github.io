@@ -1,7 +1,7 @@
-# Keewon Seo
-I live in South Korea, and work as a software engineer.
+# Keewon Seo (서기원)
+I live in South Korea, and work as an engineering manager and software engineer.
 
-I am also a game developer.
+I am also a hobby game developer.
 
 I like [hacking](https://en.wikipedia.org/wiki/Hacker) - I'm not talking about Security related hacking. See [my gists](https://gist.github.com/keewon).
 

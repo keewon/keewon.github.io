@@ -1,3 +1,6 @@
 [submodule "pins"]
 	path = pins
 	url = https://github.com/keewon/pins_on_the_map.git
+[submodule "pifi"]
+	path = pifi
+	url = git@github.com:keewon/pi_finder.git

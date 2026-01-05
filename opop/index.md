@@ -22,6 +22,7 @@
 Do you want other platforms? Please leave your feedback!
 
 ## History
+ - 2026-01-06 1.4.1 - Internal updates
  - 2021-09-11 1.3.1 - Bug fixed. And iMessage stickers for iOS!!
  - 2021-08-22 1.3.0 - You can build peptides now.
  - 2020-07-14 Listed in [Top Underrated Puzzle Games To Play](https://gameskeys.net/top-underrated-puzzle-games-to-play/#Organic) - [GamesKeys](https://gameskeys.net/)
@@ -65,7 +66,7 @@ Do you want other platforms? Please leave your feedback!
 {% include opop_aminoacid_youtube.html %}
 
 ## Feedback
-Please leave your feedback on any channel - app store, hacker news, [facebook](https://www.facebook.com/AcidBlob/) or [twitter](https://twitter.com/keewonseo)
+Please leave your feedback on any channel - App Store, Google Play, hacker news, [facebook](https://www.facebook.com/SSYLab) or [@keewonseo.bsky.social](https://bsky.app/profile/keewonseo.bsky.social)
  
 
 

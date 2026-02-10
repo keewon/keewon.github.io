@@ -22,6 +22,7 @@
 Do you want other platforms? Please leave your feedback!
 
 ## History
+ - 2026-02-10 1.5.0 - Revived the app on Google Play. Added Simplified Chinese, Japanese, and Korean translations.
  - 2026-01-06 1.4.1 - Internal updates
  - 2021-09-11 1.3.1 - Bug fixed. And iMessage stickers for iOS!!
  - 2021-08-22 1.3.0 - You can build peptides now.

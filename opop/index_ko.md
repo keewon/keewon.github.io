@@ -20,6 +20,7 @@
 
 
 ## 기록
+ - 2026-02-10 1.5.0 - Google Play에서 내려갔던 앱을 다시 살렸습니다. 중국어 간체, 일본어, 한국어 번역을 추가했습니다.
  - 2021-09-11 1.3.1 - 버그 수정. And iMessage 스티커가 제공됩니다!!
  - 2021-08-22 1.3.0 - 펩타이드를 보다 쉽게 만들 수 있습니다.
  - 2020-07-14 Listed in [Top Underrated Puzzle Games To Play](https://gameskeys.net/top-underrated-puzzle-games-to-play/#Organic) - [GamesKeys](https://gameskeys.net/)

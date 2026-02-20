@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Apps</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #f5f5f5;
+      color: #333;
+      padding: 24px 16px;
+    }
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+    .app-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .app-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: #fff;
+      border-radius: 16px;
+      padding: 16px;
+      text-decoration: none;
+      color: inherit;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      transition: box-shadow 0.15s;
+    }
+    .app-item:hover {
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    .app-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 14px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      overflow: hidden;
+    }
+    .app-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .app-info {
+      min-width: 0;
+    }
+    .app-title {
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .app-desc {
+      font-size: 14px;
+      color: #666;
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+  <h1>Apps</h1>
+  <div class="app-list">
+    <a class="app-item" href="opop/">
+      <div class="app-icon">
+        <img src="opop/favicon.png" alt="Organic Pop">
+      </div>
+      <div class="app-info">
+        <div class="app-title">Organic Pop</div>
+        <div class="app-desc">Chemistry puzzle game based on octet-rule</div>
+      </div>
+    </a>
+    <a class="app-item" href="jlpt/">
+      <div class="app-icon" style="background:#e8f5e9;">&#x1F4D7;</div>
+      <div class="app-info">
+        <div class="app-title">JLPT</div>
+        <div class="app-desc">JLPT study app</div>
+      </div>
+    </a>
+    <a class="app-item" href="pifi/">
+      <div class="app-icon" style="background:#e3f2fd;">&pi;</div>
+      <div class="app-info">
+        <div class="app-title">Pi Finder</div>
+        <div class="app-desc">Memorize and search digits of Pi</div>
+      </div>
+    </a>
+    <a class="app-item" href="pins/">
+      <div class="app-icon">
+        <img src="pins/favicon.svg" alt="Pins">
+      </div>
+      <div class="app-info">
+        <div class="app-title">Pins</div>
+        <div class="app-desc">Pin places on the map</div>
+      </div>
+    </a>
+  </div>
+</body>
+</html>

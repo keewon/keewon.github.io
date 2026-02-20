@@ -4,3 +4,6 @@
 [submodule "pifi"]
 	path = pifi
 	url = git@github.com:keewon/pi_finder.git
+[submodule "jlpt"]
+	path = jlpt
+	url = https://github.com/keewon/jlpt.git

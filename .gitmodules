@@ -7,3 +7,6 @@
 [submodule "jlpt"]
 	path = jlpt
 	url = https://github.com/keewon/jlpt.git
+[submodule "mind"]
+	path = mind
+	url = git@github.com:keewon/mind-sweeper3-web.git

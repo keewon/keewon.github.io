@@ -67,7 +67,7 @@ Do you want other platforms? Please leave your feedback!
 {% include opop_aminoacid_youtube.html %}
 
 ## Feedback
-Please leave your feedback on any channel - App Store, Google Play, hacker news, [facebook](https://www.facebook.com/SSYLab) or [@keewonseo.bsky.social](https://bsky.app/profile/keewonseo.bsky.social)
+Please leave your feedback on any channel - App Store, Google Play, hacker news, [facebook](https://www.facebook.com/KeewonLab) or [@keewonseo.bsky.social](https://bsky.app/profile/keewonseo.bsky.social)
  
 
 

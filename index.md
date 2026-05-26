@@ -17,7 +17,7 @@ I am also a hobby game developer.
 - [Apps](apps/)
   - [Organic Pop](opop)
   - [JLPT app](jlpt)
-  - [Pi finder](pifi)
+  - [Pi finder](https://pifi.acidblob.com)
   - [Pins on the map](pins)
   - [어둠 속의 지뢰찾기](mind)
 - [Works](works/)

@@ -22,23 +22,23 @@ let g_center_x = 1.7, g_center_y = 0.7;
 const texture = new Array(NUM_TEXTURES).fill(null);
 
 const g_filenames = [
-	'../image/b_1.bmp', '../image/b_2.bmp', '../image/b_3.bmp',
-	'../image/b_4.bmp', '../image/b_5.bmp', '../image/b_6.bmp',
+	'image/b_1.jpg', 'image/b_2.jpg', 'image/b_3.jpg',
+	'image/b_4.jpg', 'image/b_5.jpg', 'image/b_6.jpg',
 
-	'../image/h_1.bmp', '../image/h_2.bmp', '../image/h_3.bmp',
-	'../image/h_4.bmp', '../image/h_5.bmp', '../image/h_6.bmp',
+	'image/h_1.jpg', 'image/h_2.jpg', 'image/h_3.jpg',
+	'image/h_4.jpg', 'image/h_5.jpg', 'image/h_6.jpg',
 
-	'../image/s_1.bmp', '../image/s_2.bmp', '../image/s_3.bmp',
-	'../image/s_4.bmp', '../image/s_5.bmp', '../image/s_6.bmp',
+	'image/s_1.jpg', 'image/s_2.jpg', 'image/s_3.jpg',
+	'image/s_4.jpg', 'image/s_5.jpg', 'image/s_6.jpg',
 ];
 
 const g_musicfile = [   // 여섯 면마다 다른 곡
-	'../test1.mp3',
-	'../test2.mp3',
-	'../test1.mp3',
-	'../test2.mp3',
-	'../test1.mp3',
-	'../test2.mp3',
+	'test1.mp3',
+	'test2.mp3',
+	'test1.mp3',
+	'test2.mp3',
+	'test1.mp3',
+	'test2.mp3',
 ];
 
 let gl = null;

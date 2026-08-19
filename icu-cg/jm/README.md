@@ -1,19 +1,43 @@
 # JM 웹 포팅 (WebGL)
 
 2006년에 만든 GLUT/OpenGL + FMOD 데스크톱 프로그램(`jm.cpp`, `light.cpp`, `flag.cpp`,
-`music.cpp`)을 브라우저에서 그대로 돌아가게 옮긴 것입니다. 원본 리소스(`image/*.bmp`,
-`test1.mp3`, `test2.mp3`)를 변환 없이 그대로 씁니다.
+`music.cpp`)을 브라우저에서 그대로 돌아가게 옮긴 것입니다.
+
+리소스는 웹에서 받기 좋게 다시 인코딩했습니다. 원본은 프로젝트 루트의 `image/*.bmp`,
+`test*.mp3` 에 그대로 있습니다.
+
+| | 원본 | 웹 |
+| --- | --- | --- |
+| 텍스처 18장 | BMP 24bit, 2.5MB | JPEG q92, 304KB |
+| 배경음악 2곡 | MP3 192kbps, 11MB | MP3 96kbps, 5.4MB |
+
+이 폴더 하나만 있으면 되도록 리소스까지 안에 복사해 뒀습니다. 폴더째 어디에 올리든
+그대로 동작합니다.
+
+```
+web/
+├── index.html
+├── gl.js  light.js  flag.js  music.js  jm.js
+├── image/        b_1~6, h_1~6, s_1~6 .jpg  (실제로 쓰는 18장)
+└── test1.mp3  test2.mp3
+```
 
 ## 실행
 
 이미지 텍스처 때문에 `file://` 로는 열 수 없고 로컬 서버가 필요합니다.
-프로젝트 루트(이 폴더의 상위)에서:
+이 폴더에서:
 
 ```sh
 python3 -m http.server 8790
 ```
 
-그 다음 브라우저에서 http://localhost:8790/web/ 를 엽니다.
+그 다음 브라우저에서 http://localhost:8790/ 를 엽니다.
+
+## 올릴 때
+
+이 폴더 안의 내용을 통째로 올려야 합니다. js/html 만 올리면 텍스처와 음악이 404 가 나서
+검은 화면만 보입니다. 리소스 경로는 전부 `index.html` 기준 상대경로
+(`image/b_1.jpg`, `test1.mp3`)입니다.
 
 ## 조작
 
@@ -54,8 +78,9 @@ WebGL 에는 고정 파이프라인이 없어서 `web/gl.js` 가 그 부분을 �
   지정하지 않아 육각기둥 마지막 면의 법선을 물려받습니다.
 * **바닥 법선** — `srand(0)` 뒤의 MSVC `rand()` 수열을 그대로 재현해(`MsvcRand`)
   원본과 같은 울퉁불퉁한 반사를 만듭니다.
-* **BMP 텍스처** — 브라우저가 24비트 BMP 를 그대로 디코딩합니다. BMP 는 아래 줄부터
-  저장되므로 `UNPACK_FLIP_Y_WEBGL` 로 OpenGL 과 같은 t 축 방향을 맞췄습니다.
+* **텍스처** — `UNPACK_FLIP_Y_WEBGL` 로 OpenGL 과 t 축 방향을 맞췄습니다. 원본 BMP 는
+  아래 줄부터 저장돼 OpenGL 의 t 축과 방향이 같았는데, JPEG 로 바꿔도 브라우저가
+  화면 기준으로 디코딩하므로 이 플래그 하나로 동일하게 맞습니다.
 * **루프** — `glutIdleFunc` 는 `requestAnimationFrame`, `glutTimerFunc(100, ...)` 두 개는
   100ms 누적 타이머로 바꿨습니다.
 

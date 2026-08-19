@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>CG Term project - 20042081 Seo, Kee-won</title>
+<style>
+  :root { color-scheme: dark; }
+  html, body {
+    margin: 0; padding: 0; height: 100%;
+    background: #111; color: #ddd;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  body { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; }
+  h1 { font-size: 14px; font-weight: 500; margin: 0; color: #888; letter-spacing: .04em; }
+  #frame { position: relative; }
+  canvas {
+    display: block;
+    width: min(1000px, calc(100vw - 32px));
+    aspect-ratio: 1000 / 400;
+    height: auto;
+    background: #000;
+    border: 1px solid #333;
+    outline: none;
+    image-rendering: auto;
+  }
+  #status {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: #000; color: #6a6; font-size: 13px;
+  }
+  #status.hidden { display: none; }
+  #keys { font-size: 12px; color: #777; line-height: 1.7; text-align: center; }
+  #keys b { color: #aaa; font-weight: 500; }
+</style>
+</head>
+<body>
+
+<h1>CG Term project &mdash; 20042081 Seo, Kee-won</h1>
+
+<div id="frame">
+  <canvas id="canvas" tabindex="0" oncontextmenu="event.preventDefault()"></canvas>
+  <div id="status">loading&hellip;</div>
+</div>
+
+<div id="keys">
+  <b>&larr;</b> / <b>&rarr;</b> move &nbsp;&middot;&nbsp; <b>&uarr;</b> jump (twice for double jump)
+  &nbsp;&middot;&nbsp; <b>&darr;</b> crouch &nbsp;&middot;&nbsp; <b>space</b> shoot<br>
+  drag with the <b>left mouse button</b> on the right half to draw terrain
+  &nbsp;&middot;&nbsp; <b>right click</b> erases the last stroke
+</div>
+
+<script type="text/javascript">
+  var canvas = document.getElementById('canvas');
+  var statusEl = document.getElementById('status');
+
+  // Keep arrows and space from scrolling the page while playing.
+  window.addEventListener('keydown', function (e) {
+    if (document.activeElement === canvas &&
+        ['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].indexOf(e.key) !== -1) {
+      e.preventDefault();
+    }
+  }, false);
+
+  canvas.addEventListener('click', function () { canvas.focus(); });
+
+  var Module = {
+    canvas: canvas,
+    print: function (text) { console.log(text); },
+    printErr: function (text) { console.error(text); },
+    setStatus: function (text) {
+      if (!text) { statusEl.classList.add('hidden'); canvas.focus(); }
+      else { statusEl.classList.remove('hidden'); statusEl.textContent = text; }
+    },
+  };
+  Module.setStatus('loading…');
+  window.onerror = function () { Module.setStatus('failed — see the console'); };
+</script>
+
+{{{ SCRIPT }}}
+</body>
+</html>

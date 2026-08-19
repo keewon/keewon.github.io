@@ -1,0 +1,2818 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HW3 - 20042081 Seo, Kee-won</title>
+<style>
+	:root {
+		color-scheme: dark;
+		--bg: #14161a;
+		--panel: #1c2027;
+		--line: #2b313a;
+		--text: #d8dee9;
+		--dim: #8b94a3;
+		--accent: #7fd1b9;
+	}
+
+	* { box-sizing: border-box; }
+
+	body {
+		margin: 0;
+		background: var(--bg);
+		color: var(--text);
+		font: 13px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		min-height: 100vh;
+		padding: 16px;
+	}
+
+	h1 {
+		font-size: 14px;
+		font-weight: 600;
+		margin: 0 0 2px;
+		letter-spacing: .02em;
+	}
+
+	.sub { color: var(--dim); margin: 0 0 14px; font-size: 12px; }
+
+	#stage {
+		position: relative;
+		width: min(100%, 900px);
+		aspect-ratio: 4 / 3;
+		background: #000;
+		border: 1px solid var(--line);
+		border-radius: 6px;
+		overflow: hidden;
+	}
+
+	#screen {
+		display: block;
+		width: 100%;
+		height: 100%;
+		touch-action: none;
+	}
+
+	#status {
+		position: absolute;
+		left: 10px;
+		bottom: 8px;
+		color: var(--dim);
+		font-size: 11px;
+		text-shadow: 0 1px 2px #000;
+		pointer-events: none;
+	}
+
+	#error {
+		display: none;
+		position: absolute;
+		inset: 0;
+		align-items: center;
+		justify-content: center;
+		padding: 24px;
+		text-align: center;
+		color: #ff9a9a;
+	}
+
+	#quit {
+		display: none;
+		position: absolute;
+		inset: 0;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+		gap: 10px;
+		background: rgba(0, 0, 0, .72);
+	}
+
+	#quit button, .pad button {
+		font: inherit;
+		color: var(--text);
+		background: var(--panel);
+		border: 1px solid var(--line);
+		border-radius: 5px;
+		padding: 6px 12px;
+		cursor: pointer;
+	}
+
+	#quit button:hover, .pad button:hover { border-color: var(--accent); }
+
+	.cols {
+		width: min(100%, 900px);
+		display: flex;
+		flex-wrap: wrap;
+		gap: 16px;
+		margin-top: 14px;
+	}
+
+	.card {
+		flex: 1 1 260px;
+		background: var(--panel);
+		border: 1px solid var(--line);
+		border-radius: 6px;
+		padding: 12px 14px;
+	}
+
+	.card h2 {
+		font-size: 12px;
+		font-weight: 600;
+		margin: 0 0 8px;
+		color: var(--accent);
+		letter-spacing: .06em;
+		text-transform: uppercase;
+	}
+
+	dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 3px 12px; }
+	dt { color: var(--accent); }
+	dd { margin: 0; color: var(--dim); }
+
+	.pad { display: flex; flex-wrap: wrap; gap: 6px; }
+	.pad button { min-width: 44px; }
+
+	footer { color: var(--dim); font-size: 11px; margin-top: 18px; text-align: center; }
+</style>
+</head>
+<body>
+
+<h1>Computer Graphics HW3 &mdash; walking robots</h1>
+<p class="sub">2004, SDL + OpenGL &rarr; WebGL. Click the canvas first, then use the keys.</p>
+
+<div id="stage">
+	<canvas id="screen" width="640" height="480"></canvas>
+	<div id="status"></div>
+	<div id="error"></div>
+	<div id="quit">
+		<div>quit</div>
+		<button onclick="location.reload()">restart</button>
+	</div>
+</div>
+
+<div class="cols">
+	<div class="card">
+		<h2>keys</h2>
+		<dl>
+			<dt>&uarr; / f</dt><dd>walk forward</dd>
+			<dt>&darr; / b</dt><dd>walk backward</dd>
+			<dt>&larr; / l</dt><dd>turn left</dd>
+			<dt>&rarr; / r</dt><dd>turn right</dd>
+			<dt>s / d</dt><dd>zoom in / out</dd>
+			<dt>z / x</dt><dd>raise left / right arm</dd>
+			<dt>a</dt><dd>drunken mode</dd>
+			<dt>w</dt><dd>wireframe</dd>
+			<dt>e</dt><dd>lighting on/off</dd>
+			<dt>m</dt><dd>menu (click its buttons)</dd>
+			<dt>p</dt><dd>pause</dd>
+			<dt>q / esc</dt><dd>quit</dd>
+		</dl>
+	</div>
+
+	<div class="card">
+		<h2>controls</h2>
+		<div class="pad" id="pad">
+			<button data-key="ArrowLeft" data-hold="1">&larr;</button>
+			<button data-key="ArrowUp" data-hold="1">&uarr;</button>
+			<button data-key="ArrowDown" data-hold="1">&darr;</button>
+			<button data-key="ArrowRight" data-hold="1">&rarr;</button>
+			<button data-key="s" data-hold="1">zoom+</button>
+			<button data-key="d" data-hold="1">zoom&minus;</button>
+			<button data-key="z">arm L</button>
+			<button data-key="x">arm R</button>
+			<button data-key="a">drunk</button>
+			<button data-key="w">wire</button>
+			<button data-key="e">light</button>
+			<button data-key="m">menu</button>
+			<button data-key="p">pause</button>
+		</div>
+	</div>
+
+	<div class="card">
+		<h2>scene</h2>
+		<dl>
+			<dt>light 0</dt><dd>global directional light</dd>
+			<dt>light 1</dt><dd>ceiling spot over the robot</dd>
+			<dt>light 2/3</dt><dd>lanterns in both forearms</dd>
+			<dt>robot 2</dt><dd>wanders on its own, always drunk</dd>
+			<dt>menu</dt><dd>light number + on/off</dd>
+		</dl>
+	</div>
+</div>
+
+<footer>original: SDL 1.2 / OpenGL fixed pipeline, 2004 &middot; ported to WebGL, keeping the same geometry, lighting and collision code</footer>
+
+<script>
+// Auto-generated from yuria.tga and menu.bmp (see tools/make_assets.py).
+// Embedded as data URIs so the page also runs straight from file://
+var Assets = {
+  face: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAAZuElEQVR42pV6244kSXLdsYt7RGbWrS9zWc4udwkRBF8kSND/vxCQID0JAvQikqBWXO3szkz3dFVlZkS4u130ENW9s9Q0ATkSVVkBVKabudkxs3Oc/u7v/u6//5f/9N/+639enh6fnp5sBBF1287rug4bIAIXViJ+dXevxEQAwAgh0qoI8751z+u2XpZtGwnlUkpGGsI9xhi9j+ERSABgFmYiyghETrUej8ep6vFw0FrWy3I5nxFZayWmZV0igohKKaUUIopMa9vbh1e//stvwoZK1eVyfff9D8v1Epks4mP48HXdlq13OIkwiarO8zxPk7ubDRWZD4dJCyi3db22MWysrWdSrQwREdmi9957H5EJghQl98gkIiJioiAiJmYmojFswTLFrCJ1mtZlcXeBuDsRZWYfw91ZWERZymVd33/4UFSZh14fP7x/98P1cqF0s95b2/ro3TwCwkyiSvOkr07Ha+uIEOU6TVpKAKO3ddu24X24B+lUWMTCRx9r28zNIzMzmZBJIhSxG5D7Y2YRYWYR2nprrR+Px2Rys5Y56yy1uLuZZaaIcDLMaqlL2377u9998fr1PB11OV+ePnxwM/c+zDy8u1kyayGGiKhKEaYMN0sQMnvrra3IzLTuYckgFU0turtztLWPTsJaynAzswhXVRVJgIgiEoCIlFJUdT5Mw2y5XjOTiDzTh5XqdZqW69Xc+aPZw4ZHKpEy3T28enh4pe/fv3/88Uch8ojWVgvLAEhAyIykKKKUWJYz0ZyRvbUeSQgiQpoFeRKxiBAzu1ukE6eoJuAZmZlIIgZREgkz9hMIEpFpmqY6JZBMAPoYKiJF3byPXpRJmIUBeAYxsyoTg9mttzZAon/49nfLtlTKYb71YQFHgj2RmUkQJgYhLBsNNweCWQqzR5i5WQTJVKuKeHgmkIggZUTEGB5I1cogIIWpluLu+zkwcSKl6uiNEyLi7gYQEZi6O/VBRLUUM3d3ydRSEZ7hW99++PDD/evX+uHpvShdlsXce0pKDfTMLYOK6KRVWBMMYQsbcI5kwCzNnJlKnV6imAiBiDTLMUIURERIQFQqwgl+KHXSaY0tEiSaTG2MKZMAAQH0EvHCRESA9b5/MhMBhAQykT7XklSubVlG00yYWdu2yBSmIGRE7D5S1qIk0sdoa0NVRJpZRDBImKdap2lmZncHEBHruo4xDod5ZEQ4c2aCAkksWrVMBAgzQCpSVCNiW1eJ8HAivOR3BIgSGUmgJEJEBkCJiIgRg5xZkPn4+Kjn89lseAQAIjY3MxfiOs1TnUC0tdb76KOFdXNLcxE5TPM0z9M0ZaaZHY/H1tq2bWZWSqmltNaRrCTKEKVI0XKo9VA59u9S0apl2dZ1XSuRuyMTwO6Il82EM8DMkRmRhEwDItyTiG344+MHfX5+HmOISGb2NiyIiVRKrZNoNRvbGOaezGbD3RnAHqaAuQtzKeV6vT4/P/fe7+7uRORyPlsPUarKwmAhT4ZKLWUW9NblpRowJdLdkJkZLwC1uxtM8EhQAgkQQAAywNBwgMLd13XRdV177wRE7L6RWqoCZuZ7ESIOjkh4hIgoMYAxBjMzs4qMMZ6entz97u5umqZlWdbWhPhYykRUOFV5MRhSmIUTEUKMCDcjUEZ4egIZsZ9AZgIIBMAZydifE4BETqRARERmurvaGPlx8V4ciTLTLAgB1SQE0LqFGZdCwkQkxHsRXdf1er2WUh5evaqlPD8/n89nFTnW+TjJgcbECRbOWJHswxLDjIjCo/WOTPdgAiH3De2lYLdhR8LwlwNnYjDMXAmB3B9qgrQUHwPIUrSPHMMm0SKSQiNyHW3bRrNxWwsRpbvWenu6ZeHn5+fL+ayqp9NJRbZtW9eVhefD4XaaDvCZssASMQTmjvBuYWPsPvJhLJzuEN4twMe1b26PqP0NEQHJxG7OLKRC5Jmp1FfyYBKHWDhTkhBPmpHu4WOkmSJVCpGAUA6H4+HQbFyfzmtbqtbb4z1LubStbduk+vZwOmphrLeHKm4l1YnPWwv2yDHWVpgs3T34pRTA3IiQmUHsCA9C5r5rkGRmJFEChHCERlBwCmWWUjTDhcTczD0SRZVZiDE8eh9b78OcGMzFPVQZmX2M7Xpd142F5joJS7gn5cQ8FZ6YKlKYZmVOFiKAiSh8T1cDJSUok5j20I6Pzv90CAngp7GUmQAT524GMsMpIZLKLIGwHlvvUqapVndf180iRrdhw9wpiBjMrEJjjG1d+7YR0VQnLZqwtChF5lmnpAIIfJ51UkJQIUKyEPaYyQiEM7DHDDGIMz33XvtjMgL/wp7MPZyY+dPzvU1RVvW1DbNMYqEIrFvftitBPBJELBIRGbHXkTGGtR4Rc60iAiDDiWIimkkVPgNzLRNHFUCgzOYgTmSYhwBM5B9jnTMJfxb9P93xzzyPJHmB1D03VKS0cenDWZWgy7ot6/YRxT59D0WCAXjsHznX6TDPyHDrLFJZZqE5TcIPBae5ckRJA6VSbnDOSADpDARBkoQy9g1l4k8hhP/Xkj/7E5Cf5DQRcevdLAAQePhY2hYZdZqYKJAeEciX3iuxo28RrbWIcGZ6BknOlQ6CGThqzAWzxiSoFJNkkWQkEZTBICFWor11/RjsP7N+OjbsK16qxEuE7SAOQM/nayBLqcN9DM9IFo6MJDBRChJESH/5d+jeuoHcgwEmVuUqXImPGoc6lUognxSzCHkQEUdQBpGwEDIIJEmcyZlEjvCXUvsT9PyUD3+WAxlMnBmZKar7c+2jQySZdxwikYSPMUAC4qKChPugcJAQUzInZXdjhzC4SEJAKipFci4onBldRRhJLMEUAEAMSOZE5KAA8Ut/+QJJAO373VvYn0bOJyBi4nzBVEIkMWWmyqTbGOFpmawciQwvKkF1WEgWRfLo0/A8lb1Mg5KJweFIt9gWPcOrykE4AI2YMXt2C3MgsjYQiCYCZdyJGnHPHJTOCaWwvU3OiIiX7KQ/A6M/t4ReQBmliIioDUOAQOkWoCRiCCVlOjMFYrUeOaaKV0XdTJhPx5MS997CnUDDt+XxbGf43THvb2iqAVL2CI+IQJinuRNPXMSJSAul0yjkHpHYPQoiSsJeGehTFP1cguzGEcDMrB6eoEzEPk2RECORQLJIIt2MNadDnRQkMk/ToU7pziApdaq1Wbv2WK19d37eRltvbk7T/MWU5GGZQeg2es+oLMoMSmUKYuF86TYJ/9+LdmxhZs1MFvmEu8zMlIhIJEWCktMmpkNVElJVUWkxhvWU5KlorXPK8f64WLtuy9b707Ia+I5TEZbkHmNE9whPUcakAUSGI0EgEmbdh6RPIRRJO9z9tBJ/fE/M9LEmBDMrM+dH2CIiYSakI9xtB4oacVK+QULJkU/rsrZuBhKBW12ur0uZb043h5u7aR5tZfcYvSlB2EHmMSIDZJljWMAtsw1b1jY8uLyMePhMrPz05479L79fCnHqn3qPT+iLHOkRIaAKuq2Htzf1rpb3rS9tNLMgSq2DuA3bWnvv8VWzr29vXh9KKQeXrY0tUSGFEm4eCTARuLl3a+bZ3NY2kkQpeu+sysyZSflxePl8DmSCmT7WMuxo+gK6ezJF5sgggIVnyJubw69ePdwWutnwvPWO9FLO4d9fnqOncX3KcRoeqyn4WAIq86EKCWuJiDEiMlRKaAlPKoU4i2iQkFQRdSJz2799L2+exBH7nP1zBnimML904Kq1bK0NNyJKykzPzL0u6Fh/+dUX37y5/fK2HBXzUX9R7lfPc7dzN/LePzxGH19/8eWb26Mvy499I52q0+10fzhFobGt25LGZQ4ntvVt5YnVKy1bX1F0noy4twXESB42EBEJ9swkBJx/5hz2CpyRUoSZlYiQiUiAGBQ7HCcEdNL69tXDV6/vXt+UieNAM2u5tMHXrVYR3PMYbetfPjzUKktbCAOkonSYyukAYYH3soFFiIM8FACUQQFuY7vYMHD3DMqEByGZEJTs4ZGfBae9aCMiI0IZxMxIJGFPEvPIIAHuH26+/vL1X3z19v6oSri4ecAoTsZVcao3b47zednWtWe7aoyJvXK/Ox7ubjAdT5UD5nINQVbRDCNgga7rdu3j0nyJGCCIKAL5wkRAwaGeIyIA/leNSHfXUkrvnZmQIOJwRwDEIvz2/vabL7/4xRdvjpWRgXbeWqubiy/92rxZtl4NNnK0y22Jm2N9uCkP9/PNjdSbm5JufVVekKYSmhjuzT1YHD5AngRVnY4yzunpiaRgkuQMpTDinwOnRCJBRDsxrKfDsbWmZpYpL8MRgbgQv7o5vrk9nabKHOZ8mAsz4CPbgfqgNtxWddzWkqoPt3d3d4fjrPOhTgXTfCA33fnejAIpKtk7ub15dXc8eLz/4Numtd7c3/Tn1lcjJMD7tM6MpMTnahwRM4toKUXv7++v14uZpcXeZzARSIrE7fFwmlQy3N0DRQWScjxpklAuUzndzMuyjjHm6fhwf397d1snFVVCTtPRtwuBmSGEgjyoTsdaczrMZRWi2/l2lpQiGKtwrXMPD2Swekb4S4v32RB6sUH09uZGVauWiLE3S0ScREx8nOqkjBgRgBR2YktJUlUppRycqsjEM/l8uJnm4zTfqNYgZim1aFuQEYVFiZNkKjxNwiFbu0jkdKpb1tWsjU10GtAebplB3NLMzDP9MyfwkYBxItLbm1sRZiYRdk8G9hqiQqLK4Ax4eFIigNhjrx6Pp+lwgAhyHDlLnQLEXEElU0uZqbDrM0sBCxMTQoVnJRoBTmFSAOYRVhis1IlrYiQZgI4O7p+BISLe6Uf3yEz9+i9/9Q//9Pfb9TIJOng4w21mEKsRb1TUDEQYwwggzggiPswnCIiT+J6giZXIWYiFVQ6HetP1WBO6Df/h2bFkRHTTMuF4nDOz9bZ1opwL9+F1XiYwR/HBa6eIvHjJyETHx870zxCIKEGeFEn68PDwcP/6+vQ0zCVDlQOaYS+6AiIphSiVOSOCiVKYmDQpdo5DYl3bQkx8mCFFyqEcb5U5V52r1qL7GBUgkBR4MlCZuVrAIszDUC3TjFpSi4RmaqQ5gn42fiJChPfc1C+++MVXX331w3d/yNiI2SNSPDIKs4ggCUASJROFgMY+SgtTgMzNerueH5v58eH+djrp8aFOd9Pt6xiLFVYVESWiSDgokWSblMIiheDgyLThntzNl/RBCPaRo0f3tJ+tAx97O2TC3fX+1Zs3X341TbP1wUTuFgnPISwsQswJhmQkgiMjIh0WxvAxtt6iL3157pAH+eJ0fKXHO51vDzc3/bwRkRAxMzEnhQc8AtkpWQlCFIRwMCIi3TJteHAPb2Z9jMhgyM+O/cx700QAtEzH+/s3U52vOKtI1XB3EKuIgJLAhEBaJJN7mNvwcGS0tm3r2tu1t2s53B9Pd6fTPcoEgo81bMB6hjOBRRNukRZJRZhZiCKJEw44KALu0RIts3mOCBAzMyI/Q1i8CJwAlLgcjzdSirvVUlVYRaEpoIwMd0IS4Ihhw22Yj3APNx/NRzcPk3pzuru9ezNNh62P3tbl8mO7Xi6PH56fn3rrQZTAPtKAKECEfVgiJBDZgrbkBmnIzdENCBWQo3+ulu0ddWYqi2ipzBqewkhm5dz12x2qWEBEIO7WYpi7I5wiOCGJaZrocJc6ndfev393Pj81W9y3cL6+/259er8uiw/LpCCKRHcIwQkIIDI9ydE9W6AFWlCLbMOtk+jPN0K7+v1Jy9HwdjxUUbGIzYJLpQgKWUe7tmu3NYPI0wIcFbyT3GGI4Rlzmev05nBDNP34w7t/+Iff/vG771893Dzc3Rn1ta1Pl+uHtW/JmSPCrROVQIxIRpCBR/KGfEq7ZK6BZYt1dRvOxMrc4mf8vzv+T72QCBcVFQHRiJhYWTOG925L20Y4ZeYIz1SwWSacOKBSi4pOM0/VmedDlXL7cPe7b3//+z/+4fL8hGNdPN+d29VcWDhSQnqQMCKCIj3YQT1jy9gyesTwbGY2nEC0N92fbyI+Lc2IrbU969O9sJAiiAI4X7frNmgWH7aPCxEOAoFVmUlLmZhK9yiq96/f/Lu7+/lG/9c//v26PD8++dNmP67L5iilHku9mWaeBHHN4DSygCFGwC26RY/YLLatDbckEkb+67TERzOUgW1Zt2XZ2cMde6IU9+nDsn3/+Myv7yUiY5CUzCACESd4eHQ3oSgyKcnzstS5/PqvfkPU/88//4N9ELCS8GrpyGOh08wHlQiJ4EgYqHlu5ptl92yGbfgyWhvBKpmZFEz8mQz+yQkcD8fRuw+baq2iGZGBMtWMcd3G94+Xw1weJkHmurWEM2eBEEUYZ1rRcnt7un/zNon2Wezu9p5Jf/lwc2nj3SW2cBBNzCcdBWOkRCJABl7Cz56b+Rq5RqzDukUgiZAU+fmBZnf/J3L3/MO7H2yM03y0TDcHcyAMJFSuzR4va8U8sZNIOIZbu/Yxdg233t/esEhYkOhYY7les/E3b359Ww/f/vG78/mx966T3tR6I2meS2p4RqInVs+L+5a5BdYxVhsGIhZmRvoLRfEZA16IFpB+/913f/j9HyLz7u7u8enJ3ZV427bW+/HhAWV6umxT9jenwtPBgT58a8v5edlWiyzn02k5P6/d2+bbajC7m+cvXz0M4ZEaPFORkTlCGsICHTR8dEdPOpuf3TqoeyxtbN2SiUXBIKRkun2Wef8US9rXdrlcbu/ubg+Hx8enMAfLfsuq1klr2S6XK+g03cJXdxujr0tblmW9dtDk6/X9767dubXszSnoUPT307QhLta9Fp4rETDMCEB2jh7ZPJph9eiRRrSZb92GO5dZVIRAmRmwTPo875gIZOiH9++va//rv/2373/4TnSaMrKtk8TFEREnMc/lslFf715L9HVbluvoa5rdnert3en1fHPfde2NnC3w4bz84cPj4/Xp2rkTbxrt0khxU/V+FmVebIB49dgsDcxJ1O3x3M+rFdVDLTvnFslmAWRE7sm6S8iqygxmiOwMRMhfffPN8XT46qu3jx/eXy+PRSUz2ojzsk1Cv/rq7Vx4WVdAJqVwMxvhxoCWQkwCVp6TOINhWVCPPN9KZS2i4pFrjuZj5OhkJHyqhzZ66x5ErnId/uP1aR2W/qK77BzpJ6Lt0/qJMMMirCqq5TBVvV6f//1//A9ffv323bs/fPu7tN7X3gA+znVZzs366XDIDx+ul+eT3AiTqqYrgojhNn7o/du41uBcDSMVJYPWGJaDCFJ4RlWBzFxnIbCPACkXsYhrs8fr9cfLuhOEe5vwLxSkjyGU+10WACJE+3UczqTUX3zzF3/1b35zOh2//Pqrf/yfdfTOpTzcvn6d9u0///bdu/e333xd58O4Pq8rn47H+XiYqnoYhZP7au19W6rDzdPJY3OwlVTKADHVY8IpA45mIyizuKqzX7b27vn8vK0DKNhvdL3o8rt8RsSAf1LKgGRmop0/Z1YtpdbjrH/zN397PN0F4u7uYT6ecow3r778+le/aY/fv/v9b3/4/t0Xb97e3N57W5ZlEZF5vp3nSRicCcSp9bvn1YbbiDb8ed26D9JyJnMP2vXpQMlM9xRuRa5te17ah+v13LYeKWVmTyGKj77nF/IWCRAhAxlBTCxEIGYWZiBFWJj1l3/5Gy11Xa+1nB7u3o5L+/oXv/zVr3/9x/58d3O4XLYfz5fbL17dzPPjGL33dVur3sx1KiLEuJnsy3LsZqPFsmyHpOe+JVGvnAH0ffDkACBkzGeKH8/Xx+u1j5GQwsqQxCBmztylbNmV6UxQEH0UtRgqgv0ERIsWZh6961RuSikZqNN8f//q/e//qOW0GfXWX93dLZu/e3z+xeu706H0uNl6f7qchalUQirCAqa3UnKitcOzznQjxYbNkZRMREHiRA0+PLbwH6/t3JbNBrEKaTjFSCAhGZkeUf+EOcEvmvbO9vBL6BOYk4UpAWKVAmM8D4/p9Mu//hud5lcnoae/T3t68+o0xnY5Pz79eDy9fX0TTwqzzZcPT9RsPhxIJGF+uSI5RrStr55r9741ppxJgsWYR6APXBsW82sbZiAUISESkBOIWJBgkGjZb94wKECUQaBPLyEmJmEhZoRnMhOrTqUFq05ffvX1Fw83b1/d9vf/+/Ldbw81yfjV7aTWfFvaeFWVD7V08772q11G9yyKNMQwRyS5oRmao4XWgyRxDzL3zWJtfduseYRlJsnHK4sAaNc8kfuku1Pnu9ACvEhoTCTMzCwsrKxFtRYpRZV1bcFCb25uJsF2boMi0otMN3W263Y7H+qDIGJcn+aTcFGaKjyG2bpdx9WSoaWaE5KCOFm4zkUy1IfH6uPS7dJs6b2l2YuUGGAmpp9c8NhHRP6IOcgXsvqlHxIREVHVUkoCIqQqqlKK6u3xlhHwrT8/Xb7/dv3x+2zbQesm2lUrcCrFu43RI7WKSJ04kzdqNgbcjLqHR0ZSMAPqSQnetq1534Yvw5ZhA568k50fB0LaNxm7LMOS+0WUnfchepFR95l4z+x9vUCoKDMzoGM951h8Pa9P79v5wyw4Hg+LPQthqgo3raKHerlc4IOEigpHwX75gxHN1z7cvTlGpCdZIgIdIyKHe/PwHVJAu0Ke5J98vCPmXpt2mexTHWAmZton4H163A9LKAWBCBGNSP32n/6HRp84OEbVKFq9mYho0anWPjbimI9zoG7NPjos94YEBBWahFv6LmxbZHd4uBEH0vfWnZIDkYaEiGTyfh8rAELuNAiQn157Gfh0NYiZVbXUWmqpUxWhUsqhlOGWLP8XioRCVV0AmrYAAAAASUVORK5CYII=",
+  menu: "data:image/png;base64,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"
+};
+
+</script>
+<script>
+// gl_compat.js
+//
+// A small OpenGL 1.1 fixed-function emulation on top of WebGL, just big enough
+// for this program: matrix stack, immediate mode (glBegin/glVertex/...),
+// GL_LIGHTING with 4 lights (positional/directional, spot, attenuation),
+// GL_COLOR_MATERIAL and a single 2D texture unit in GL_MODULATE mode.
+//
+// The point is that draw_manager.js / part.js / light.js can stay a near
+// line-by-line transcription of the original C++.
+//
+// Difference worth knowing about: the original pipeline lit per vertex
+// (Gouraud). Here the same equation runs per fragment, so the spot lights have
+// smooth edges instead of following the floor tessellation.
+
+var GLC = (function () {
+	'use strict';
+
+	var MAX_LIGHTS = 4;
+	var FLOATS_PER_VERTEX = 12; // pos3 + normal3 + color4 + uv2
+
+	var gl = null;
+	var canvas = null;
+	var prog = null;
+	var loc = {};      // uniform locations
+	var vbo = null;
+	var vboBytes = 0;
+
+	// ---- matrix helpers ------------------------------------------------
+
+	function mat4Identity(m) {
+		m[0] = 1; m[1] = 0; m[2] = 0; m[3] = 0;
+		m[4] = 0; m[5] = 1; m[6] = 0; m[7] = 0;
+		m[8] = 0; m[9] = 0; m[10] = 1; m[11] = 0;
+		m[12] = 0; m[13] = 0; m[14] = 0; m[15] = 1;
+		return m;
+	}
+
+	// out = a * b, column major like OpenGL
+	function mat4Mul(out, a, b) {
+		var t = mat4Mul.tmp;
+		for (var c = 0; c < 4; ++c) {
+			for (var r = 0; r < 4; ++r) {
+				t[c * 4 + r] = a[r] * b[c * 4] + a[4 + r] * b[c * 4 + 1] +
+					a[8 + r] * b[c * 4 + 2] + a[12 + r] * b[c * 4 + 3];
+			}
+		}
+		for (var i = 0; i < 16; ++i) out[i] = t[i];
+		return out;
+	}
+	mat4Mul.tmp = new Float32Array(16);
+
+	// v' = m * v, with v = (x, y, z, w)
+	function mat4MulVec4(out, m, x, y, z, w) {
+		out[0] = m[0] * x + m[4] * y + m[8] * z + m[12] * w;
+		out[1] = m[1] * x + m[5] * y + m[9] * z + m[13] * w;
+		out[2] = m[2] * x + m[6] * y + m[10] * z + m[14] * w;
+		out[3] = m[3] * x + m[7] * y + m[11] * z + m[15] * w;
+		return out;
+	}
+
+	// direction transformed by the upper-left 3x3, which is what OpenGL does
+	// to GL_SPOT_DIRECTION when glLightfv is called.
+	function mat3MulVec3(out, m, x, y, z) {
+		out[0] = m[0] * x + m[4] * y + m[8] * z;
+		out[1] = m[1] * x + m[5] * y + m[9] * z;
+		out[2] = m[2] * x + m[6] * y + m[10] * z;
+		return out;
+	}
+
+	// inverse transpose of the upper-left 3x3, for normals
+	function normalMatrix(out, m) {
+		var a00 = m[0], a01 = m[1], a02 = m[2];
+		var a10 = m[4], a11 = m[5], a12 = m[6];
+		var a20 = m[8], a21 = m[9], a22 = m[10];
+
+		var b01 = a22 * a11 - a12 * a21;
+		var b11 = -a22 * a10 + a12 * a20;
+		var b21 = a21 * a10 - a11 * a20;
+
+		var det = a00 * b01 + a01 * b11 + a02 * b21;
+		if (!det) { // singular: fall back to the plain 3x3
+			out[0] = a00; out[1] = a01; out[2] = a02;
+			out[3] = a10; out[4] = a11; out[5] = a12;
+			out[6] = a20; out[7] = a21; out[8] = a22;
+			return out;
+		}
+		det = 1.0 / det;
+
+		out[0] = b01 * det;
+		out[1] = (-a22 * a01 + a02 * a21) * det;
+		out[2] = (a12 * a01 - a02 * a11) * det;
+		out[3] = b11 * det;
+		out[4] = (a22 * a00 - a02 * a20) * det;
+		out[5] = (-a12 * a00 + a02 * a10) * det;
+		out[6] = b21 * det;
+		out[7] = (-a21 * a00 + a01 * a20) * det;
+		out[8] = (a11 * a00 - a01 * a10) * det;
+		return out;
+	}
+
+	// ---- state ---------------------------------------------------------
+
+	var MODELVIEW = 0, PROJECTION = 1;
+	var matrixMode = MODELVIEW;
+	var stacks = [[], []];                        // saved matrices per mode
+	var matrices = [new Float32Array(16), new Float32Array(16)];
+	mat4Identity(matrices[0]);
+	mat4Identity(matrices[1]);
+
+	var state = {
+		lighting: false,
+		texture2d: false,
+		depthTest: false,
+		blend: false,
+		cullFace: false,
+		normalize: false,
+		colorMaterial: false,
+		wireframe: false,
+		boundTexture: null,
+		lightModelAmbient: new Float32Array([0.2, 0.2, 0.2, 1.0]),
+		matAmbient: new Float32Array([0.2, 0.2, 0.2, 1.0]),
+		matDiffuse: new Float32Array([0.8, 0.8, 0.8, 1.0]),
+		matSpecular: new Float32Array([0, 0, 0, 1]),
+		matEmission: new Float32Array([0, 0, 0, 1]),
+		matShininess: 0.0
+	};
+
+	function makeLight(index) {
+		return {
+			enabled: false,
+			ambient: new Float32Array([0, 0, 0, 1]),
+			diffuse: new Float32Array(index === 0 ? [1, 1, 1, 1] : [0, 0, 0, 1]),
+			specular: new Float32Array(index === 0 ? [1, 1, 1, 1] : [0, 0, 0, 1]),
+			// position and spot direction are kept in eye space, exactly like
+			// OpenGL stores them: they are transformed by the modelview matrix
+			// that was current when glLightfv() was called.
+			position: new Float32Array([0, 0, 1, 0]),
+			spotDirection: new Float32Array([0, 0, -1]),
+			spotExponent: 0.0,
+			spotCutoff: 180.0,
+			atten: new Float32Array([1, 0, 0])
+		};
+	}
+
+	var lights = [];
+	for (var li = 0; li < MAX_LIGHTS; ++li) lights.push(makeLight(li));
+
+	// current immediate-mode vertex attributes
+	var curColor = new Float32Array([1, 1, 1, 1]);
+	var curNormal = new Float32Array([0, 0, 1]);
+	var curTexCoord = new Float32Array([0, 0]);
+
+	var primMode = -1;
+	var verts = [];              // flat array of FLOATS_PER_VERTEX-sized vertices
+	var scratch = new Float32Array(4);
+
+	// GL primitive constants used by the ported code
+	var GL_TRIANGLES = 0x0004;
+	var GL_QUADS = 0x0007;
+	var GL_QUAD_STRIP = 0x0008;
+	var GL_LINES = 0x0001;
+	var GL_LINE_LOOP = 0x0002;
+	var GL_TRIANGLE_FAN = 0x0006;
+
+	// ---- shaders -------------------------------------------------------
+
+	var VERT_SRC = [
+		'attribute vec3 aPos;',
+		'attribute vec3 aNormal;',
+		'attribute vec4 aColor;',
+		'attribute vec2 aTexCoord;',
+		'uniform mat4 uModelView;',
+		'uniform mat4 uProjection;',
+		'uniform mat3 uNormalMatrix;',
+		'varying vec3 vEyePos;',
+		'varying vec3 vNormal;',
+		'varying vec4 vColor;',
+		'varying vec2 vTexCoord;',
+		'void main() {',
+		'  vec4 eye = uModelView * vec4(aPos, 1.0);',
+		'  vEyePos = eye.xyz;',
+		'  vNormal = uNormalMatrix * aNormal;',
+		'  vColor = aColor;',
+		'  vTexCoord = aTexCoord;',
+		'  gl_Position = uProjection * eye;',
+		'}'
+	].join('\n');
+
+	var FRAG_SRC = [
+		'precision mediump float;',
+		'#define MAX_LIGHTS ' + MAX_LIGHTS,
+		'varying vec3 vEyePos;',
+		'varying vec3 vNormal;',
+		'varying vec4 vColor;',
+		'varying vec2 vTexCoord;',
+		'uniform bool uLightingEnabled;',
+		'uniform bool uTextureEnabled;',
+		'uniform sampler2D uSampler;',
+		'uniform vec4 uLightModelAmbient;',
+		'uniform vec4 uMatAmbient;',
+		'uniform vec4 uMatDiffuse;',
+		'uniform vec4 uMatSpecular;',
+		'uniform vec4 uMatEmission;',
+		'uniform float uMatShininess;',
+		'uniform bool uColorMaterial;',
+		'uniform bool uLightEnabled[MAX_LIGHTS];',
+		'uniform vec4 uLightAmbient[MAX_LIGHTS];',
+		'uniform vec4 uLightDiffuse[MAX_LIGHTS];',
+		'uniform vec4 uLightSpecular[MAX_LIGHTS];',
+		'uniform vec4 uLightPosition[MAX_LIGHTS];',
+		'uniform vec3 uLightSpotDir[MAX_LIGHTS];',
+		'uniform float uLightSpotExp[MAX_LIGHTS];',
+		'uniform float uLightSpotCutoff[MAX_LIGHTS];',
+		'uniform vec3 uLightAtten[MAX_LIGHTS];',
+		'',
+		'void main() {',
+		'  vec4 texel = uTextureEnabled ? texture2D(uSampler, vTexCoord) : vec4(1.0);',
+		'  if (!uLightingEnabled) {',
+		'    gl_FragColor = vColor * texel;',
+		'    return;',
+		'  }',
+		'',
+		// GL_COLOR_MATERIAL with GL_AMBIENT_AND_DIFFUSE: the vertex colour
+		// replaces both the ambient and the diffuse material reflectance.
+		'  vec4 matAmb = uColorMaterial ? vColor : uMatAmbient;',
+		'  vec4 matDiff = uColorMaterial ? vColor : uMatDiffuse;',
+		'',
+		'  vec3 n = normalize(vNormal);',
+		// GL_LIGHT_MODEL_LOCAL_VIEWER is GL_TRUE in this program
+		'  vec3 v = normalize(-vEyePos);',
+		'  vec3 color = uMatEmission.rgb + uLightModelAmbient.rgb * matAmb.rgb;',
+		'',
+		'  for (int i = 0; i < MAX_LIGHTS; ++i) {',
+		'    if (!uLightEnabled[i]) continue;',
+		'    vec3 L;',
+		'    float atten = 1.0;',
+		'    float spot = 1.0;',
+		'    if (uLightPosition[i].w == 0.0) {',
+		// directional: no attenuation and no spot, per the GL spec
+		'      L = normalize(uLightPosition[i].xyz);',
+		'    } else {',
+		'      vec3 toLight = uLightPosition[i].xyz - vEyePos;',
+		'      float d = length(toLight);',
+		'      L = toLight / max(d, 0.0001);',
+		'      vec3 k = uLightAtten[i];',
+		'      atten = 1.0 / max(k.x + k.y * d + k.z * d * d, 0.0001);',
+		'      if (uLightSpotCutoff[i] < 180.0) {',
+		'        float cosA = dot(-L, normalize(uLightSpotDir[i]));',
+		'        if (cosA < cos(radians(uLightSpotCutoff[i]))) spot = 0.0;',
+		'        else spot = pow(max(cosA, 0.0), uLightSpotExp[i]);',
+		'      }',
+		'    }',
+		'    float att = atten * spot;',
+		'    if (att <= 0.0) continue;',
+		'',
+		'    vec3 contrib = uLightAmbient[i].rgb * matAmb.rgb;',
+		'    float nl = dot(n, L);',
+		'    if (nl > 0.0) {',
+		'      contrib += nl * uLightDiffuse[i].rgb * matDiff.rgb;',
+		'      vec3 h = normalize(L + v);',
+		'      float sp = pow(max(dot(n, h), 0.0), max(uMatShininess, 0.001));',
+		'      contrib += sp * uLightSpecular[i].rgb * uMatSpecular.rgb;',
+		'    }',
+		'    color += att * contrib;',
+		'  }',
+		'',
+		'  gl_FragColor = vec4(clamp(color, 0.0, 1.0), matDiff.a) * texel;',
+		'}'
+	].join('\n');
+
+	function compile(type, src) {
+		var s = gl.createShader(type);
+		gl.shaderSource(s, src);
+		gl.compileShader(s);
+		if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
+			throw new Error('shader compile failed: ' + gl.getShaderInfoLog(s));
+		}
+		return s;
+	}
+
+	function buildProgram() {
+		var p = gl.createProgram();
+		gl.attachShader(p, compile(gl.VERTEX_SHADER, VERT_SRC));
+		gl.attachShader(p, compile(gl.FRAGMENT_SHADER, FRAG_SRC));
+		gl.bindAttribLocation(p, 0, 'aPos');
+		gl.bindAttribLocation(p, 1, 'aNormal');
+		gl.bindAttribLocation(p, 2, 'aColor');
+		gl.bindAttribLocation(p, 3, 'aTexCoord');
+		gl.linkProgram(p);
+		if (!gl.getProgramParameter(p, gl.LINK_STATUS)) {
+			throw new Error('program link failed: ' + gl.getProgramInfoLog(p));
+		}
+		return p;
+	}
+
+	function cacheUniforms() {
+		var names = ['uModelView', 'uProjection', 'uNormalMatrix', 'uLightingEnabled',
+			'uTextureEnabled', 'uSampler', 'uLightModelAmbient', 'uMatAmbient',
+			'uMatDiffuse', 'uMatSpecular', 'uMatEmission', 'uMatShininess',
+			'uColorMaterial'];
+		for (var i = 0; i < names.length; ++i) {
+			loc[names[i]] = gl.getUniformLocation(prog, names[i]);
+		}
+		var arrays = ['uLightEnabled', 'uLightAmbient', 'uLightDiffuse', 'uLightSpecular',
+			'uLightPosition', 'uLightSpotDir', 'uLightSpotExp', 'uLightSpotCutoff',
+			'uLightAtten'];
+		for (var a = 0; a < arrays.length; ++a) {
+			loc[arrays[a]] = [];
+			for (var k = 0; k < MAX_LIGHTS; ++k) {
+				loc[arrays[a]].push(gl.getUniformLocation(prog, arrays[a] + '[' + k + ']'));
+			}
+		}
+	}
+
+	// ---- public API ----------------------------------------------------
+
+	var api = {};
+
+	api.GL_TRIANGLES = GL_TRIANGLES;
+	api.GL_QUADS = GL_QUADS;
+	api.GL_QUAD_STRIP = GL_QUAD_STRIP;
+	api.GL_LINES = GL_LINES;
+	api.GL_LINE_LOOP = GL_LINE_LOOP;
+	api.GL_TRIANGLE_FAN = GL_TRIANGLE_FAN;
+
+	api.init = function (c) {
+		canvas = c;
+		var opts = { alpha: false, depth: true, antialias: true, preserveDrawingBuffer: false };
+		gl = canvas.getContext('webgl', opts) || canvas.getContext('experimental-webgl', opts);
+		if (!gl) return null;
+
+		prog = buildProgram();
+		gl.useProgram(prog);
+		cacheUniforms();
+
+		vbo = gl.createBuffer();
+		gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
+
+		gl.enableVertexAttribArray(0);
+		gl.enableVertexAttribArray(1);
+		gl.enableVertexAttribArray(2);
+		gl.enableVertexAttribArray(3);
+		var stride = FLOATS_PER_VERTEX * 4;
+		gl.vertexAttribPointer(0, 3, gl.FLOAT, false, stride, 0);
+		gl.vertexAttribPointer(1, 3, gl.FLOAT, false, stride, 12);
+		gl.vertexAttribPointer(2, 4, gl.FLOAT, false, stride, 24);
+		gl.vertexAttribPointer(3, 2, gl.FLOAT, false, stride, 40);
+
+		gl.uniform1i(loc.uSampler, 0);
+		gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+		return gl;
+	};
+
+	api.raw = function () { return gl; };
+
+	// -- capabilities
+
+	api.enable = function (cap) { setCap(cap, true); };
+	api.disable = function (cap) { setCap(cap, false); };
+
+	function setCap(cap, on) {
+		switch (cap) {
+			case 'lighting': state.lighting = on; break;
+			case 'texture2d': state.texture2d = on; break;
+			case 'normalize': state.normalize = on; break;
+			case 'colorMaterial': state.colorMaterial = on; break;
+			case 'depthTest':
+				state.depthTest = on;
+				if (on) gl.enable(gl.DEPTH_TEST); else gl.disable(gl.DEPTH_TEST);
+				break;
+			case 'blend':
+				state.blend = on;
+				if (on) gl.enable(gl.BLEND); else gl.disable(gl.BLEND);
+				break;
+			case 'cullFace':
+				state.cullFace = on;
+				if (on) gl.enable(gl.CULL_FACE); else gl.disable(gl.CULL_FACE);
+				break;
+			default:
+				if (cap >= 0 && cap < MAX_LIGHTS) lights[cap].enabled = on; // GL_LIGHTi
+				break;
+		}
+	}
+
+	api.enableLight = function (i) { if (i >= 0 && i < MAX_LIGHTS) lights[i].enabled = true; };
+	api.disableLight = function (i) { if (i >= 0 && i < MAX_LIGHTS) lights[i].enabled = false; };
+	api.isLightEnabled = function (i) { return i >= 0 && i < MAX_LIGHTS && lights[i].enabled; };
+
+	api.setWireframe = function (on) { state.wireframe = !!on; };
+
+	api.clearColor = function (r, g, b, a) { gl.clearColor(r, g, b, a); };
+	api.clear = function () { gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT); };
+	api.viewport = function (x, y, w, h) { gl.viewport(x, y, w, h); };
+	api.depthMask = function (on) { gl.depthMask(!!on); };
+
+	// -- matrix stack
+
+	api.matrixMode = function (mode) { matrixMode = mode; };
+	api.MODELVIEW = MODELVIEW;
+	api.PROJECTION = PROJECTION;
+
+	api.loadIdentity = function () { mat4Identity(matrices[matrixMode]); };
+
+	api.pushMatrix = function () {
+		stacks[matrixMode].push(new Float32Array(matrices[matrixMode]));
+	};
+
+	api.popMatrix = function () {
+		var m = stacks[matrixMode].pop();
+		if (m) matrices[matrixMode].set(m);
+	};
+
+	api.multMatrix = function (m) { mat4Mul(matrices[matrixMode], matrices[matrixMode], m); };
+
+	var tmpM = new Float32Array(16);
+
+	api.translatef = function (x, y, z) {
+		mat4Identity(tmpM);
+		tmpM[12] = x; tmpM[13] = y; tmpM[14] = z;
+		mat4Mul(matrices[matrixMode], matrices[matrixMode], tmpM);
+	};
+
+	api.scalef = function (x, y, z) {
+		mat4Identity(tmpM);
+		tmpM[0] = x; tmpM[5] = y; tmpM[10] = z;
+		mat4Mul(matrices[matrixMode], matrices[matrixMode], tmpM);
+	};
+
+	api.rotatef = function (angleDeg, x, y, z) {
+		var len = Math.sqrt(x * x + y * y + z * z);
+		if (len < 1e-8) return; // glRotatef with a zero axis is a no-op
+		x /= len; y /= len; z /= len;
+		var a = angleDeg * Math.PI / 180.0;
+		var c = Math.cos(a), s = Math.sin(a), t = 1 - c;
+
+		mat4Identity(tmpM);
+		tmpM[0] = t * x * x + c;
+		tmpM[1] = t * x * y + s * z;
+		tmpM[2] = t * x * z - s * y;
+		tmpM[4] = t * x * y - s * z;
+		tmpM[5] = t * y * y + c;
+		tmpM[6] = t * y * z + s * x;
+		tmpM[8] = t * x * z + s * y;
+		tmpM[9] = t * y * z - s * x;
+		tmpM[10] = t * z * z + c;
+		mat4Mul(matrices[matrixMode], matrices[matrixMode], tmpM);
+	};
+
+	api.perspective = function (fovy, aspect, zNear, zFar) { // gluPerspective
+		var f = 1.0 / Math.tan(fovy * Math.PI / 360.0);
+		var m = tmpM;
+		mat4Identity(m);
+		m[0] = f / aspect;
+		m[5] = f;
+		m[10] = (zFar + zNear) / (zNear - zFar);
+		m[11] = -1;
+		m[14] = (2 * zFar * zNear) / (zNear - zFar);
+		m[15] = 0;
+		mat4Mul(matrices[matrixMode], matrices[matrixMode], m);
+	};
+
+	api.ortho = function (left, right, bottom, top, zNear, zFar) {
+		var m = tmpM;
+		mat4Identity(m);
+		m[0] = 2 / (right - left);
+		m[5] = 2 / (top - bottom);
+		m[10] = -2 / (zFar - zNear);
+		m[12] = -(right + left) / (right - left);
+		m[13] = -(top + bottom) / (top - bottom);
+		m[14] = -(zFar + zNear) / (zFar - zNear);
+		mat4Mul(matrices[matrixMode], matrices[matrixMode], m);
+	};
+
+	api.lookAt = function (ex, ey, ez, cx, cy, cz, ux, uy, uz) { // gluLookAt
+		var fx = cx - ex, fy = cy - ey, fz = cz - ez;
+		var rl = Math.sqrt(fx * fx + fy * fy + fz * fz) || 1;
+		fx /= rl; fy /= rl; fz /= rl;
+
+		var sx = fy * uz - fz * uy;
+		var sy = fz * ux - fx * uz;
+		var sz = fx * uy - fy * ux;
+		var sl = Math.sqrt(sx * sx + sy * sy + sz * sz) || 1;
+		sx /= sl; sy /= sl; sz /= sl;
+
+		var tx = sy * fz - sz * fy;
+		var ty = sz * fx - sx * fz;
+		var tz = sx * fy - sy * fx;
+
+		var m = tmpM;
+		mat4Identity(m);
+		m[0] = sx; m[4] = sy; m[8] = sz;
+		m[1] = tx; m[5] = ty; m[9] = tz;
+		m[2] = -fx; m[6] = -fy; m[10] = -fz;
+		mat4Mul(matrices[matrixMode], matrices[matrixMode], m);
+		api.translatef(-ex, -ey, -ez);
+	};
+
+	// -- lights and materials
+
+	api.lightModelAmbient = function (v) { state.lightModelAmbient.set(v); };
+
+	api.materialAmbient = function (v) { state.matAmbient.set(v); };
+	api.materialDiffuse = function (v) { state.matDiffuse.set(v); };
+	api.materialSpecular = function (v) { state.matSpecular.set(v); };
+	api.materialEmission = function (v) { state.matEmission.set(v); };
+	api.materialShininess = function (s) { state.matShininess = s; };
+
+	api.lightAmbient = function (i, v) { lights[i].ambient.set(v); };
+	api.lightDiffuse = function (i, v) { lights[i].diffuse.set(v); };
+	api.lightSpecular = function (i, v) { lights[i].specular.set(v); };
+	api.lightSpotExponent = function (i, v) { lights[i].spotExponent = v; };
+	api.lightSpotCutoff = function (i, v) { lights[i].spotCutoff = v; };
+	api.lightAttenuation = function (i, c, l, q) {
+		lights[i].atten[0] = c; lights[i].atten[1] = l; lights[i].atten[2] = q;
+	};
+
+	// glLightfv(.., GL_POSITION, ..): the position is transformed by the
+	// modelview matrix in effect right now and kept in eye coordinates.
+	api.lightPosition = function (i, p) {
+		mat4MulVec4(scratch, matrices[MODELVIEW], p[0], p[1], p[2], p[3]);
+		lights[i].position[0] = scratch[0];
+		lights[i].position[1] = scratch[1];
+		lights[i].position[2] = scratch[2];
+		lights[i].position[3] = p[3];
+	};
+
+	// glLightfv(.., GL_SPOT_DIRECTION, ..): transformed by the upper-left 3x3.
+	api.lightSpotDirection = function (i, d) {
+		mat3MulVec3(scratch, matrices[MODELVIEW], d[0], d[1], d[2]);
+		lights[i].spotDirection[0] = scratch[0];
+		lights[i].spotDirection[1] = scratch[1];
+		lights[i].spotDirection[2] = scratch[2];
+	};
+
+	// -- textures
+
+	// flipY defaults to true: TGA/BMP rows run bottom-to-top, which is also how
+	// OpenGL reads texture data, while HTML images are top-down. The menu sheet
+	// passes false so its sprite rectangles can stay in top-down pixel coords.
+	api.createTexture = function (image, mipmap, wrapClamp, flipY) {
+		var tex = gl.createTexture();
+		gl.bindTexture(gl.TEXTURE_2D, tex);
+		gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, flipY === undefined ? true : !!flipY);
+		gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+		gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+
+		var clamp = wrapClamp ? gl.CLAMP_TO_EDGE : gl.REPEAT;
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, clamp);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, clamp);
+		if (mipmap) {
+			gl.generateMipmap(gl.TEXTURE_2D);
+			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
+		} else {
+			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+		}
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+		gl.bindTexture(gl.TEXTURE_2D, null);
+		return tex;
+	};
+
+	api.bindTexture = function (tex) { state.boundTexture = tex || null; };
+
+	// -- immediate mode
+
+	api.color3f = function (r, g, b) {
+		curColor[0] = r; curColor[1] = g; curColor[2] = b; curColor[3] = 1.0;
+	};
+	api.color4f = function (r, g, b, a) {
+		curColor[0] = r; curColor[1] = g; curColor[2] = b; curColor[3] = a;
+	};
+	api.color4fv = function (v) { curColor.set(v); };
+
+	api.normal3f = function (x, y, z) {
+		curNormal[0] = x; curNormal[1] = y; curNormal[2] = z;
+	};
+
+	api.texCoord2f = function (s, t) { curTexCoord[0] = s; curTexCoord[1] = t; };
+
+	api.begin = function (mode) {
+		primMode = mode;
+		verts.length = 0;
+	};
+
+	api.vertex3f = function (x, y, z) {
+		verts.push(x, y, z,
+			curNormal[0], curNormal[1], curNormal[2],
+			curColor[0], curColor[1], curColor[2], curColor[3],
+			curTexCoord[0], curTexCoord[1]);
+	};
+
+	api.vertex3fv = function (p) { api.vertex3f(p[0], p[1], p[2]); };
+
+	function pushVertex(out, src, i) {
+		var o = i * FLOATS_PER_VERTEX;
+		for (var k = 0; k < FLOATS_PER_VERTEX; ++k) out.push(src[o + k]);
+	}
+
+	// Turn the immediate-mode primitive into a triangle or line list, which is
+	// all WebGL understands. Wireframe mode (glPolygonMode GL_LINE) is emulated
+	// by emitting the polygon edges instead of its triangles.
+	var assembled = [];
+
+	function assemble() {
+		var n = verts.length / FLOATS_PER_VERTEX;
+		assembled.length = 0;
+		var i, wire = state.wireframe;
+
+		function tri(a, b, c) {
+			if (wire) {
+				pushVertex(assembled, verts, a); pushVertex(assembled, verts, b);
+				pushVertex(assembled, verts, b); pushVertex(assembled, verts, c);
+				pushVertex(assembled, verts, c); pushVertex(assembled, verts, a);
+			} else {
+				pushVertex(assembled, verts, a);
+				pushVertex(assembled, verts, b);
+				pushVertex(assembled, verts, c);
+			}
+		}
+
+		switch (primMode) {
+			case GL_TRIANGLES:
+				for (i = 0; i + 2 < n; i += 3) tri(i, i + 1, i + 2);
+				return wire ? gl.LINES : gl.TRIANGLES;
+
+			case GL_QUADS:
+				for (i = 0; i + 3 < n; i += 4) {
+					if (wire) {
+						// the four edges, not the diagonal
+						pushVertex(assembled, verts, i); pushVertex(assembled, verts, i + 1);
+						pushVertex(assembled, verts, i + 1); pushVertex(assembled, verts, i + 2);
+						pushVertex(assembled, verts, i + 2); pushVertex(assembled, verts, i + 3);
+						pushVertex(assembled, verts, i + 3); pushVertex(assembled, verts, i);
+					} else {
+						tri(i, i + 1, i + 2);
+						tri(i, i + 2, i + 3);
+					}
+				}
+				return wire ? gl.LINES : gl.TRIANGLES;
+
+			case GL_QUAD_STRIP:
+				for (i = 0; i + 3 < n; i += 2) {
+					if (wire) {
+						pushVertex(assembled, verts, i); pushVertex(assembled, verts, i + 1);
+						pushVertex(assembled, verts, i + 1); pushVertex(assembled, verts, i + 3);
+						pushVertex(assembled, verts, i + 3); pushVertex(assembled, verts, i + 2);
+						pushVertex(assembled, verts, i + 2); pushVertex(assembled, verts, i);
+					} else {
+						// quad is (i, i+1, i+3, i+2)
+						tri(i, i + 1, i + 3);
+						tri(i, i + 3, i + 2);
+					}
+				}
+				return wire ? gl.LINES : gl.TRIANGLES;
+
+			case GL_TRIANGLE_FAN:
+				for (i = 1; i + 1 < n; ++i) tri(0, i, i + 1);
+				return wire ? gl.LINES : gl.TRIANGLES;
+
+			case GL_LINE_LOOP:
+				for (i = 0; i < n; ++i) {
+					pushVertex(assembled, verts, i);
+					pushVertex(assembled, verts, (i + 1) % n);
+				}
+				return gl.LINES;
+
+			case GL_LINES:
+			default:
+				for (i = 0; i < n; ++i) pushVertex(assembled, verts, i);
+				return gl.LINES;
+		}
+	}
+
+	var uploadBuf = new Float32Array(0);
+
+	function upload(data) {
+		if (uploadBuf.length < data.length) {
+			uploadBuf = new Float32Array(Math.max(data.length, uploadBuf.length * 2, 4096));
+		}
+		uploadBuf.set(data);
+		var view = uploadBuf.subarray(0, data.length);
+		var bytes = view.byteLength;
+		if (bytes > vboBytes) {
+			gl.bufferData(gl.ARRAY_BUFFER, uploadBuf, gl.DYNAMIC_DRAW);
+			vboBytes = uploadBuf.byteLength;
+		} else {
+			gl.bufferSubData(gl.ARRAY_BUFFER, 0, view);
+		}
+		return view.length / FLOATS_PER_VERTEX;
+	}
+
+	function applyUniforms(useTexture) {
+		gl.uniformMatrix4fv(loc.uModelView, false, matrices[MODELVIEW]);
+		gl.uniformMatrix4fv(loc.uProjection, false, matrices[PROJECTION]);
+		normalMatrix(applyUniforms.nm, matrices[MODELVIEW]);
+		gl.uniformMatrix3fv(loc.uNormalMatrix, false, applyUniforms.nm);
+
+		gl.uniform1i(loc.uLightingEnabled, state.lighting ? 1 : 0);
+		gl.uniform1i(loc.uTextureEnabled, useTexture ? 1 : 0);
+		gl.uniform1i(loc.uColorMaterial, state.colorMaterial ? 1 : 0);
+		gl.uniform4fv(loc.uLightModelAmbient, state.lightModelAmbient);
+		gl.uniform4fv(loc.uMatAmbient, state.matAmbient);
+		gl.uniform4fv(loc.uMatDiffuse, state.matDiffuse);
+		gl.uniform4fv(loc.uMatSpecular, state.matSpecular);
+		gl.uniform4fv(loc.uMatEmission, state.matEmission);
+		gl.uniform1f(loc.uMatShininess, state.matShininess);
+
+		for (var i = 0; i < MAX_LIGHTS; ++i) {
+			var L = lights[i];
+			gl.uniform1i(loc.uLightEnabled[i], L.enabled ? 1 : 0);
+			if (!L.enabled) continue;
+			gl.uniform4fv(loc.uLightAmbient[i], L.ambient);
+			gl.uniform4fv(loc.uLightDiffuse[i], L.diffuse);
+			gl.uniform4fv(loc.uLightSpecular[i], L.specular);
+			gl.uniform4fv(loc.uLightPosition[i], L.position);
+			gl.uniform3fv(loc.uLightSpotDir[i], L.spotDirection);
+			gl.uniform1f(loc.uLightSpotExp[i], L.spotExponent);
+			gl.uniform1f(loc.uLightSpotCutoff[i], L.spotCutoff);
+			gl.uniform3fv(loc.uLightAtten[i], L.atten);
+		}
+	}
+	applyUniforms.nm = new Float32Array(9);
+
+	api.end = function () {
+		if (verts.length === 0) { primMode = -1; return; }
+
+		var drawMode = assemble();
+		var count = upload(assembled);
+		var useTexture = state.texture2d && state.boundTexture;
+
+		if (useTexture) {
+			gl.activeTexture(gl.TEXTURE0);
+			gl.bindTexture(gl.TEXTURE_2D, state.boundTexture);
+		}
+		applyUniforms(useTexture);
+		gl.drawArrays(drawMode, 0, count);
+
+		verts.length = 0;
+		primMode = -1;
+	};
+
+	return api;
+})();
+
+</script>
+<script>
+// linear_algebra.js - port of src/linear_algebra.{h,cpp}
+
+var LinearAlgebra = (function () {
+	'use strict';
+
+	function Vertex(a, b, c) {
+		this.p = [a || 0.0, b || 0.0, c || 0.0];
+	}
+
+	function Triangle(a, b, c) {
+		this.v = [a || new Vertex(), b || new Vertex(), c || new Vertex()];
+	}
+
+	return { Vertex: Vertex, Triangle: Triangle };
+})();
+
+</script>
+<script>
+// collision_manager.js - port of src/collision_manager.cpp
+//
+// Bounding box against the walls, plain distance against the other robot.
+// Return value: 0 = blocked, 1 = moved but close to something, 2 = free.
+
+var CollisionManager = (function () {
+	'use strict';
+
+	var robot = [
+		{ x: -100.0, y: -100.0 },
+		{ x: 0.0, y: 0.0 },
+		{ x: 0.0, y: 0.0 }
+	];
+
+	function CheckAndSet(id, x, y) {
+		var dx = 0.0, dy = 0.0;
+		var result = 0;
+
+		// check collision with wall
+		if (!(-8.5 <= x && x <= 9.5 && -8.5 <= y && y <= 9.5)) {
+			return 0;
+		} else if (!(-7.0 <= x && x <= 8.0 && -7.0 <= y && y <= 8.0)) {
+			result = 1;
+		}
+
+		if (id === 1) {
+			dx = robot[2].x - x;
+			dy = robot[2].y - y;
+		} else if (id === 2) {
+			dx = robot[1].x - x;
+			dy = robot[1].y - y;
+		}
+
+		if (dx * dx + dy * dy < 3.0) {
+			return 0;
+		}
+
+		if (id === 1) {
+			robot[1].x = x;
+			robot[1].y = y;
+		} else if (id === 2) {
+			robot[2].x = x;
+			robot[2].y = y;
+		}
+
+		if (result === 1 || dx * dx + dy * dy < 6.0) {
+			return 1;
+		}
+		return 2;
+	}
+
+	return { CheckAndSet: CheckAndSet };
+})();
+
+</script>
+<script>
+// light.js - port of src/light.{h,cpp}
+//
+//   light 0 : global light, directional (w = 0), from 10/6/8 towards -1/-1/-1
+//   light 1 : ceiling spot above the player robot
+//   light 2 : red lantern held in the left forearm
+//   light 3 : green lantern held in the right forearm
+
+var Light = (function () {
+	'use strict';
+
+	var TWO_PI = 2 * Math.PI;
+	var NUM_LIGHTS = 4;
+
+	var modelAmb = [0.5, 0.5, 0.5, 1.0];
+	var matAmb = [0.6, 0.6, 0.6, 1.0];
+	var matDiff = [0.8, 0.8, 0.8, 1.0];
+	var matSpec = [0.6, 0.6, 0.6, 1.0];
+	var matEmission = [0.0, 0.0, 0.0, 1.0];
+
+	var spots = [
+		// global light
+		{
+			amb: [0.1, 0.1, 0.1, 1.0],
+			diff: [0.3, 0.3, 0.3, 1.0],
+			spec: [0.1, 0.1, 0.1, 1.0],
+			pos: [10.0, 6.0, 8.0, 0.0],
+			spotDir: [-1.0, -1.0, -1.0],
+			spotExp: 20.0,
+			spotCutoff: 60.0,
+			atten: [1.0, 0.0, 0.0],
+			trans: [0.0, 1.25, 0.0],
+			rot: [0.0, 0.0, 0.0],
+			swing: [0.0, 0.0, 0.0],
+			arc: [0.0, 0.0, 0.0],
+			arcIncr: [TWO_PI / 70.0, 0.0, TWO_PI / 140.0],
+			r: 255, g: 255, b: 255, on: true
+		},
+		{
+			amb: [0.2, 0.2, 0.2, 1.0],
+			diff: [0.8, 0.8, 0.8, 1.0],
+			spec: [0.4, 0.4, 0.4, 1.0],
+			pos: [0.0, 10.0, 0.0, 1.0],
+			spotDir: [0.0, -1.0, 0.0],
+			spotExp: 20.0,
+			spotCutoff: 60.0,
+			atten: [1.0, 0.0, 0.0],
+			trans: [0.0, 1.25, 0.0],
+			rot: [0.0, 0.0, 0.0],
+			swing: [0.0, 0.0, 0.0],
+			arc: [0.0, 0.0, 0.0],
+			arcIncr: [TWO_PI / 70.0, 0.0, TWO_PI / 140.0],
+			r: 255, g: 255, b: 255, on: true
+		},
+		// left
+		{
+			amb: [0.2, 0.0, 0.0, 1.0],
+			diff: [0.8, 0.0, 0.0, 1.0],
+			spec: [0.4, 0.0, 0.0, 1.0],
+			pos: [0.0, 0.0, 0.0, 1.0],
+			spotDir: [0.1, -1.0, 0.0],
+			spotExp: 20.0,
+			spotCutoff: 20.0,
+			atten: [1.0, 0.0, 0.0],
+			trans: [0.0, 0.0, 0.0],
+			rot: [0.0, 0.0, 0.0],
+			swing: [0.0, 0.0, 0.0],
+			arc: [0.0, 0.0, 0.0],
+			arcIncr: [TWO_PI / 70.0, 0.0, TWO_PI / 140.0],
+			r: 255, g: 255, b: 255, on: true
+		},
+		// right
+		{
+			amb: [0.0, 0.2, 0.0, 1.0],
+			diff: [0.0, 0.8, 0.0, 1.0],
+			spec: [0.0, 0.4, 0.0, 1.0],
+			pos: [0.0, 0.0, 0.0, 1.0],
+			spotDir: [-0.1, -1.0, 0.0],
+			spotExp: 20.0,
+			spotCutoff: 20.0,
+			atten: [1.0, 0.0, 0.0],
+			trans: [0.0, 0.0, 0.0],
+			rot: [0.0, 0.0, 0.0],
+			swing: [0.0, 0.0, 0.0],
+			arc: [0.0, 0.0, 0.0],
+			arcIncr: [TWO_PI / 70.0, 0.0, TWO_PI / 140.0],
+			r: 255, g: 255, b: 255, on: true
+		}
+	];
+
+	function InitLights() {
+		GLC.lightModelAmbient(modelAmb);
+		// GL_LIGHT_MODEL_LOCAL_VIEWER = true, GL_LIGHT_MODEL_TWO_SIDE = false
+		// are both baked into the shader.
+
+		GLC.materialAmbient(matAmb);
+		GLC.materialDiffuse(matDiff);
+		GLC.materialSpecular(matSpec);
+		GLC.materialEmission(matEmission);
+		GLC.materialShininess(10.0);
+		GLC.enable('colorMaterial'); // GL_FRONT, GL_AMBIENT_AND_DIFFUSE
+
+		for (var k = 0; k < NUM_LIGHTS; ++k) {
+			var light = spots[k];
+
+			if (light.on) GLC.enableLight(k);
+			else GLC.disableLight(k);
+
+			GLC.lightAmbient(k, light.amb);
+			GLC.lightDiffuse(k, light.diff);
+			GLC.lightSpecular(k, light.spec);
+
+			GLC.lightSpotExponent(k, light.spotExp);
+			GLC.lightSpotCutoff(k, light.spotCutoff);
+			GLC.lightAttenuation(k, light.atten[0], light.atten[1], light.atten[2]);
+		}
+	}
+
+	// Position and spot direction are snapshot in eye space here, so where this
+	// is called from decides what the light is attached to.
+	function SetSpecificLight(k) {
+		var light = spots[k];
+
+		GLC.pushMatrix();
+		GLC.translatef(light.trans[0], light.trans[1], light.trans[2]);
+
+		GLC.rotatef(light.rot[0], 1, 0, 0);
+		GLC.rotatef(light.rot[1], 0, 1, 0);
+		GLC.rotatef(light.rot[2], 0, 0, 1);
+
+		GLC.lightPosition(k, light.pos);
+		GLC.lightSpotDirection(k, light.spotDir);
+		GLC.popMatrix();
+	}
+
+	function DrawSpecificLight(k) {
+		var light = spots[k];
+
+		GLC.color4fv(light.diff);
+
+		GLC.pushMatrix();
+		GLC.translatef(light.trans[0], light.trans[1], light.trans[2]);
+
+		GLC.rotatef(light.rot[0], 1, 0, 0);
+		GLC.rotatef(light.rot[1], 0, 1, 0);
+		GLC.rotatef(light.rot[2], 0, 0, 1);
+
+		GLC.begin(GLC.GL_LINES);
+		GLC.vertex3f(light.pos[0], light.pos[1], light.pos[2]);
+		GLC.vertex3f(light.spotDir[0], light.spotDir[1], light.spotDir[2]);
+		GLC.end();
+		GLC.popMatrix();
+	}
+
+	function SynchLights(light_no, onoff, light_property_array) {
+		light_no = light_no - 1;
+
+		if (!(0 <= light_no && light_no < NUM_LIGHTS)) {
+			return;
+		}
+
+		var light = spots[light_no];
+
+		if (onoff) {
+			light.on = true;
+			GLC.enableLight(light_no);
+		} else {
+			light.on = false;
+			GLC.disableLight(light_no);
+		}
+
+		light.r = light_property_array[0];
+		light.g = light_property_array[1];
+		light.b = light_property_array[2];
+
+		var factor = (light_no === 0) ? [0.4, 0.6, 0.1] : [0.2, 0.8, 0.4];
+
+		light.amb[0] = light.r / 255.0 * factor[0];
+		light.amb[1] = light.g / 255.0 * factor[0];
+		light.amb[2] = light.b / 255.0 * factor[0];
+
+		light.diff[0] = light.r / 255.0 * factor[1];
+		light.diff[1] = light.g / 255.0 * factor[1];
+		light.diff[2] = light.b / 255.0 * factor[1];
+
+		light.spec[0] = light.r / 255.0 * factor[2];
+		light.spec[1] = light.g / 255.0 * factor[2];
+		light.spec[2] = light.b / 255.0 * factor[2];
+
+		light.spotCutoff = light_property_array[3];
+
+		// As in light.cpp, the new colours stay in the struct and are never
+		// handed to GL, so only the on/off switch above has a visible effect.
+		// (HW3_20042081.txt: "control colors : not implemented" - and the
+		// simple menu has no colour buttons to begin with. Pushing them would
+		// also blow out light 0, because these factors do not reproduce its
+		// initial ambient/diffuse.)
+	}
+
+	function GetLightValue() {
+		return { light_max: NUM_LIGHTS, light: spots };
+	}
+
+	return {
+		NUM_LIGHTS: NUM_LIGHTS,
+		InitLights: InitLights,
+		SetSpecificLight: SetSpecificLight,
+		DrawSpecificLight: DrawSpecificLight,
+		SynchLights: SynchLights,
+		GetLightValue: GetLightValue
+	};
+})();
+
+</script>
+<script>
+// part.js - port of src/part.{h,cpp}
+//
+// One node of the robot's part hierarchy. A part owns its local translation,
+// a rotation around an offset axis point, and a list of sub parts that inherit
+// its matrix.
+
+var GameLogic = GameLogic || {};
+
+(function (ns) {
+	'use strict';
+
+	var Vertex = LinearAlgebra.Vertex;
+
+	// PartType
+	ns.PART_TYPE_NONE = 0;
+	ns.PART_TYPE_HEAD = 1;
+	ns.PART_TYPE_TORSO = 2;
+	ns.PART_TYPE_BREAST = 3;
+	ns.PART_TYPE_ARM = 4;
+	ns.PART_TYPE_UPPER_ARM = 5;
+	ns.PART_TYPE_FORE_ARM = 6;
+	ns.PART_TYPE_LEG = 7;
+	ns.PART_TYPE_THIGH = 8;
+	ns.PART_TYPE_CALF = 9;
+	ns.PART_TYPE_FOOT = 10;
+	ns.PART_TYPE_HIP = 11;
+	ns.PART_TYPE_END = 12;
+
+	// PartCmd
+	ns.PART_CMD_MOVE_DEFAULT = 0;
+	ns.PART_CMD_MOVE_FORWARD = 1;
+	ns.PART_CMD_MOVE_BACKWARD = 2;
+	ns.PART_CMD_TURN_LEFT = 3;
+	ns.PART_CMD_TURN_RIGHT = 4;
+	ns.PART_CMD_TILT_LEFT = 5;
+	ns.PART_CMD_TILT_RIGHT = 6;
+	ns.PART_CMD_AIM = 7;
+
+	// PartSide
+	ns.PART_SIDE_CENTER = 0;
+	ns.PART_SIDE_LEFT = 1;
+	ns.PART_SIDE_RIGHT = 2;
+
+	var SWING_UNIT_ARM = 5.0;
+	var SWING_UNIT_LEG = 2.0;
+	var SWING_MAX_ARM = 50.0;
+	var SWING_MAX_LEG = 20.0;
+
+	function Part(partType, name1, numTriangles, triangles, partSide) {
+		this.partType = partType;
+		this.name = String(name1).substring(0, 31);
+		this.numTriangles = numTriangles;
+		this.triangles = triangles;
+		this.partSide = partSide;
+		this.subPartList = [];
+
+		this.v_xyz = new Vertex();
+		this.v_rot = new Vertex();
+		this.v_rot_axis = new Vertex();
+
+		this.rot_angle = 0.0;
+		this.rot_velocity = 0.0;
+		this.partCmd = ns.PART_CMD_MOVE_DEFAULT;
+
+		switch (partType) {
+			case ns.PART_TYPE_ARM:
+				this.SetRotAxis(0.0, 0.6, 0.0);
+				break;
+			case ns.PART_TYPE_FORE_ARM:
+				this.SetXyz(0.0, -2.0, 0.0);
+				this.SetRot(0.0, 1.0, 0.0, 0.0);
+				this.SetRotAxis(0.0, -0.9, 0.0);
+				break;
+			case ns.PART_TYPE_CALF:
+				this.SetRotAxis(0.0, 2.0, 0.0);
+				break;
+			default:
+				this.SetRotAxis(0.0, 0.0, 0.0);
+				break;
+		}
+	}
+
+	Part.prototype.AddSubPart = function (p) {
+		if (!p) return;
+
+		this.subPartList.push(p);
+
+		switch (p.GetPartType()) {
+			case ns.PART_TYPE_FORE_ARM:
+				p.SetXyz(0.0, -1.2, 0.0);
+				break;
+			case ns.PART_TYPE_CALF:
+				p.SetXyz(0.0, -0.80, 0.0);
+				break;
+			case ns.PART_TYPE_FOOT:
+				p.SetXyz(0.0, -0.35, 0.0);
+				break;
+			default:
+				break;
+		}
+	};
+
+	Part.prototype.Draw = function () {
+		GLC.translatef(this.v_rot_axis.p[0], this.v_rot_axis.p[1], this.v_rot_axis.p[2]);
+		DrawManager.Rotate(this.rot_angle, this.v_rot);
+		GLC.translatef(-this.v_rot_axis.p[0], -this.v_rot_axis.p[1], -this.v_rot_axis.p[2]);
+		DrawManager.Translate(this.v_xyz);
+
+		if (this.numTriangles === 0) {
+			GLC.pushMatrix();
+			DrawManager.DrawPart(this.partType, this.partSide);
+			GLC.popMatrix();
+		} else {
+			// Never taken: LoadGeometry() zeroes every triangle count, the
+			// robot is built entirely from the cubes in draw_manager.
+			GLC.begin(GLC.GL_TRIANGLES);
+			for (var i = 0; i < this.numTriangles; ++i) {
+				GLC.vertex3fv(this.triangles[i].v[0].p);
+				GLC.vertex3fv(this.triangles[i].v[1].p);
+				GLC.vertex3fv(this.triangles[i].v[2].p);
+			}
+			GLC.end();
+		}
+
+		for (var k = 0; k < this.subPartList.length; ++k) {
+			GLC.pushMatrix();
+			this.subPartList[k].Draw();
+			GLC.popMatrix();
+		}
+	};
+
+	Part.prototype.Command = function (command) {
+		this.partCmd = command;
+
+		switch (this.partCmd) {
+			case ns.PART_CMD_MOVE_DEFAULT:
+				this.rot_velocity = 0.0;
+				if (this.partType === ns.PART_TYPE_FORE_ARM) this.SetRot(0.0, 1.0, 0.0, 0.0);
+				if (this.partType === ns.PART_TYPE_TORSO) this.SetRot(0.0, 1.0, 0.0, 0.0);
+				break;
+
+			case ns.PART_CMD_MOVE_FORWARD:
+				if (this.rot_velocity < 0.001 && this.rot_velocity > -0.001) {
+					if ((this.partSide === ns.PART_SIDE_LEFT && this.partType === ns.PART_TYPE_ARM) ||
+						(this.partSide === ns.PART_SIDE_RIGHT && this.partType === ns.PART_TYPE_LEG)) {
+						this.rot_velocity = -1.0;
+					} else {
+						this.rot_velocity = 1.0;
+					}
+				}
+
+				if (this.partType === ns.PART_TYPE_FORE_ARM) {
+					if (this.rot_angle < -90.0) this.rot_angle = -90.0;
+					else this.rot_angle -= 10.0;
+
+					this.v_rot.p[0] = 1.0;
+					this.v_rot.p[1] = 0.0;
+					this.v_rot.p[2] = 0.0;
+				}
+				break;
+
+			case ns.PART_CMD_MOVE_BACKWARD:
+				if (this.rot_velocity < 0.001 && this.rot_velocity > -0.001) {
+					if (this.partSide === ns.PART_SIDE_LEFT) this.rot_velocity = 1.0;
+					else this.rot_velocity = -1.0;
+				}
+				if (this.partType === ns.PART_TYPE_FORE_ARM) {
+					if (this.rot_angle < -30.0) this.rot_angle = -30.0;
+					else this.rot_angle -= 10.0;
+
+					this.v_rot.p[0] = 1.0;
+					this.v_rot.p[1] = 0.0;
+					this.v_rot.p[2] = 0.0;
+				}
+				break;
+
+			case ns.PART_CMD_TILT_LEFT:
+				if (this.partType === ns.PART_TYPE_TORSO) this.SetRot(15.0, 0.0, 1.0, -1.0);
+				break;
+
+			case ns.PART_CMD_TILT_RIGHT:
+				if (this.partType === ns.PART_TYPE_TORSO) this.SetRot(15.0, 0.0, -1.0, 1.0);
+				break;
+
+			case ns.PART_CMD_AIM:
+				if (this.partType === ns.PART_TYPE_ARM) this.SetRot(-85.0, 30.0, 0.0, 0.0);
+				else if (this.partType === ns.PART_TYPE_FORE_ARM) this.SetRot(0.0, 0.0, 0.0, 0.0);
+				break;
+
+			default:
+				break;
+		}
+
+		for (var i = 0; i < this.subPartList.length; ++i) {
+			this.subPartList[i].Command(command);
+		}
+	};
+
+	Part.prototype.GetPartType = function () { return this.partType; };
+
+	Part.prototype.Move = function () {
+		var swing_unit = 0.0;
+		var swing_max = 0.0;
+
+		if (this.partType === ns.PART_TYPE_ARM) {
+			swing_unit = SWING_UNIT_ARM;
+			swing_max = SWING_MAX_ARM;
+		} else if (this.partType === ns.PART_TYPE_LEG || this.partType === ns.PART_TYPE_CALF) {
+			swing_unit = SWING_UNIT_LEG;
+			swing_max = SWING_MAX_LEG;
+		}
+
+		switch (this.partType) {
+			case ns.PART_TYPE_ARM:
+			case ns.PART_TYPE_LEG:
+				if (this.rot_velocity > 0.01) {
+					this.rot_angle += swing_unit;
+					if (this.rot_angle >= swing_max) {
+						this.rot_angle = swing_max;
+						this.rot_velocity = -1.0;
+					}
+				} else if (this.rot_velocity < -0.01) {
+					this.rot_angle -= swing_unit;
+					if (this.rot_angle <= -swing_max) {
+						this.rot_angle = -swing_max;
+						this.rot_velocity = +1.0;
+					}
+				} else {
+					// swing back to the rest pose
+					if (this.rot_angle > 0.01) this.rot_angle -= (swing_unit / 2);
+					else if (this.rot_angle < -0.01) this.rot_angle += (swing_unit / 2);
+
+					if (-swing_unit / 2 <= this.rot_angle && this.rot_angle <= swing_unit / 2) {
+						this.rot_angle = 0.0;
+						this.rot_velocity = 0.0;
+					}
+				}
+				break;
+
+			default:
+				break;
+		}
+
+		for (var i = 0; i < this.subPartList.length; ++i) {
+			this.subPartList[i].Move();
+		}
+	};
+
+	Part.prototype.SetXyz = function (x, y, z) {
+		this.v_xyz.p[0] = x;
+		this.v_xyz.p[1] = y;
+		this.v_xyz.p[2] = z;
+	};
+
+	Part.prototype.SetRotAxis = function (x, y, z) {
+		this.v_rot_axis.p[0] = x;
+		this.v_rot_axis.p[1] = y;
+		this.v_rot_axis.p[2] = z;
+	};
+
+	Part.prototype.SetRot = function (angle, x, y, z) {
+		this.v_rot.p[0] = x;
+		this.v_rot.p[1] = y;
+		this.v_rot.p[2] = z;
+		this.rot_angle = angle;
+	};
+
+	ns.Part = Part;
+})(GameLogic);
+
+</script>
+<script>
+// part_factory.js - port of src/part_factory.{h,cpp}
+
+var GameLogic = GameLogic || {};
+
+(function (ns) {
+	'use strict';
+
+	var g_partNames = [
+		'NONE', 'HEAD', 'TORSO', 'BREAST', 'ARM', 'UP_ARM', 'FOREARM',
+		'LEG', 'THIGH', 'CALF', 'FOOT', 'HIP'
+	];
+
+	// Both stay empty: every part is drawn as a scaled cube by draw_manager,
+	// the triangle-soup path was never filled in.
+	var g_partNumTriangles = [];
+	var g_partTriangles = [];
+
+	function LoadGeometry() {
+		for (var i = 0; i < ns.PART_TYPE_END; ++i) {
+			g_partNumTriangles[i] = 0;
+			g_partTriangles[i] = null;
+		}
+	}
+
+	// FIXME (from the original): assume that every part has only one sub part.
+	function GetSubPartType(parent) {
+		switch (parent) {
+			case ns.PART_TYPE_ARM: return ns.PART_TYPE_FORE_ARM;
+			case ns.PART_TYPE_LEG: return ns.PART_TYPE_CALF;
+			case ns.PART_TYPE_CALF: return ns.PART_TYPE_FOOT;
+			default: break;
+		}
+		return ns.PART_TYPE_NONE;
+	}
+
+	function PartFactory() {
+		this.partList = [];
+	}
+
+	PartFactory.prototype.MakePart = function (partType, partSide) {
+		if (partType <= ns.PART_TYPE_NONE || partType >= ns.PART_TYPE_END) return null;
+
+		var p = new ns.Part(
+			partType,
+			g_partNames[partType],
+			g_partNumTriangles[partType] || 0,
+			g_partTriangles[partType],
+			partSide
+		);
+
+		this.partList.push(p);
+
+		var subPartType = GetSubPartType(partType);
+		if (subPartType !== ns.PART_TYPE_NONE) {
+			p.AddSubPart(this.MakePart(subPartType, partSide));
+		}
+
+		return p;
+	};
+
+	ns.PartFactory = PartFactory;
+	ns.g_PartFactory = new PartFactory();
+	ns.LoadGeometry = LoadGeometry;
+})(GameLogic);
+
+</script>
+<script>
+// draw_manager.js - port of src/draw_manager.{h,cpp}
+//
+// Everything is built from one unit cube, scaled per body part, plus the
+// floor / two walls of the room.
+
+var DrawManager = (function () {
+	'use strict';
+
+	var g_TexturesArray = [null];
+	var state = {
+		alcohol: false,
+		robot_id: 0
+	};
+
+	function Initialize(faceImage) {
+		// tga.cpp did this with gluBuild2DMipmaps on yuria.tga
+		if (faceImage) g_TexturesArray[0] = GLC.createTexture(faceImage, true, true);
+	}
+
+	function Destroy() {
+	}
+
+	function Translate(v) {
+		GLC.translatef(v.p[0], v.p[1], v.p[2]);
+	}
+
+	function Rotate(angle, v) {
+		GLC.rotatef(angle, v.p[0], v.p[1], v.p[2]);
+	}
+
+	function DrawHead() {
+		// Front Face - the textured one. In draw_manager.cpp the
+		// glBindTexture call was commented out, so the face texture never
+		// actually showed up; bound here so it does. Split into its own
+		// begin/end because the other five faces are untextured.
+		GLC.bindTexture(g_TexturesArray[0]);
+		GLC.begin(GLC.GL_QUADS);
+		if (state.alcohol && state.robot_id === 1) {
+			GLC.color3f(0.5, 0.0, 0.0);
+		} else {
+			GLC.color3f(1.0, 1.0, 1.0);
+		}
+		GLC.normal3f(0.0, 0.0, 1.0);
+		GLC.texCoord2f(0.0, 0.0); GLC.vertex3f(-1.0, -1.0, 1.0);
+		GLC.texCoord2f(1.0, 0.0); GLC.vertex3f(1.0, -1.0, 1.0);
+		GLC.texCoord2f(1.0, 1.0); GLC.vertex3f(1.0, 1.0, 1.0);
+		GLC.texCoord2f(0.0, 1.0); GLC.vertex3f(-1.0, 1.0, 1.0);
+		GLC.end();
+		GLC.bindTexture(null);
+
+		GLC.begin(GLC.GL_QUADS);
+		if (state.alcohol && state.robot_id === 1) {
+			GLC.color3f(0.5, 0.0, 0.0);
+		} else {
+			GLC.color3f(1.0, 0.0, 0.0);
+		}
+		// Back Face
+		GLC.normal3f(0.0, 0.0, -1.0);
+		GLC.vertex3f(-1.0, -1.0, -1.0);
+		GLC.vertex3f(-1.0, 1.0, -1.0);
+		GLC.vertex3f(1.0, 1.0, -1.0);
+		GLC.vertex3f(1.0, -1.0, -1.0);
+		// Top Face
+		GLC.normal3f(0.0, 1.0, 0.0);
+		GLC.vertex3f(-1.0, 1.0, -1.0);
+		GLC.vertex3f(-1.0, 1.0, 1.0);
+		GLC.vertex3f(1.0, 1.0, 1.0);
+		GLC.vertex3f(1.0, 1.0, -1.0);
+		// Bottom Face
+		GLC.normal3f(0.0, -1.0, 0.0);
+		GLC.vertex3f(-1.0, -1.0, -1.0);
+		GLC.vertex3f(1.0, -1.0, -1.0);
+		GLC.vertex3f(1.0, -1.0, 1.0);
+		GLC.vertex3f(-1.0, -1.0, 1.0);
+		// Right face
+		GLC.normal3f(1.0, 0.0, 0.0);
+		GLC.vertex3f(1.0, -1.0, -1.0);
+		GLC.vertex3f(1.0, 1.0, -1.0);
+		GLC.vertex3f(1.0, 1.0, 1.0);
+		GLC.vertex3f(1.0, -1.0, 1.0);
+		// Left Face
+		GLC.normal3f(-1.0, 0.0, 0.0);
+		GLC.vertex3f(-1.0, -1.0, -1.0);
+		GLC.vertex3f(-1.0, -1.0, 1.0);
+		GLC.vertex3f(-1.0, 1.0, 1.0);
+		GLC.vertex3f(-1.0, 1.0, -1.0);
+		GLC.end();
+	}
+
+	function DrawCube() {
+		GLC.begin(GLC.GL_QUADS);
+		// Front Face
+		GLC.normal3f(0.0, 0.0, 1.0);
+		GLC.vertex3f(-1.0, -1.0, 1.0);
+		GLC.vertex3f(1.0, -1.0, 1.0);
+		GLC.vertex3f(1.0, 1.0, 1.0);
+		GLC.vertex3f(-1.0, 1.0, 1.0);
+		// Back Face
+		GLC.normal3f(0.0, 0.0, -1.0);
+		GLC.vertex3f(-1.0, -1.0, -1.0);
+		GLC.vertex3f(-1.0, 1.0, -1.0);
+		GLC.vertex3f(1.0, 1.0, -1.0);
+		GLC.vertex3f(1.0, -1.0, -1.0);
+		// Top Face
+		GLC.normal3f(0.0, 1.0, 0.0);
+		GLC.vertex3f(-1.0, 1.0, -1.0);
+		GLC.vertex3f(-1.0, 1.0, 1.0);
+		GLC.vertex3f(1.0, 1.0, 1.0);
+		GLC.vertex3f(1.0, 1.0, -1.0);
+		// Bottom Face
+		GLC.normal3f(0.0, -1.0, 0.0);
+		GLC.vertex3f(-1.0, -1.0, -1.0);
+		GLC.vertex3f(1.0, -1.0, -1.0);
+		GLC.vertex3f(1.0, -1.0, 1.0);
+		GLC.vertex3f(-1.0, -1.0, 1.0);
+		// Right face
+		GLC.normal3f(1.0, 0.0, 0.0);
+		GLC.vertex3f(1.0, -1.0, -1.0);
+		GLC.vertex3f(1.0, 1.0, -1.0);
+		GLC.vertex3f(1.0, 1.0, 1.0);
+		GLC.vertex3f(1.0, -1.0, 1.0);
+		// Left Face
+		GLC.normal3f(-1.0, 0.0, 0.0);
+		GLC.vertex3f(-1.0, -1.0, -1.0);
+		GLC.vertex3f(-1.0, -1.0, 1.0);
+		GLC.vertex3f(-1.0, 1.0, 1.0);
+		GLC.vertex3f(-1.0, 1.0, -1.0);
+		GLC.end();
+	}
+
+	function DrawPart(part, side) {
+		var G = GameLogic;
+
+		switch (part) {
+			case G.PART_TYPE_HEAD:
+				GLC.pushMatrix();
+				GLC.scalef(0.5, 0.4, 0.5);
+				if (state.alcohol && state.robot_id === 1) {
+					GLC.color3f(0.5, 0.0, 0.0);
+				} else {
+					GLC.color3f(1.0, 0.0, 0.0);
+				}
+				DrawHead();
+				GLC.popMatrix();
+				break;
+
+			case G.PART_TYPE_TORSO:
+				if (state.robot_id === 1) GLC.color3f(0.0, 1.0, 0.0);
+				else GLC.color3f(0.0, 1.0, 1.0);
+				GLC.scalef(1.0, 0.5, 0.6);
+				GLC.translatef(0.0, 0.5, 0.0);
+				DrawCube();
+				break;
+
+			case G.PART_TYPE_ARM:
+				GLC.color3f(0.0, 0.5, 1.0);
+				GLC.scalef(0.2, 0.3, 0.2);
+				GLC.translatef(0.0, -2.0, 0.0);
+				DrawCube();
+				break;
+
+			case G.PART_TYPE_LEG:
+				GLC.color3f(0.2, 0.3, 1.0);
+				GLC.scalef(0.35, 0.3, 0.5);
+				GLC.translatef(0.0, -1.0, 0.0);
+				DrawCube();
+				break;
+
+			case G.PART_TYPE_CALF:
+				GLC.color3f(1.0, 0.0, 0.0);
+				GLC.scalef(0.4, 0.3, 0.4);
+				DrawCube();
+				break;
+
+			case G.PART_TYPE_FOOT:
+				GLC.color3f(0.0, 1.0, 0.0);
+				GLC.scalef(0.42, 0.1, 0.6);
+				DrawCube();
+				break;
+
+			case G.PART_TYPE_FORE_ARM:
+				GLC.color3f(1.0, 1.0, 0.0);
+				GLC.scalef(0.18, 0.5, 0.18);
+				GLC.translatef(0.0, -0.3, 0.0);
+				DrawCube();
+				// the lanterns ride along with the player robot's forearms
+				if (side === G.PART_SIDE_LEFT && state.robot_id === 1) {
+					Light.SetSpecificLight(2);
+					Light.DrawSpecificLight(2);
+				} else if (state.robot_id === 1) {
+					Light.SetSpecificLight(3);
+					Light.DrawSpecificLight(3);
+				}
+				break;
+
+			default:
+				break;
+		}
+	}
+
+	function DrawRoom() {
+		var i, j;
+
+		// floor
+		for (i = -20; i <= 20; ++i) {
+			GLC.begin(GLC.GL_QUAD_STRIP);
+			GLC.color3f(1.0, 1.0, 1.0);
+			GLC.normal3f(0.0, 1.0, 0.0);
+
+			for (j = -20; j <= 20; ++j) {
+				GLC.vertex3f((i + 1) * 0.5, 0.0, j * 0.5);
+				GLC.vertex3f(i * 0.5, 0.0, j * 0.5);
+			}
+			GLC.end();
+		}
+
+		// grid lines on the floor
+		for (i = -10; i <= 10; ++i) {
+			GLC.begin(GLC.GL_LINES);
+			GLC.color3f(0.1, 0.1, 0.1);
+			GLC.vertex3f(i * 1.0, 0.01, -10.0);
+			GLC.vertex3f(i * 1.0, 0.01, 10.0);
+			GLC.end();
+
+			GLC.begin(GLC.GL_LINES);
+			GLC.color3f(0.1, 0.1, 0.1);
+			GLC.vertex3f(-10.0, 0.01, i * 1.0);
+			GLC.vertex3f(10.0, 0.01, i * 1.0);
+			GLC.end();
+		}
+
+		// wall 1
+		for (i = 0; i <= 20; ++i) {
+			GLC.begin(GLC.GL_QUAD_STRIP);
+			GLC.color3f(1.0, 0.9, 1.0);
+			GLC.normal3f(1.0, 0.0, 0.0);
+
+			for (j = -20; j <= 20; ++j) {
+				GLC.vertex3f(-10.0, i * 0.5, j * 0.5);
+				GLC.vertex3f(-10.0, (i + 1) * 0.5, j * 0.5);
+			}
+			GLC.end();
+		}
+
+		// wall 2
+		for (i = -20; i <= 20; ++i) {
+			GLC.begin(GLC.GL_QUAD_STRIP);
+			GLC.color3f(1.0, 1.0, 0.9);
+			GLC.normal3f(0.0, 0.0, 1.0);
+
+			for (j = 0; j <= 21; ++j) {
+				GLC.vertex3f(i * 0.5, j * 0.5, -10.0);
+				GLC.vertex3f((i + 1) * 0.5, j * 0.5, -10.0);
+			}
+			GLC.end();
+		}
+	}
+
+	return {
+		state: state,
+		Initialize: Initialize,
+		Destroy: Destroy,
+		Translate: Translate,
+		Rotate: Rotate,
+		DrawPart: DrawPart,
+		DrawRoom: DrawRoom
+	};
+})();
+
+</script>
+<script>
+// robot.js - port of src/robot.{h,cpp}
+
+var GameLogic = GameLogic || {};
+
+(function (ns) {
+	'use strict';
+
+	var Vertex = LinearAlgebra.Vertex;
+
+	// file-static in robot.cpp, so shared by every robot
+	var ai_move_to = 0;
+	var ai_turn_to = 0;
+	var ai_frame = 0;
+
+	var user_light_left = 1;
+	var user_light_right = 1;
+
+	function Robot(id) {
+		var f = ns.g_PartFactory;
+
+		this.id = id;
+		this.head = f.MakePart(ns.PART_TYPE_HEAD, ns.PART_SIDE_CENTER);
+		this.body = f.MakePart(ns.PART_TYPE_TORSO, ns.PART_SIDE_CENTER);
+		this.arm0 = f.MakePart(ns.PART_TYPE_ARM, ns.PART_SIDE_LEFT);
+		this.arm1 = f.MakePart(ns.PART_TYPE_ARM, ns.PART_SIDE_RIGHT);
+		this.leg0 = f.MakePart(ns.PART_TYPE_LEG, ns.PART_SIDE_LEFT);
+		this.leg1 = f.MakePart(ns.PART_TYPE_LEG, ns.PART_SIDE_RIGHT);
+
+		this.head.SetXyz(0.0, 1.2, 0.0);
+		this.arm0.SetXyz(1.2, 1.0, 0.0);
+		this.arm1.SetXyz(-1.2, 1.0, 0.0);
+		this.leg0.SetXyz(0.6, -0.2, 0.0);
+		this.leg1.SetXyz(-0.6, -0.2, 0.0);
+
+		this.arm0.SetRot(0.0, 1.0, 0.0, 0.0);
+		this.arm1.SetRot(0.0, 1.0, 0.0, 0.0);
+		this.leg0.SetRot(0.0, 1.0, 0.0, 0.0);
+		this.leg1.SetRot(0.0, 1.0, 0.0, 0.0);
+
+		this.body.AddSubPart(this.head);
+		this.body.AddSubPart(this.arm0);
+		this.body.AddSubPart(this.arm1);
+		this.body.AddSubPart(this.leg0);
+		this.body.AddSubPart(this.leg1);
+
+		this.v_xyz = new Vertex(0.0, 0.0, 0.0);
+		this.v_rot = new Vertex(0.0, 1.0, 0.0);
+
+		this.rot_angle = 0.0;
+		this.vel_move = 0.0;
+		this.vel_turn = 0.0;
+
+		this.alcohol = false;
+		this.arm_aim = [0, 0];
+	}
+
+	Robot.prototype.Move = function (velocity) { this.vel_move = velocity; };
+	Robot.prototype.Turn = function (velocity) { this.vel_turn = velocity; };
+
+	Robot.prototype.SetXyz = function (x, y, z) {
+		this.v_xyz.p[0] = x; this.v_xyz.p[1] = y; this.v_xyz.p[2] = z;
+	};
+
+	Robot.prototype.Draw = function () {
+		DrawManager.Translate(this.v_xyz);
+		DrawManager.Rotate(this.rot_angle, this.v_rot);
+
+		GLC.pushMatrix();
+		DrawManager.state.robot_id = this.id;
+		this.body.Draw();
+		GLC.popMatrix();
+		DrawManager.state.robot_id = 0;
+	};
+
+	Robot.prototype.DrinkAlcohol = function () {
+		this.alcohol = !this.alcohol;
+		DrawManager.state.alcohol = this.alcohol;
+	};
+
+	Robot.prototype.PerFrame = function () {
+		// Process Rotation
+		this.rot_angle += this.vel_turn;
+
+		if (this.rot_angle < 0.0) this.rot_angle += 360.0;
+		else if (this.rot_angle >= 360.0) this.rot_angle -= 360.0;
+
+		// move when the feet are on the ground
+		if (this.leg0.rot_angle <= 15.0 && this.leg0.rot_angle >= -15.0) {
+			var x_next = this.v_xyz.p[0] + (this.vel_move * Math.sin(this.rot_angle / 180.0 * Math.PI));
+			var z_next = this.v_xyz.p[2] + (this.vel_move * Math.cos(this.rot_angle / 180.0 * Math.PI));
+
+			var collision = CollisionManager.CheckAndSet(this.id, x_next, z_next);
+
+			if (collision === 2 || collision === 1) {
+				this.v_xyz.p[0] = x_next;
+				this.v_xyz.p[2] = z_next;
+			} else {
+				if (this.id === 2) ai_move_to = -ai_move_to;
+			}
+
+			// close to something: blink the lanterns like a warning light
+			if (collision === 0 || collision === 1) {
+				if (this.id === 1) {
+					user_light_left = 0;
+					user_light_right = 0;
+
+					if (Math.floor(ai_frame / 10) % 2 === 0) {
+						GLC.enableLight(2);
+						GLC.disableLight(3);
+					} else {
+						GLC.enableLight(3);
+						GLC.disableLight(2);
+					}
+				}
+			} else {
+				if (this.id === 1) {
+					user_light_left = 1;
+					user_light_right = 1;
+
+					GLC.enableLight(3);
+					GLC.enableLight(2);
+				}
+			}
+		}
+
+		if (this.alcohol) {
+			if (this.leg0.rot_angle > 1.0) {
+				this.body.Command(ns.PART_CMD_TILT_LEFT);
+			} else if (this.leg1.rot_angle > 1.0) {
+				this.body.Command(ns.PART_CMD_TILT_RIGHT);
+			}
+		}
+
+		if (this.vel_move > 0.01) {
+			this.body.Command(ns.PART_CMD_MOVE_FORWARD);
+		} else if (this.vel_move < -0.01) {
+			this.body.Command(ns.PART_CMD_MOVE_BACKWARD);
+		} else {
+			this.body.Command(ns.PART_CMD_MOVE_DEFAULT);
+		}
+
+		if (this.vel_turn > 0.01) {
+			this.body.Command(ns.PART_CMD_TURN_LEFT);
+		} else if (this.vel_turn < -0.01) {
+			this.body.Command(ns.PART_CMD_TURN_RIGHT);
+		}
+
+		this.vel_turn = 0.0;
+		this.vel_move = 0.0;
+
+		this.body.Move();
+
+		if (this.arm_aim[0]) this.arm0.Command(ns.PART_CMD_AIM);
+		if (this.arm_aim[1]) this.arm1.Command(ns.PART_CMD_AIM);
+	};
+
+	// the second robot wanders around on its own, permanently drunk
+	Robot.prototype.MoveSelf = function () {
+		this.alcohol = true;
+
+		if (ai_frame % 120 === 0) {
+			switch (Math.floor(ai_frame / 120) % 5) {
+				case 0: ai_turn_to = 2.0; ai_move_to = 0.2; break;
+				case 1: ai_turn_to = 0.0; ai_move_to = 0.2; break;
+				case 2: ai_turn_to = -2.0; ai_move_to = 0.2; break;
+				case 3: ai_turn_to = 0.0; ai_move_to = -0.2; break;
+				case 4: ai_turn_to = 2.0; ai_move_to = -0.2; break;
+			}
+		}
+
+		this.Move(ai_move_to);
+		this.Turn(ai_turn_to);
+
+		ai_frame++;
+	};
+
+	ns.Robot = Robot;
+})(GameLogic);
+
+</script>
+<script>
+// menu.js - port of src/menu.{h,cpp}
+//
+// The original blitted menu.bmp straight onto the screen surface with
+// SDL_OPENGLBLIT, a mode that only ever existed in SDL 1.2. Here the same
+// sprite sheet is drawn as textured quads in an orthographic pass over the
+// scene; every rectangle and all of the button logic is unchanged.
+
+var Menu = (function () {
+	'use strict';
+
+	var SIMPLE_MENU = 1;
+
+	var SRC = 0;
+	var DST = 1;
+
+	var N_WIDTH = 10;
+	var N_HEIGHT = 20;
+
+	var MAX_BUTTONS = SIMPLE_MENU ? 4 : 12;
+	var MAX_DISP_NO = SIMPLE_MENU ? 1 : 5;
+
+	var SCREEN_W = 640;
+	var SCREEN_H = 480;
+
+	function Button() {
+		this.tx = 0; this.ty = 0; this.bx = 0; this.by = 0;
+		this.id = 0; this.state = 0; this.shape = 0;
+	}
+	Button.prototype.SetValue = function (tx, ty, bx, by) {
+		this.tx = tx; this.ty = ty; this.bx = bx; this.by = by;
+	};
+
+	var BTN_OFF = 0, BTN_ON = 1;
+	var BTN_SHAPE_OFF = 0, BTN_SHAPE_ON = 1, BTN_SHAPE_UP = 2, BTN_SHAPE_DN = 3;
+
+	var btns = [];
+	var rect = [];   // rect[i][SRC|DST] = {x, y, w, h}
+	for (var r = 0; r < 19; ++r) rect.push([{ x: 0, y: 0, w: 0, h: 0 }, { x: 0, y: 0, w: 0, h: 0 }]);
+
+	var disp_on = true;
+
+	var disp_number = [1, 0, 0, 0, 0];
+	var disp_number_min = [1, 0, 0, 0, 0];
+	var disp_number_max = SIMPLE_MENU ? [2, 255, 255, 255, 90] : [4, 255, 255, 255, 90];
+	var disp_number_small = [0, 0, 0, 0, 0];
+
+	var disp_number_rect = [
+		{ x: 118, y: 8, w: N_WIDTH, h: N_HEIGHT },
+		{ x: 29, y: 83, w: N_WIDTH, h: N_HEIGHT },
+		{ x: 100, y: 83, w: N_WIDTH, h: N_HEIGHT },
+		{ x: 167, y: 83, w: N_WIDTH, h: N_HEIGHT },
+		{ x: 95, y: 122, w: N_WIDTH, h: N_HEIGHT }
+	];
+
+	var menu_tex = null;
+	var menu_w = 231;
+	var menu_h = 256;
+
+	function Initialize(menuImage) {
+		var i;
+
+		if (!menuImage) {
+			console.log('Cannot load menu.bmp');
+			return;
+		}
+		menu_w = menuImage.width;
+		menu_h = menuImage.height;
+		// SDL_SetColorKey(magenta) is already baked into the PNG's alpha
+		menu_tex = GLC.createTexture(menuImage, false, true, false);
+
+		for (i = 0; i < 10; ++i) {
+			rect[i][SRC].x = i * 22 + 6;
+			rect[i][SRC].y = 174;
+			rect[i][SRC].w = N_WIDTH;
+			rect[i][SRC].h = N_HEIGHT;
+		}
+
+		// Menu Panel
+		var panelH = SIMPLE_MENU ? 80 : 155;
+		rect[10][SRC].x = 0;
+		rect[10][SRC].y = 0;
+		rect[10][SRC].w = menu_w;
+		rect[10][SRC].h = panelH;
+
+		rect[10][DST].x = SCREEN_W - 230;
+		rect[10][DST].y = 0;
+		rect[10][DST].w = menu_w;
+		rect[10][DST].h = panelH;
+
+		// yellow on
+		rect[11][SRC] = { x: 0, y: 207, w: 59, h: 24 };
+		rect[11][DST] = { x: rect[10][DST].x + 12, y: rect[10][DST].y + 43, w: 59, h: 24 };
+
+		// gray on
+		rect[12][SRC] = { x: 0, y: 231, w: 59, h: 24 };
+		rect[12][DST] = { x: rect[10][DST].x + 12, y: rect[10][DST].y + 43, w: 59, h: 24 };
+
+		// yellow off
+		rect[13][SRC] = { x: 59, y: 231, w: 59, h: 24 };
+		rect[13][DST] = { x: rect[10][DST].x + 71, y: rect[10][DST].y + 43, w: 59, h: 24 };
+
+		// gray off
+		rect[14][SRC] = { x: 59, y: 207, w: 59, h: 24 };
+		rect[14][DST] = { x: rect[10][DST].x + 71, y: rect[10][DST].y + 43, w: 59, h: 24 };
+
+		// red up
+		rect[15][SRC] = { x: 160, y: 207, w: 177 - 160 + 1, h: 217 - 207 + 1 };
+		rect[15][DST] = { x: 0, y: 0, w: rect[15][SRC].w, h: rect[15][SRC].h };
+		// gray up
+		rect[16][SRC] = { x: 178, y: 207, w: 195 - 178 + 1, h: 217 - 207 + 1 };
+		rect[16][DST] = { x: 0, y: 0, w: rect[15][SRC].w, h: rect[15][SRC].h };
+		// red down
+		rect[17][SRC] = { x: 178, y: 218, w: 177 - 160 + 1, h: 217 - 207 + 1 };
+		rect[17][DST] = { x: 0, y: 0, w: rect[15][SRC].w, h: rect[15][SRC].h };
+		// gray down
+		rect[18][SRC] = { x: 160, y: 218, w: 177 - 160 + 1, h: 229 - 218 + 1 };
+		rect[18][DST] = { x: 0, y: 0, w: rect[15][SRC].w, h: rect[15][SRC].h };
+
+		for (i = 0; i < MAX_BUTTONS; ++i) {
+			btns[i] = new Button();
+			btns[i].id = i;
+			btns[i].shape = BTN_SHAPE_UP + i % 2;
+			btns[i].state = BTN_OFF;
+		}
+		btns[0].shape = BTN_SHAPE_ON;
+		btns[1].shape = BTN_SHAPE_OFF;
+
+		btns[0].SetValue(13, 44, 70, 65);
+		btns[1].SetValue(72, 44, 129, 65);
+		btns[2].SetValue(152, 8, 167, 17);
+		btns[3].SetValue(152, 19, 167, 28);
+		if (!SIMPLE_MENU) {
+			btns[4].SetValue(64, 83, 79, 92);
+			btns[5].SetValue(64, 94, 79, 103);
+			btns[6].SetValue(132, 83, 147, 92);
+			btns[7].SetValue(132, 94, 147, 103);
+			btns[8].SetValue(197, 83, 212, 92);
+			btns[9].SetValue(197, 94, 212, 103);
+			btns[10].SetValue(132, 122, 147, 131);
+			btns[11].SetValue(132, 133, 147, 142);
+		}
+
+		if (disp_on) {
+			btns[0].state = BTN_ON;
+			btns[1].state = BTN_OFF;
+		} else {
+			btns[0].state = BTN_OFF;
+			btns[1].state = BTN_ON;
+		}
+
+		disp_number[0] = 1;
+
+		var lv = Light.GetLightValue();
+		if (lv.light_max > 0) {
+			disp_on = lv.light[0].on;
+			disp_number[1] = lv.light[0].r;
+			disp_number[2] = lv.light[0].g;
+			disp_number[3] = lv.light[0].b;
+			disp_number[4] = Math.floor(lv.light[0].spotCutoff);
+		}
+	}
+
+	function Destroy() {
+	}
+
+	function MenuActionDown(id) {
+		var d = Math.floor(id / 2) - 1;
+
+		switch (id) {
+			case 0:
+			case 1:
+				if (disp_on && id === 1) {
+					btns[0].state = BTN_OFF;
+					btns[1].state = BTN_ON;
+					disp_on = !disp_on;
+				} else if (!disp_on && id === 0) {
+					btns[0].state = BTN_ON;
+					btns[1].state = BTN_OFF;
+					disp_on = !disp_on;
+				}
+				break;
+
+			case 2:
+			case 3:
+				// light synch
+				{
+					var lv = Light.GetLightValue();
+					var i = disp_number[0];
+
+					if (0 <= i && i < lv.light_max) {
+						disp_on = lv.light[i].on;
+						disp_number[1] = lv.light[i].r;
+						disp_number[2] = lv.light[i].g;
+						disp_number[3] = lv.light[i].b;
+						disp_number[4] = Math.floor(lv.light[i].spotCutoff);
+					} else {
+						disp_on = false;
+					}
+
+					if (disp_on) {
+						btns[0].state = BTN_OFF;
+						btns[1].state = BTN_ON;
+					} else {
+						btns[0].state = BTN_ON;
+						btns[1].state = BTN_OFF;
+					}
+				}
+			/* falls through - deliberate, as in menu.cpp */
+			case 4:
+			case 5:
+			case 6:
+			case 7:
+			case 8:
+			case 9:
+			case 10:
+			case 11:
+				if (id % 2 === 0) {
+					disp_number[d]++;
+					disp_number_small[d] = 0;
+				} else {
+					disp_number[d]--;
+					disp_number_small[d] = 6;
+				}
+
+				if (disp_number[d] < disp_number_min[d]) {
+					disp_number[d] = disp_number_max[d];
+				} else if (disp_number[d] > disp_number_max[d]) {
+					disp_number[d] = disp_number_min[d];
+				}
+
+				btns[id].state = BTN_ON;
+				break;
+		}
+	}
+
+	function CheckMouseDown(mx1, my1) {
+		var mx = mx1 - rect[10][DST].x;
+		var my = my1 - rect[10][DST].y;
+
+		for (var i = 0; i < MAX_BUTTONS; ++i) {
+			if (btns[i].tx <= mx && mx <= btns[i].bx &&
+				btns[i].ty <= my && my <= btns[i].by) {
+				MenuActionDown(btns[i].id);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	function CheckMouseUp() {
+		for (var i = 2; i < MAX_BUTTONS; ++i) {
+			btns[i].state = BTN_OFF;
+		}
+		return false;
+	}
+
+	function PerFrame() {
+		// auto-repeat while an up/down button is held
+		for (var i = 4; i < MAX_BUTTONS; ++i) {
+			var d = Math.floor(i / 2) - 1;
+
+			if (btns[i].state === BTN_ON) {
+				if (i % 2 === 0) disp_number_small[d]++;
+				else disp_number_small[d]--;
+
+				if (disp_number_small[d] > 6) {
+					disp_number[d]++;
+					disp_number_small[d] = 0;
+				}
+				if (disp_number_small[d] < 0) {
+					disp_number[d]--;
+					disp_number_small[d] = 6;
+				}
+
+				if (disp_number[d] < disp_number_min[d]) {
+					disp_number[d] = disp_number_max[d];
+				} else if (disp_number[d] > disp_number_max[d]) {
+					disp_number[d] = disp_number_min[d];
+				}
+			}
+		}
+
+		Light.SynchLights(disp_number[0], disp_on, disp_number.slice(1));
+	}
+
+	// one sprite = one textured quad in screen space
+	function Blit(src, dst) {
+		var u0 = src.x / menu_w;
+		var u1 = (src.x + src.w) / menu_w;
+		var v0 = src.y / menu_h;
+		var v1 = (src.y + src.h) / menu_h;
+
+		var x0 = dst.x, y0 = dst.y;
+		var x1 = dst.x + src.w, y1 = dst.y + src.h;
+
+		GLC.begin(GLC.GL_QUADS);
+		GLC.color3f(1.0, 1.0, 1.0);
+		GLC.texCoord2f(u0, v1); GLC.vertex3f(x0, y1, 0.0);
+		GLC.texCoord2f(u1, v1); GLC.vertex3f(x1, y1, 0.0);
+		GLC.texCoord2f(u1, v0); GLC.vertex3f(x1, y0, 0.0);
+		GLC.texCoord2f(u0, v0); GLC.vertex3f(x0, y0, 0.0);
+		GLC.end();
+	}
+
+	function Draw() {
+		if (!menu_tex) return;
+
+		// 2D overlay pass
+		GLC.matrixMode(GLC.PROJECTION);
+		GLC.pushMatrix();
+		GLC.loadIdentity();
+		GLC.ortho(0, SCREEN_W, SCREEN_H, 0, -1, 1);
+		GLC.matrixMode(GLC.MODELVIEW);
+		GLC.pushMatrix();
+		GLC.loadIdentity();
+
+		GLC.setWireframe(false); // main.Draw() sets it again next frame
+		GLC.enable('blend');
+		GLC.disable('depthTest');
+		GLC.bindTexture(menu_tex);
+
+		// Menu panel
+		Blit(rect[10][SRC], rect[10][DST]);
+
+		var i;
+		for (i = 0; i < MAX_BUTTONS; ++i) {
+			var btn_r = { x: 0, y: 0, w: 0, h: 0 };
+			var sprite_no = 11;
+
+			switch (btns[i].shape) {
+				case BTN_SHAPE_ON:
+					sprite_no = 11;
+					btn_r.x = rect[11][DST].x;
+					btn_r.y = rect[11][DST].y;
+					break;
+				case BTN_SHAPE_OFF:
+					sprite_no = 13;
+					btn_r.x = rect[13][DST].x;
+					btn_r.y = rect[13][DST].y;
+					break;
+				case BTN_SHAPE_UP:
+					sprite_no = 15;
+					btn_r.x = btns[i].tx + (rect[10][DST].x - 1);
+					btn_r.y = btns[i].ty + (rect[10][DST].y - 1);
+					break;
+				case BTN_SHAPE_DN:
+					sprite_no = 17;
+					btn_r.x = btns[i].tx + (rect[10][DST].x - 1);
+					btn_r.y = btns[i].ty + (rect[10][DST].y - 1);
+					break;
+			}
+
+			if (btns[i].state === BTN_OFF) sprite_no++;
+
+			Blit(rect[sprite_no][SRC], btn_r);
+		}
+
+		// numbers
+		for (i = 0; i < MAX_DISP_NO; ++i) {
+			var d = disp_number[i];
+			var ten_square = [100, 10, 1];
+
+			for (var j = 0; j < 3; ++j) {
+				var pos = {
+					x: rect[10][DST].x - 1 + disp_number_rect[i].x + j * N_WIDTH,
+					y: rect[10][DST].y - 1 + disp_number_rect[i].y
+				};
+				Blit(rect[Math.floor(d / ten_square[j]) % 10][SRC], pos);
+			}
+		}
+
+		GLC.bindTexture(null);
+		GLC.disable('blend');
+		GLC.enable('depthTest');
+
+		GLC.popMatrix();
+		GLC.matrixMode(GLC.PROJECTION);
+		GLC.popMatrix();
+		GLC.matrixMode(GLC.MODELVIEW);
+	}
+
+	return {
+		SCREEN_W: SCREEN_W,
+		SCREEN_H: SCREEN_H,
+		Initialize: Initialize,
+		Destroy: Destroy,
+		CheckMouseDown: CheckMouseDown,
+		CheckMouseUp: CheckMouseUp,
+		PerFrame: PerFrame,
+		Draw: Draw
+	};
+})();
+
+</script>
+<script>
+// main.js - port of src/main.cpp
+//
+// SDL window + event loop becomes a canvas + DOM events, the 60 fps
+// SDL_Delay loop becomes requestAnimationFrame with a fixed 60 Hz step so the
+// robot walks at the same speed on a 144 Hz monitor.
+
+(function () {
+	'use strict';
+
+	var APP_NAME = 'HW3 - 20042081 Seo, Kee-won';
+	var SCREEN_W = 640;
+	var SCREEN_H = 480;
+	var TICK_INTERVAL = 1000 / 60; // 60 frames per second
+
+	var canvas = null;
+	var gp_Robot = null;
+	var gp_Robot2 = null;
+
+	var wireframe = 0;
+	var light = 0;
+	var lightingEnabled = true;
+	var menu = 0;
+	var eye_distance = 10.0;
+	var paused = false;
+
+	var keys = {};        // SDL_GetKeyState equivalent
+	var mouseDown = false;
+
+	// ---- log ------------------------------------------------------------
+
+	function Log() {
+		if (window.console && console.log) {
+			console.log.apply(console, arguments);
+		}
+	}
+
+	// ---- init -----------------------------------------------------------
+
+	function ReshapeGL(width, height) {
+		if (height === 0) height = 1;
+
+		GLC.viewport(0, 0, width, height);
+		GLC.matrixMode(GLC.PROJECTION);
+		GLC.loadIdentity();
+		GLC.perspective(45.0, width / height, 1.0, 100.0);
+		GLC.matrixMode(GLC.MODELVIEW);
+		GLC.loadIdentity();
+	}
+
+	function InitGL() {
+		GLC.clearColor(0.0, 0.0, 0.0, 0.5);
+		GLC.enable('depthTest');
+		GLC.disable('blend');
+
+		GLC.enable('lighting');
+		GLC.enable('normalize');
+		Light.InitLights();
+
+		GLC.enable('texture2d');
+		return true;
+	}
+
+	function Initialize(images) {
+		menu = 0;
+
+		DrawManager.Initialize(images.face);
+		Menu.Initialize(images.menu);
+		GameLogic.LoadGeometry();
+
+		gp_Robot = new GameLogic.Robot(1);
+		gp_Robot2 = new GameLogic.Robot(2);
+
+		gp_Robot.SetXyz(0.0, 1.5, 0.0);
+		gp_Robot2.SetXyz(-5.0, 1.5, -5.0);
+
+		CollisionManager.CheckAndSet(1, 0.0, 0.0);
+		CollisionManager.CheckAndSet(2, -5.0, -5.0);
+
+		return true;
+	}
+
+	// ---- input ----------------------------------------------------------
+
+	// Key names chosen so the original single-letter bindings still work.
+	function ProcessKeyDown(key) {
+		switch (key) {
+			case 'Escape':
+			case 'q':
+				TerminateApplication();
+				break;
+
+			case 'a':
+				gp_Robot.DrinkAlcohol();
+				break;
+
+			case 'w':
+				wireframe = !wireframe;
+				break;
+
+			case 'e':
+				// as in main.cpp: the first press is a no-op, the second one
+				// switches lighting off. (There it also fell through into 'm'.)
+				light = !light;
+				lightingEnabled = !!light;
+				if (light) GLC.enable('lighting');
+				else GLC.disable('lighting');
+				break;
+
+			case 'm':
+				menu = !menu;
+				break;
+
+			case 'z':
+				gp_Robot.arm_aim[0] = gp_Robot.arm_aim[0] ? 0 : 1;
+				break;
+			case 'x':
+				gp_Robot.arm_aim[1] = gp_Robot.arm_aim[1] ? 0 : 1;
+				break;
+
+			case 'p':
+				paused = !paused;
+				break;
+
+			default:
+				break;
+		}
+		UpdateHud();
+	}
+
+	function ProcessKeyPress() {
+		if (keys['f'] || keys['ArrowUp']) {
+			gp_Robot.Move(0.1);
+		} else if (keys['b'] || keys['ArrowDown']) {
+			gp_Robot.Move(-0.1);
+		}
+
+		if (keys['l'] || keys['ArrowLeft']) {
+			gp_Robot.Turn(2.0);
+		} else if (keys['r'] || keys['ArrowRight']) {
+			gp_Robot.Turn(-2.0);
+		}
+
+		if (keys['d']) {
+			eye_distance += 0.2;
+		} else if (keys['s']) {
+			eye_distance -= 0.2;
+		}
+	}
+
+	function TerminateApplication() {
+		paused = true;
+		var over = document.getElementById('quit');
+		if (over) over.style.display = 'flex';
+	}
+
+	// ---- frame ----------------------------------------------------------
+
+	function Update() {
+		if (menu) Menu.PerFrame();
+		gp_Robot.PerFrame();
+		gp_Robot2.MoveSelf();
+		gp_Robot2.PerFrame();
+	}
+
+	var eye = [0.0, 0.0, 0.0];
+	var center = [-2.0, -0.5, -50.0];
+	var up = [0.0, 1.0, 0.0];
+
+	function Draw() {
+		eye[0] = 0.2 * eye_distance;
+		eye[1] = 0.8 * eye_distance;
+		eye[2] = 2.0 * eye_distance;
+
+		GLC.clear();
+
+		GLC.matrixMode(GLC.MODELVIEW);
+		GLC.loadIdentity();
+		GLC.lookAt(eye[0], eye[1], eye[2], center[0], center[1], center[2],
+			up[0], up[1], up[2]);
+
+		GLC.setWireframe(!!wireframe);
+
+		Light.SetSpecificLight(0);
+
+		// draw two walls, floor
+		DrawManager.DrawRoom();
+
+		// draw robot
+		GLC.pushMatrix();
+		gp_Robot.Draw();
+		Light.SetSpecificLight(1);
+		GLC.popMatrix();
+
+		GLC.pushMatrix();
+		GLC.popMatrix();
+		gp_Robot2.Draw();
+
+		// draw menu
+		if (menu) {
+			GLC.disable('lighting');
+			Menu.Draw();
+			if (lightingEnabled) GLC.enable('lighting');
+		}
+	}
+
+	// ---- hud ------------------------------------------------------------
+
+	function UpdateHud() {
+		var el = document.getElementById('status');
+		if (!el) return;
+		el.textContent =
+			'wireframe ' + (wireframe ? 'on' : 'off') +
+			'  |  lighting ' + (lightingEnabled ? 'on' : 'off') +
+			'  |  drunk ' + (gp_Robot && gp_Robot.alcohol ? 'on' : 'off') +
+			'  |  menu ' + (menu ? 'on' : 'off') +
+			(paused ? '  |  paused' : '');
+	}
+
+	// ---- main -----------------------------------------------------------
+
+	function loadImage(src) {
+		return new Promise(function (resolve, reject) {
+			var img = new Image();
+			img.onload = function () { resolve(img); };
+			img.onerror = function () { reject(new Error('cannot load image')); };
+			img.src = src;
+		});
+	}
+
+	function fail(msg) {
+		var el = document.getElementById('error');
+		if (el) {
+			el.textContent = msg;
+			el.style.display = 'block';
+		}
+		Log(msg);
+	}
+
+	function resizeCanvas() {
+		var dpr = window.devicePixelRatio || 1;
+		var w = Math.round(canvas.clientWidth * dpr);
+		var h = Math.round(canvas.clientHeight * dpr);
+		if (w === 0 || h === 0) return;
+		if (canvas.width !== w || canvas.height !== h) {
+			canvas.width = w;
+			canvas.height = h;
+			ReshapeGL(w, h); // SDL_VIDEORESIZE
+		}
+	}
+
+	// canvas pixel -> the 640x480 space the menu rectangles live in
+	function mousePos(ev) {
+		var box = canvas.getBoundingClientRect();
+		return {
+			x: (ev.clientX - box.left) * SCREEN_W / box.width,
+			y: (ev.clientY - box.top) * SCREEN_H / box.height
+		};
+	}
+
+	function bindEvents() {
+		window.addEventListener('keydown', function (ev) {
+			if (ev.metaKey || ev.ctrlKey || ev.altKey) return;
+			var k = ev.key.length === 1 ? ev.key.toLowerCase() : ev.key;
+			if (!keys[k]) ProcessKeyDown(k);
+			keys[k] = true;
+			if (k.indexOf('Arrow') === 0 || k === ' ') ev.preventDefault();
+		});
+
+		window.addEventListener('keyup', function (ev) {
+			var k = ev.key.length === 1 ? ev.key.toLowerCase() : ev.key;
+			keys[k] = false;
+		});
+
+		window.addEventListener('blur', function () { keys = {}; });
+
+		canvas.addEventListener('mousedown', function (ev) {
+			mouseDown = true;
+			if (menu) {
+				var p = mousePos(ev);
+				Menu.CheckMouseDown(p.x, p.y);
+			}
+		});
+
+		window.addEventListener('mouseup', function () {
+			if (mouseDown && menu) Menu.CheckMouseUp();
+			mouseDown = false;
+		});
+
+		// touch: tap the menu panel
+		canvas.addEventListener('touchstart', function (ev) {
+			if (!menu || !ev.touches.length) return;
+			var p = mousePos(ev.touches[0]);
+			Menu.CheckMouseDown(p.x, p.y);
+			ev.preventDefault();
+		}, { passive: false });
+
+		canvas.addEventListener('touchend', function () {
+			if (menu) Menu.CheckMouseUp();
+		});
+
+		window.addEventListener('resize', resizeCanvas);
+
+		// on-screen buttons, so the thing is usable without a keyboard
+		var pad = document.getElementById('pad');
+		if (pad) {
+			pad.addEventListener('mousedown', padDown);
+			pad.addEventListener('mouseup', padUp);
+			pad.addEventListener('mouseleave', padUp);
+			pad.addEventListener('touchstart', function (ev) { padDown(ev); ev.preventDefault(); }, { passive: false });
+			pad.addEventListener('touchend', padUp);
+		}
+	}
+
+	var padKey = null;
+
+	function padDown(ev) {
+		var t = ev.target.closest ? ev.target.closest('[data-key]') : null;
+		if (!t) return;
+		var k = t.getAttribute('data-key');
+		if (t.getAttribute('data-hold') === '1') {
+			padKey = k;
+			keys[k] = true;
+		} else {
+			ProcessKeyDown(k);
+		}
+	}
+
+	function padUp() {
+		if (padKey) { keys[padKey] = false; padKey = null; }
+	}
+
+	var lastTime = 0;
+	var accumulator = 0;
+
+	function frame(now) {
+		requestAnimationFrame(frame);
+
+		if (!lastTime) lastTime = now;
+		var dt = now - lastTime;
+		lastTime = now;
+		if (dt > 250) dt = 250; // came back from a background tab
+
+		if (!paused) {
+			accumulator += dt;
+			var steps = 0;
+			while (accumulator >= TICK_INTERVAL && steps < 4) {
+				ProcessKeyPress();
+				Update();
+				accumulator -= TICK_INTERVAL;
+				steps++;
+			}
+			if (steps === 0 && accumulator > TICK_INTERVAL * 4) accumulator = 0;
+		}
+
+		Draw();
+	}
+
+	function main() {
+		canvas = document.getElementById('screen');
+		document.title = APP_NAME;
+
+		if (!GLC.init(canvas)) {
+			fail('WebGL is not available in this browser.');
+			return;
+		}
+
+		Promise.all([loadImage(Assets.face), loadImage(Assets.menu)])
+			.then(function (imgs) {
+				resizeCanvas();
+				InitGL();
+				Initialize({ face: imgs[0], menu: imgs[1] });
+				bindEvents();
+				UpdateHud();
+				requestAnimationFrame(frame);
+			})
+			.catch(function (e) {
+				fail('Failed to start: ' + e.message);
+			});
+	}
+
+	window.addEventListener('load', main);
+})();
+
+</script>
+</body>
+</html>

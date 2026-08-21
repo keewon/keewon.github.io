@@ -24,7 +24,7 @@ I'm a software and game developer running a studio in Seoul. [LinkedIn](https://
   - [Pi finder](https://pifi.acidblob.com)
   - [Pins on the map](pins)
   - [어둠 속의 지뢰찾기](mind)
-
+  - [Stickers](stickers/) - 뒤뚱이모티콘, 블루 앤 스카이블루, 옆모습 펭귀니, 물방울 펭귀니, 하찮은 펭귀니
 
 ## Experience 
 
@@ -41,7 +41,3 @@ I'm a software and game developer running a studio in Seoul. [LinkedIn](https://
 ## Education
 - **KAIST** — M.S. in Digital Media, 2004 – 2006
 - **KAIST** — B.S. in Computer Science, 1999 – 2004
-
-
-[[redacted]](redacted)
-

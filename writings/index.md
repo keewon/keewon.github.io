@@ -1,8 +1,7 @@
 # Writings
-
+ - [괴도-펭귄 교과서 도난 사건](/books/thief-penguin) - 2025
  - [On the way to the office](on_the_way_to_the_office) - 2019-01-02
  - [야근](yageun_hu) - 2008-10-18
  - [주말 근무](jumal_geunmu) - 2007-08-20
  - [별헤는밤.c](counting_stars.c) - 2004-07-17
  - [아빠와 딸 (2021)](IMG_5185.JPG) - 2021-12
- - [위기의 서부장과 초록색 산장](https://novel.munpia.com/555739) - 2026-04

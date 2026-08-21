@@ -1,13 +1,11 @@
 <img class="profile-photo" src="/assets/img/profile.jpg" alt="Keewon Seo">
 
 # Keewon Seo (서기원)
-I'm a software and game developer running a studio in Seoul. [LinkedIn](https://www.linkedin.com/in/keewon-seo-62bb2263/)
+I'm a software and game developer running a studio in Seoul. [LinkedIn](https://www.linkedin.com/in/keewon-seo-62bb2263/) [Blog](https://keewonseo.medium.com/)
 
 ## 서기원소프트웨어연구소 (SeoKeewon Software Lab)
 > 소프트웨어로 온갖 문제 해결
 > 무료 상담!!!  문의: keewon.seo@gmail.com
-
-[Blog](https://keewonseo.medium.com/)
 
 ### 전문 분야
 - 모바일 서비스 및 앱 개발 (Mobile Services & App Development)

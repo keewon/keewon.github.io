@@ -1,0 +1,167 @@
+<!doctype html>
+<!--
+  Standalone on purpose: no Jekyll front matter, so the site theme's layout and
+  sidebar navigation are not applied. This page is read mostly inside the app's
+  정보 tab, where that chrome is only in the way and the theme's desktop column
+  is a size too small.
+-->
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>뒤뚱이모티콘 안드로이드 앱</title>
+<meta name="description" content="펭귀니 스티커 다섯 팩을 한 앱에 모은 안드로이드 앱 안내">
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --fg: #23242a;
+    --muted: #6f7280;
+    --rule: #e3e4e8;
+    --link: #1f6fb2;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #15161a;
+      --fg: #e4e5ea;
+      --muted: #9b9ead;
+      --rule: #2c2e36;
+      --link: #79bbf0;
+    }
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    padding: 28px 20px 56px;
+    background: var(--bg);
+    color: var(--fg);
+    font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
+          "Noto Sans KR", "Malgun Gothic", "Helvetica Neue", Arial, sans-serif;
+    -webkit-text-size-adjust: 100%;
+    /* Korean reads far better when lines break between 어절, not mid-word. */
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+
+  main { max-width: 680px; margin: 0 auto; }
+
+  a { color: var(--link); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  h1 { font-size: 1.75rem; line-height: 1.25; margin: 0 0 0.15em; }
+  h1 .en { display: block; font-size: 0.85rem; font-weight: 400; color: var(--muted); letter-spacing: 0.04em; }
+  h2 { font-size: 1.2rem; margin: 2.2em 0 0.8em; padding-bottom: 0.4em; border-bottom: 1px solid var(--rule); }
+  h3 { font-size: 1.05rem; margin: 0 0 0.15em; }
+  p { margin: 0 0 1em; }
+  ul { margin: 0 0 1em; padding-left: 1.2em; }
+  li { margin-bottom: 0.5em; }
+  .lede { color: var(--muted); }
+
+  .pack { margin: 0 0 2.4em; }
+  .pack .meta { margin: 0 0 0.6em; font-size: 0.875rem; color: var(--muted); }
+  .pack img {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin-top: 0.9em;
+    border-radius: 10px;
+    border: 1px solid var(--rule);
+  }
+
+  .history { margin: 0; }
+  .history div { padding: 0.7em 0; border-bottom: 1px solid var(--rule); }
+  .history div:last-child { border-bottom: 0; }
+  .history dt { font-size: 0.8125rem; color: var(--muted); }
+  .history dd { margin: 0.1em 0 0; }
+
+  /* Wide enough for two columns: date beside the entry. */
+  @media (min-width: 560px) {
+    .history div { display: flex; gap: 1.2em; }
+    .history dt { flex: 0 0 9.5em; padding-top: 0.15em; }
+    .history dd { margin-top: 0; }
+  }
+
+  footer {
+    margin-top: 3em;
+    padding-top: 1.2em;
+    border-top: 1px solid var(--rule);
+    font-size: 0.8125rem;
+    color: var(--muted);
+  }
+</style>
+</head>
+<body>
+<main>
+
+  <h1>뒤뚱이모티콘 <span class="en">Penguini Stickers</span></h1>
+
+  <p class="lede">
+    드디어 뒤뚱이모티콘을 비롯한 귀여운 펭귀니 스티커를 안드로이드에서도 쓸 수 있습니다.
+    스티커를 누르면 카카오톡을 비롯해 이미지를 받을 수 있는 어떤 앱으로든 바로 보낼 수 있습니다.
+    현재 다섯 팩, 98종이 들어 있습니다.
+  </p>
+
+  <h2>최신 소식</h2>
+
+  <ul>
+    <li><strong>하찮은 펭귀니</strong> 11종이 새로 들어왔습니다. 안드로이드에서 먼저 만나볼 수 있습니다.</li>
+  </ul>
+
+  <h2>각 스티커 소개</h2>
+
+  <div class="pack">
+    <h3>뒤뚱이모티콘</h3>
+    <p>크리스마스가 생일이고 펭복초등학교 3학년인 대표 펭귄 뒤뚱이입니다.</p>
+    <img src="Duitung1.png" alt="뒤뚱이모티콘" loading="lazy">
+  </div>
+
+  <div class="pack">
+    <h3>블루 앤 스카이블루</h3>
+    <p>최고의 친구 블루와 스카이블루</p>
+    <img src="BNS1.png" alt="블루 앤 스카이블루" loading="lazy">
+  </div>
+
+  <div class="pack">
+    <h3>옆모습 펭귀니</h3>
+    <p>펭귀니의 다양한 감정과 행동</p>
+    <img src="SideViewPenguini1.png" alt="옆모습 펭귀니" loading="lazy">
+  </div>
+
+  <div class="pack">
+    <h3>물방울 펭귀니</h3>
+    <p>물의 날에 태어난 물방울 펭귀니. 깨끗한 물의 소중함을 다시 한 번 생각해봐요!</p>
+    <img src="WaterDropPenguini1.png" alt="물방울 펭귀니" loading="lazy">
+  </div>
+
+  <div class="pack">
+    <h3>하찮은 펭귀니</h3>
+    <p>하찮지만 소중한 펭귀니</p>
+    <img src="HumblePenguini1.png" alt="하찮은 펭귀니" loading="lazy">
+  </div>
+
+  <h2>히스토리</h2>
+
+  <dl class="history">
+    <div><dt>2026. 8.</dt><dd>안드로이드 앱, 그리고 하찮은 펭귀니</dd></div>
+    <div><dt>2025. 8. ~ 10.</dt><dd>물방울 펭귀니 작업</dd></div>
+    <div><dt>2024. 12. ~ 2025. 1.</dt><dd>옆모습 펭귀니 1.1.0, 1.2.0</dd></div>
+    <div><dt>2024. 8.</dt><dd>옆모습 펭귀니 작업 시작</dd></div>
+    <div><dt>2024. 2.</dt><dd>블루 앤 스카이블루 배포</dd></div>
+    <div><dt>2023. 6.</dt><dd>블루 앤 스카이블루 작업 시작</dd></div>
+    <div><dt>2022. 10. ~ 2024. 8.</dt><dd>뒤뚱이모티콘 1.2 ~ 1.6.2, 스티커를 조금씩 추가</dd></div>
+    <div><dt>2022. 7.</dt><dd>뒤뚱이모티콘 첫 배포</dd></div>
+  </dl>
+
+  <h2>개인정보</h2>
+
+  <p>이 앱은 이름, 나이, 성별, 전화번호, 주소 등 어떤 개인 정보도 수집하지 않습니다. <a href="privacy.html">자세히 보기</a></p>
+
+  <footer>
+    <a href="https://keewon.github.io">keewon.github.io</a>
+  </footer>
+
+</main>
+</body>
+</html>

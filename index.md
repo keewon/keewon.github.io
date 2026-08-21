@@ -1,6 +1,5 @@
 # Keewon Seo (서기원)
-I'm a software and game developer running a studio in Seoul.
-
+I'm a software and game developer running a studio in Seoul. [LinkedIn](https://www.linkedin.com/in/keewon-seo-62bb2263/)
 ## 서기원소프트웨어연구소 (SeoKeewon Software Lab)
 > 소프트웨어로 온갖 문제 해결
 > 무료 상담!!!  문의: keewon.seo@gmail.com
@@ -24,7 +23,7 @@ I'm a software and game developer running a studio in Seoul.
   - [어둠 속의 지뢰찾기](mind)
 
 
-## Experience [(LinkedIn)](https://www.linkedin.com/in/keewon-seo-62bb2263/)
+## Experience 
 
 - **서기원소프트웨어연구소** — Software Engineer, Jul 2026 – present
 - **5Rocks → Tapjoy → ironSource → Unity** — Software Engineer → Senior Manager, Software Engineering, Jul 2014 – Jun 2026<br>

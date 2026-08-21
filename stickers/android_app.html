@@ -83,6 +83,21 @@
     .history dd { margin-top: 0; }
   }
 
+  /* Boxed, because it is someone else's app on this page -- the border says
+     "this is an aside" without needing a label that says so. */
+  .promo { border: 1px solid var(--rule); border-radius: 10px; padding: 1.1em; }
+  .promo h3 { margin-top: 0; }
+  .promo h3 small { font-weight: 400; color: var(--muted); }
+  .promo p:last-child { margin-bottom: 0; }
+  .promo img {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 0.9em 0 1em;
+    border-radius: 8px;
+  }
+  .promo .links a { margin-right: 1.1em; white-space: nowrap; }
+
   footer {
     margin-top: 3em;
     padding-top: 1.2em;
@@ -113,7 +128,7 @@
 
   <div class="pack">
     <h3>뒤뚱이모티콘</h3>
-    <p>크리스마스가 생일이고 펭복초등학교 3학년인 대표 펭귄 뒤뚱이입니다.</p>
+    <p>크리스마스가 생일이고 귀여운 대표 펭귄 뒤뚱이입니다.</p>
     <img src="Duitung1.png" alt="뒤뚱이모티콘" loading="lazy">
   </div>
 
@@ -158,8 +173,24 @@
 
   <p>이 앱은 이름, 나이, 성별, 전화번호, 주소 등 어떤 개인 정보도 수집하지 않습니다.</p>
 
+  <h2>홍보</h2>
+
+  <div class="promo">
+    <h3>오가닉팝 <small>Organic Pop</small></h3>
+    <p>
+      옥텟 규칙에 맞춰 원자를 이으면 분자가 완성되면서 팝하고 사라집니다.
+      수소 분자에서 시작해 카페인, 이부프로펜을 거쳐 인슐린까지 만들어 보세요.
+    </p>
+    <img src="../opop/ethanol.gif" alt="오가닉팝에서 에탄올을 만드는 화면" loading="lazy">
+    <p class="links">
+      <a href="https://play.google.com/store/apps/details?id=com.acidblob.opop1">Google Play</a>
+      <a href="https://itunes.apple.com/kr/app/organic-pop/id1317691271?mt=8">App Store</a>
+      <a href="https://keewon.github.io/opop/index_ko">자세히 보기</a>
+    </p>
+  </div>
+
   <footer>
-    <a href="https://keewon.github.io">keewon.github.io</a>
+    <a href="https://keewon.github.io">서기원소프트웨어연구소</a>
   </footer>
 
 </main>

@@ -24,14 +24,14 @@ I'm a software and game developer running a studio in Seoul.
   - [어둠 속의 지뢰찾기](mind)
 
 
-## Experience [LinkedIn](https://www.linkedin.com/in/keewon-seo-62bb2263/)
+## Experience [(LinkedIn)](https://www.linkedin.com/in/keewon-seo-62bb2263/)
 
 - **서기원소프트웨어연구소** — Software Engineer, Jul 2026 – present
 - **5Rocks → Tapjoy → ironSource → Unity** — Software Engineer → Senior Manager, Software Engineering, Jul 2014 – Jun 2026<br>
   *Ad tech — Tapjoy Offerwall; joined through a series of acquisitions*
 - **NCSOFT** — Senior Software Engineer, Dec 2009 – Dec 2013<br>
   *Mobile services — NC Messenger, AION mobile website*
-- **WRG** — Software Engineer, Jan 2006 – Nov 2009<br>
+- **WRG → Newport Media Inc.** — Software Engineer, Jan 2006 – Nov 2009<br>
   *Mobile TV, smartphone applications, iOS games*
 - **Sony Computer Entertainment Korea** — Software Engineer, Dec 2002 – Feb 2004<br>
   *PlayStation2 software; while on leave from KAIST*

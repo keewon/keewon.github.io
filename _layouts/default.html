@@ -12,8 +12,11 @@
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
   </head>
-  <body>
+  {% assign is_home = false %}
+  {% if page.url == '/' or page.url == '/index.html' %}{% assign is_home = true %}{% endif %}
+  <body{% if is_home %} class="home"{% endif %}>
     <div class="wrapper">
+      {% unless is_home %}
       <header>
         <a href="{{ site.github.url }}"> <h1>{{ site.title | default: site.github.repository_name }}</h1> </a>
         {% if false %}
@@ -53,6 +56,7 @@
           </ul>
         {% endif %}
       </header>
+      {% endunless %}
       <section>
 
       {{ content }}

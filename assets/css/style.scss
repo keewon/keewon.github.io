@@ -1,0 +1,19 @@
+---
+---
+
+@import "{{ site.theme }}";
+
+/* 첫 페이지는 좌측 열(header/footer)을 쓰지 않고 본문이 전체 폭을 차지한다 */
+body.home section {
+  float: none;
+  width: auto;
+  border: 0;
+  margin: 0;
+  padding: 0 0 50px;
+}
+
+body.home footer {
+  float: none;
+  position: static;
+  width: auto;
+}

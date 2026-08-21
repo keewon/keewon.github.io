@@ -17,3 +17,24 @@ body.home footer {
   position: static;
   width: auto;
 }
+
+/* 이름 오른쪽에 배치하는 프로필 사진 */
+.profile-photo {
+  float: right;
+  width: 150px;
+  margin: 0 0 16px 24px;
+  border: 1px solid #e5e5e5;
+  border-radius: 6px;
+}
+
+/* 사진 옆으로 소개 문단까지만 흐르고, 이후 섹션은 아래로 내린다 */
+body.home h2 {
+  clear: right;
+}
+
+@media print, screen and (max-width: 480px) {
+  .profile-photo {
+    width: 96px;
+    margin-left: 16px;
+  }
+}

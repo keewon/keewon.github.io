@@ -98,6 +98,23 @@
   }
   .promo .links a { margin-right: 1.1em; white-space: nowrap; }
 
+  /* Opens in place. This page is read inside the app's 정보 tab, which has no
+     back button, so anything that can stay on the page should. */
+  details.collect { border: 1px solid var(--rule); border-radius: 10px; padding: 0 1.1em; }
+  details.collect > summary {
+    cursor: pointer;
+    padding: 0.9em 0;
+    font-weight: 600;
+    color: var(--link);
+  }
+  details.collect[open] > summary {
+    color: inherit;
+    border-bottom: 1px solid var(--rule);
+  }
+  details.collect h4 { font-size: 0.95rem; margin: 1.3em 0 0.4em; }
+  details.collect ul { margin-bottom: 1.2em; }
+  details.collect .full { font-size: 0.875rem; color: var(--muted); }
+
   footer {
     margin-top: 3em;
     padding-top: 1.2em;
@@ -176,8 +193,45 @@
     누구에게 보냈는지도 앱은 알지 못합니다. 앱이 얼마나 쓰이는지와 어떤 스티커가
     인기 있는지는 익명 통계로 수집하며, 화면 위쪽 배너 광고를 띄우기 위해 광고
     ID가 사용됩니다.
-    <a href="privacy.android">수집 항목 자세히 보기</a>
   </p>
+
+  <!-- Kept in step with privacy.android by hand; if one changes, change both. -->
+  <details class="collect">
+    <summary>수집 항목 자세히 보기</summary>
+
+    <h4>기기 안에만 남는 것</h4>
+    <ul>
+      <li>최근 보낸 스티커 최대 24개</li>
+      <li>마지막으로 열었던 탭</li>
+      <li>스티커를 보낼 때 앱 캐시에 잠시 복사되는 이미지</li>
+    </ul>
+
+    <h4>사용 통계 (Firebase Analytics)</h4>
+    <ul>
+      <li>앱 인스턴스 ID — 설치할 때 만들어지는 무작위 값. 개인을 가리키지 않으며 앱을 지우면 사라집니다</li>
+      <li>기기 모델, 안드로이드 버전, 앱 버전, 언어 설정</li>
+      <li>IP에서 추정한 대략적인 지역 (국가·지역 수준)</li>
+      <li>실행 횟수, 사용 시간</li>
+      <li>보낸 스티커의 팩과 파일명</li>
+    </ul>
+
+    <h4>광고 (Google AdMob)</h4>
+    <ul>
+      <li>광고 ID(AAID) — 이름이나 계정과 연결되지 않으며, 기기 설정에서 언제든 초기화하거나 삭제할 수 있습니다</li>
+      <li>IP 주소와 그로부터 추정한 대략적인 지역</li>
+      <li>기기 모델, 안드로이드 버전, 화면 크기</li>
+      <li>광고가 표시된 횟수, 눌린 횟수</li>
+    </ul>
+
+    <h4>수집하지 않는 것</h4>
+    <ul>
+      <li>이름, 나이, 성별, 전화번호, 주소, 연락처, 사진, 정밀 위치</li>
+      <li>누구에게 보냈는지 — 안드로이드 공유 시트를 거치므로 앱은 알지 못합니다</li>
+      <li>계정 정보 — 로그인 기능 자체가 없습니다</li>
+    </ul>
+
+    <p class="full"><a href="privacy.android">전문 보기</a> — 스토어에 등록된 개인정보 처리방침입니다.</p>
+  </details>
 
   <h2>홍보</h2>
 

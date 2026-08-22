@@ -7,11 +7,10 @@ I'm a software and game developer running a studio in Seoul. [LinkedIn](https://
 > 소프트웨어로 온갖 문제 해결
 > 무료 상담!!!  문의: keewon.seo@gmail.com
 
-### 전문 분야
+### 전문 분야 및 관심 분야
 - 모바일 서비스 및 앱 개발 (Mobile Services & App Development)
 - 기능성 게임 개발 (Serious Game Development)
 - AI 응용 서비스 (AI-powered Services)
-- AI 전환 (AI Transformation, AX)
 
 
 ## Portfolio
@@ -31,5 +30,5 @@ I'm a software and game developer running a studio in Seoul. [LinkedIn](https://
   *PlayStation2 software; while on leave from KAIST*
 
 ## Education
-- **KAIST** — M.S. in Digital Media, 2004 – 2006
+- **KAIST (ICC)** — M.S. in Digital Media, 2004 – 2006
 - **KAIST** — B.S. in Computer Science, 1999 – 2004

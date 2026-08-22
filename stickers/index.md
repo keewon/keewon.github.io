@@ -1,10 +1,3 @@
-# 안드로이드 앱
-다섯 팩을 한 앱에 모았습니다. 하찮은 펭귀니는 안드로이드에서 먼저 만나보실 수 있습니다.
-
-[앱 안내 보기](android_app.html)
-
-![뒤뚱이모티콘 안드로이드 앱](feature_graphic.png)
-
 # 뒤뚱이모티콘
 [AppStore](https://apps.apple.com/kr/app/%EB%92%A4%EB%9A%B1%EC%9D%B4%EB%AA%A8%ED%8B%B0%EC%BD%98/id1637097307)
 
@@ -22,3 +15,10 @@
 
 # 물방울 펭귀니
 ![물방울 펭귀니 아이콘](WaterDropPenguini1.png)
+
+# 안드로이드 앱
+다섯 팩을 한 앱에 모았습니다. 하찮은 펭귀니는 안드로이드에서 먼저 만나보실 수 있습니다.
+
+[앱 안내 보기](android_app.html)
+
+![뒤뚱이모티콘 안드로이드 앱](feature_graphic.png)

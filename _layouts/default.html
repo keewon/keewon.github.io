@@ -22,7 +22,10 @@
     <div class="wrapper">
       {% if show_nav %}
       <header class="topbar">
+        {% comment %} 첫 페이지에는 본문 첫 줄이 이미 이름이라 여기서는 뺀다. {% endcomment %}
+        {% unless is_home %}
         <a class="site" href="{{ site.github.url }}">{{ site.title | default: site.github.repository_name }}</a>
+        {% endunless %}
         <nav>
           <a href="/">Home</a>
           <a href="/works/">Works</a>

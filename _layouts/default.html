@@ -17,7 +17,7 @@
   {% comment %} nav: false 를 앞머리에 두면 상단 내비게이션이 빠진다. 앱 안에서
   읽히거나 스토어에서 바로 열리는 페이지는 사이트 크롬이 방해가 된다. {% endcomment %}
   {% assign show_nav = true %}
-  {% if is_home or page.nav == false %}{% assign show_nav = false %}{% endif %}
+  {% if page.nav == false %}{% assign show_nav = false %}{% endif %}
   <body{% if is_home %} class="home"{% endif %}>
     <div class="wrapper">
       {% if show_nav %}
@@ -27,7 +27,6 @@
           <a href="/">Home</a>
           <a href="/works/">Works</a>
           <a href="/writings/">Writings</a>
-          <a href="https://gist.github.com/keewon">Gist</a>
           {% if site.github.is_user_page %}
           <a href="{{ site.github.owner_url }}">GitHub</a>
           {% endif %}

@@ -1,3 +1,7 @@
+---
+nav: false
+---
+
 # Organic Pop - Privacy / 개인정보 처리방침
 
 [\[한국어\]](#한국어) [\[English\]](#english)

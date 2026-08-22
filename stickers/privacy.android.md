@@ -1,3 +1,7 @@
+---
+nav: false
+---
+
 # 뒤뚱이모티콘 안드로이드 앱 - 개인정보 처리방침
 
 *Penguini Stickers for Android - Privacy Policy*

@@ -3,19 +3,65 @@
 
 @import "{{ site.theme }}";
 
-/* 첫 페이지는 좌측 열(header/footer)을 쓰지 않고 본문이 전체 폭을 차지한다 */
-body.home section {
-  float: none;
+/* 한 단 레이아웃이 기본. 테마는 270px 좌측 열에 header/footer 를 고정하고 본문을
+   500px 로 좁히는데, 읽는 화면에서 그 열은 계속 자리만 차지한다. 내비게이션은
+   아래 .topbar 로 위에 눕힌다. */
+div.wrapper {
   width: auto;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+header,
+section,
+footer {
+  float: none;
+  position: static;
+  width: auto;
+}
+
+header {
+  padding: 0;
+}
+
+section {
   border: 0;
   margin: 0;
   padding: 0 0 50px;
 }
 
-body.home footer {
-  float: none;
-  position: static;
-  width: auto;
+footer {
+  padding-top: 20px;
+}
+
+/* 좌측 열을 대신하는 상단 내비게이션. 하위 페이지에서 돌아갈 길이 없으면
+   곤란하므로 열만 없애고 링크는 남긴다. */
+.topbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 20px;
+  margin-bottom: 32px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.topbar .site {
+  font-weight: 700;
+  font-size: 18px;
+  color: #222;
+  margin-right: auto;
+}
+
+.topbar .site:hover {
+  color: #069;
+}
+
+.topbar nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 18px;
+  font-size: 14px;
 }
 
 /* 이름 오른쪽에 배치하는 프로필 사진 */

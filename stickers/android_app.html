@@ -51,6 +51,16 @@
   a:hover { text-decoration: underline; }
 
   h1 { font-size: 1.75rem; line-height: 1.25; margin: 0 0 0.15em; }
+  /* 이미지가 제목을 겸한다. 이름은 그림 안에 있으므로 alt 가 제목 문구를
+     대신한다. */
+  h1.hero { margin: 0 0 1.4em; }
+  h1.hero img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    border: 1px solid var(--rule);
+  }
   h1 .en { display: block; font-size: 0.85rem; font-weight: 400; color: var(--muted); letter-spacing: 0.04em; }
   h2 { font-size: 1.2rem; margin: 2.2em 0 0.8em; padding-bottom: 0.4em; border-bottom: 1px solid var(--rule); }
   h3 { font-size: 1.05rem; margin: 0 0 0.15em; }
@@ -127,7 +137,10 @@
 <body>
 <main>
 
-  <h1>뒤뚱이모티콘 <span class="en">Penguini Stickers</span></h1>
+  <h1 class="hero">
+    <img src="feature_graphic.png"
+         alt="뒤뚱이모티콘 - 펭귀니 스티커 98종 / Penguini Stickers">
+  </h1>
 
   <p class="lede">
     드디어 뒤뚱이모티콘을 비롯한 귀여운 펭귀니 스티커를 안드로이드에서도 쓸 수 있습니다.

@@ -63,6 +63,6 @@
 {% include opop_aminoacid_youtube.html %}
 
 ## 피드백
-편하신 채널로 피드백을 남겨주세요 - 스토어, [facebook](https://www.facebook.com/KeewonLab) 아니면 [@keewonseo.bsky.social](https://bsky.app/profile/keewonseo.bsky.social)
+편하신 채널로 피드백을 남겨주세요 - 스토어 또는 keewon.seo@gmail.com
 
 [Privacy](privacy)
